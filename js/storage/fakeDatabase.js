@@ -25,6 +25,7 @@ class Database {
         totalCore,
       };
       this.storage.push(polyLineInfo);
+      console.log(storage);
     }
   }
 }
