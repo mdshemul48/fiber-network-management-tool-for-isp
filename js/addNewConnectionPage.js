@@ -31,7 +31,7 @@ document.getElementById('submit-form').addEventListener('submit', (event) => {
   event.preventDefault();
   const { totalCore, connectionType } = submitFormData();
   const allCoordinates = editablePolyline.getAllThePath();
-  console.log(totalCore, connectionType, allCoordinates);
+  submitNewHandler(totalCore, connectionType, allCoordinates);
 });
 // Append the 'script' element to 'head'
 document.head.appendChild(script);

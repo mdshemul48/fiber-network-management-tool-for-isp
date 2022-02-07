@@ -5,15 +5,15 @@ class Graph {
     this.numberOfNodes = 0;
     this.adjacentList = {};
   }
-  addVertex(node, nodeData) {
-    this.adjacentList[node] = {
+  addVertex(VertexKey, nodeData) {
+    this.adjacentList[VertexKey] = {
       children: [],
       nodeData,
-      currentNode: node,
+      currentNode: VertexKey,
       prevNode: null,
     };
     if (this.numberOfNodes === 0) {
-      this.head = this.adjacentList[node];
+      this.head = this.adjacentList[VertexKey];
     }
     this.numberOfNodes++;
   }

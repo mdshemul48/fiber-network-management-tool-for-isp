@@ -1,4 +1,8 @@
-import submitFormData from './submitFormData.js';
+import Database from './storage/fakeDatabase.js';
 
-const submitNewHandler = (event) => {};
+const submitNewHandler = (totalCore, connectionType, allCoordinates) => {
+  const db = new Database();
+  console.log(totalCore, connectionType, allCoordinates);
+  db.addPointToPoint(null, { totalCore, connectionType, allCoordinates });
+};
 export default submitNewHandler;

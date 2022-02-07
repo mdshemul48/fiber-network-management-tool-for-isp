@@ -6,27 +6,20 @@ class Database {
     this.storage = new Graph();
   }
 
-  addPointToPoint(coordinates, id, totalCore) {
+  addPointToPoint(id, polylineInfo) {
     if (id) {
-      const targetPTP = this.storage.find((connection) => connection.id === id);
-
-      targetPTP.pointToPoint.push(coordinates);
+      const uniqueId = uuidv4();
+      this.storage.addVertex(uniqueId, polylineInfo);
+      this.storage.addEdge(id, uniqueId);
     } else {
-      if (!totalCore || totalCore < 1)
-        throw new createError(
-          'invalidCore',
-          'you have not entered valid core.'
-        );
+      // if (!totalCore || totalCore < 1)
+      // throw new createError(
+      //   'invalidCore',
+      //   'you have not entered valid core.'
+      // );
 
       const uniqueId = uuidv4();
-      const polyLineInfo = {
-        id: uniqueId,
-        pointToPoint: [coordinates],
-        local: [],
-        totalCore,
-      };
-      this.storage.push(polyLineInfo);
-      console.log(storage);
+      this.storage.addVertex(uniqueId, polylineInfo);
     }
   }
 }
