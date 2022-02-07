@@ -1,5 +1,5 @@
 import Graph from './Graph.js';
-
+import uuidv4 from '../util/uuid.js';
 class Database {
   storage = null;
   constructor() {
@@ -18,7 +18,7 @@ class Database {
           'you have not entered valid core.'
         );
 
-      const uniqueId = uuid();
+      const uniqueId = uuidv4();
       const polyLineInfo = {
         id: uniqueId,
         pointToPoint: [coordinates],
