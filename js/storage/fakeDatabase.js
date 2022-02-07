@@ -1,5 +1,6 @@
 import Graph from './Graph.js';
 import uuidv4 from '../util/uuid.js';
+import createError from '../util/error.js';
 class Database {
   storage = null;
   constructor() {
@@ -12,11 +13,11 @@ class Database {
       this.storage.addVertex(uniqueId, polylineInfo);
       this.storage.addEdge(id, uniqueId);
     } else {
-      // if (!totalCore || totalCore < 1)
-      // throw new createError(
-      //   'invalidCore',
-      //   'you have not entered valid core.'
-      // );
+      if (!totalCore || totalCore < 1)
+        throw new createError(
+          'invalidCore',
+          'you have not entered valid core.'
+        );
 
       const uniqueId = uuidv4();
       this.storage.addVertex(uniqueId, polylineInfo);
