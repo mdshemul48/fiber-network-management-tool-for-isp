@@ -1,8 +1,9 @@
 import EditablePolyline from './googleMap/editablePolyline.js';
-// import database from './storage/fakeDatabase.js';
+import submitFormData from './submitFormData.js';
+import submitNewHandler from './submitNewConnection.js';
 
 let map;
-let polyline;
+let editablePolyline;
 
 // Create the script tag, set the appropriate attributes
 const script = document.createElement('script');
@@ -18,13 +19,24 @@ window.initMap = function () {
     zoom: 15,
   });
 
-  const polyline = new EditablePolyline();
-  polyline.setMap(map);
+  editablePolyline = new EditablePolyline();
+  editablePolyline.setMap(map);
   map.addListener('click', (event) => {
     const latLng = event.latLng;
-    polyline.addVertex(latLng);
+    editablePolyline.addVertex(latLng);
   });
 };
 
+document.getElementById('submit-form').addEventListener('submit', (event) => {
+  event.preventDefault();
+  const { totalCore, connectionType } = submitFormData();
+  const path = editablePolyline.polyline.getPath();
+  const allCoordinatesFunctions = path.xd;
+  const allCoordinates = allCoordinatesFunctions.map(({ lat, lng }) => ({
+    lat: lat(),
+    lng: lng(),
+  }));
+  console.log(allCoordinates);
+});
 // Append the 'script' element to 'head'
 document.head.appendChild(script);
