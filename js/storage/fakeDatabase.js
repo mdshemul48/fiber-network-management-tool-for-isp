@@ -1,4 +1,3 @@
-import { v5 as uuid } from 'uuid';
 import Graph from './Graph.js';
 
 class Database {
