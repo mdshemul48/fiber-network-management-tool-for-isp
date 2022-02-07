@@ -1,7 +1,6 @@
 import { v5 as uuid } from 'uuid';
 
 class Database {
-  storage = [];
   constructor() {
     console.log('working');
   }
