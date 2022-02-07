@@ -13,12 +13,6 @@ class Database {
       this.storage.addVertex(uniqueId, polylineInfo);
       this.storage.addEdge(id, uniqueId);
     } else {
-      if (!totalCore || totalCore < 1)
-        throw new createError(
-          'invalidCore',
-          'you have not entered valid core.'
-        );
-
       const uniqueId = uuidv4();
       this.storage.addVertex(uniqueId, polylineInfo);
     }
