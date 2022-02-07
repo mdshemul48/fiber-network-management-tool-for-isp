@@ -1,13 +1,16 @@
 import { v5 as uuid } from 'uuid';
+import Graph from './Graph.js';
 
 class Database {
+  storage = null;
   constructor() {
-    console.log('working');
+    this.storage = new Graph();
   }
 
   addPointToPoint(coordinates, id, totalCore) {
     if (id) {
       const targetPTP = this.storage.find((connection) => connection.id === id);
+
       targetPTP.pointToPoint.push(coordinates);
     } else {
       if (!totalCore || totalCore < 1)

@@ -1,4 +1,6 @@
 import EditablePolyline from './googleMap/editablePolyline.js';
+// import database from './storage/fakeDatabase.js';
+
 let map;
 let polyline;
 
