@@ -18,7 +18,7 @@
     <!-- ==============navigation bar================= -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">Navbar</a>
+            <a class="navbar-brand" href="#">YetFix GEO GRAPH</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                 aria-label="Toggle navigation">
@@ -27,7 +27,7 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/">dashboard</a>
+                        <a class="nav-link active" aria-current="page" href="/">Dashboard</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/addNewConnection.html">Add New Connection</a>
@@ -41,6 +41,35 @@
     <!-- =================submission form ============  -->
 
 
+    <section class="row mt-2 ms-1">
+        <div class="col-lg-6">
+            <form>
+                <div>
+                    <div class="mb-3">
+                        <label for="totalCore" class="form-label">Total Core</label>
+                        <input type="number" class="form-control" id="totalCoreForm" placeholder="Enter Total Core">
+                        <small class="text-muted form-text">This is required for adding any point to point
+                            connection.</small>
+                    </div>
+                </div>
+                <div class="mt-2 mb-3"><label class="mb-2 form-label" for="radio button">Select Connection Type</label>
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="form-check"><input name="connectionType" type="radio" id="pTpConnection"
+                                    class="form-check-input" value="PtP" checked=""><label title="" for="pTpConnection"
+                                    class="form-check-label">Point To Point</label></div>
+                        </div>
+                        <div class="col">
+                            <div class="form-check"><input name="connectionType" type="radio" id="localConnection"
+                                    class="form-check-input" value="local"><label title="" for="localConnection"
+                                    class="form-check-label">Local Connection</label></div>
+                        </div>
+                        <div class="col"> <button type="submit" class="btn btn-primary">Submit</button></div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
 
 
 
