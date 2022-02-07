@@ -30,13 +30,8 @@ window.initMap = function () {
 document.getElementById('submit-form').addEventListener('submit', (event) => {
   event.preventDefault();
   const { totalCore, connectionType } = submitFormData();
-  const path = editablePolyline.polyline.getPath();
-  const allCoordinatesFunctions = path.xd;
-  const allCoordinates = allCoordinatesFunctions.map(({ lat, lng }) => ({
-    lat: lat(),
-    lng: lng(),
-  }));
-  console.log(allCoordinates);
+  const allCoordinates = editablePolyline.getAllThePath();
+  console.log(totalCore, connectionType, allCoordinates);
 });
 // Append the 'script' element to 'head'
 document.head.appendChild(script);
