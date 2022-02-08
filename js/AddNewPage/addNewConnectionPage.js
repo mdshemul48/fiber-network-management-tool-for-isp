@@ -5,7 +5,7 @@ import submitNewHandler from './submitNewConnection.js';
 
 let map;
 let editablePolyline;
-let selectedPolyline;
+let selectedPolyline = null;
 
 // Create the script tag, set the appropriate attributes
 const script = document.createElement('script');
@@ -30,9 +30,14 @@ window.initMap = function () {
 
   // this will draw all the old polyline and will set an click listener on them
   drawAndAddEventListener(map, (clickedPolylineId, vertexKey) => {
-    const latLng = clickedPolylineId.latLng;
-    editablePolyline.addVertex(latLng);
-    console.log(vertexKey);
+    console.log(selectedPolyline);
+    if (!selectedPolyline) {
+      const latLng = clickedPolylineId.latLng;
+      editablePolyline.addVertex(latLng);
+      const connectedPolyline = document.getElementById('connectedPolyline');
+      connectedPolyline.value = vertexKey;
+      selectedPolyline = vertexKey;
+    }
   });
 };
 
