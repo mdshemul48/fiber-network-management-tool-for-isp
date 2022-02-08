@@ -1,10 +1,11 @@
 import EditablePolyline from '../googleMap/editablePolyline.js';
-import drawAllPolyline from '../googleMap/drawAllPolyline.js';
+import drawAndAddEventListener from './drawAndAddEventListener.js';
 import submitFormData from './submitFormData.js';
 import submitNewHandler from './submitNewConnection.js';
 
 let map;
 let editablePolyline;
+let selectedPolyline;
 
 // Create the script tag, set the appropriate attributes
 const script = document.createElement('script');
@@ -20,13 +21,18 @@ window.initMap = function () {
     zoom: 15,
   });
 
-  drawAllPolyline();
-
   editablePolyline = new EditablePolyline();
   editablePolyline.setMap(map);
   map.addListener('click', (event) => {
     const latLng = event.latLng;
     editablePolyline.addVertex(latLng);
+  });
+
+  // this will draw all the old polyline and will set an click listener on them
+  drawAndAddEventListener(map, (clickedPolylineId, vertexKey) => {
+    const latLng = clickedPolylineId.latLng;
+    editablePolyline.addVertex(latLng);
+    console.log(vertexKey);
   });
 };
 
