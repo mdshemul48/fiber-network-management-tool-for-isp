@@ -1,3 +1,5 @@
+import drawAllPolyline from './drawAllPolyline.js';
+
 let map;
 
 const script = document.createElement('script');
@@ -10,6 +12,7 @@ window.initMap = function () {
     center: { lat: 23.919524586722066, lng: 90.25663246242456 },
     zoom: 15,
   });
+  drawAllPolyline(map);
 };
 
 document.head.appendChild(script);
