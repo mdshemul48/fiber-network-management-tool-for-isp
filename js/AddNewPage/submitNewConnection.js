@@ -1,5 +1,5 @@
-import Database from './storage/fakeDatabase.js';
-import createError from './util/error.js';
+import Database from '../storage/fakeDatabase.js';
+import createError from '../util/error.js';
 const submitNewHandler = (totalCore, connectionType, allCoordinates) => {
   const db = new Database();
   console.log(totalCore, connectionType, allCoordinates);

@@ -1,4 +1,4 @@
-import EditablePolyline from './googleMap/editablePolyline.js';
+import EditablePolyline from '../googleMap/editablePolyline.js';
 import submitFormData from './submitFormData.js';
 import submitNewHandler from './submitNewConnection.js';
 
