@@ -24,14 +24,14 @@ class Database {
 
   addLocalLine(parentPolylineKey, polylineInfo) {
     const parentPolyline = this.storage.getVertexByKey(parentPolylineKey);
-    const ref = this.storage;
+    const graphRef = this.storage;
     // this function will get the main point to point location
     const mainPointToPointPolyline = (() => {
       function findPolyline(parentPolyline) {
         if (parentPolyline.nodeData.totalCore > 0) {
           return parentPolyline;
         }
-        return findPolyline(ref.getVertexByKey(parentPolyline.prevNode));
+        return findPolyline(graphRef.getVertexByKey(parentPolyline.prevNode));
       }
       return findPolyline(parentPolyline);
     })();

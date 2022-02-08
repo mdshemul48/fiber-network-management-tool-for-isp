@@ -5,9 +5,25 @@ const drawAllPolyline = (map) => {
   const graph = new Graph(savedData);
 
   const getAllThePath = graph.getAllVertices();
+
   getAllThePath.forEach((item) => {
-    const { allCoordinates, connectionType, totalCore, usedCore } =
-      item.nodeData;
+    let { allCoordinates, connectionType, totalCore, usedCore } = item.nodeData;
+
+    if (connectionType === 'pointToPoint' && !totalCore) {
+      const mainPointToPointPolyline = (() => {
+        function findPolyline(parentPolyline) {
+          if (parentPolyline.nodeData.totalCore > 0) {
+            return parentPolyline;
+          }
+          return findPolyline(graph.getVertexByKey(parentPolyline.prevNode));
+        }
+        return findPolyline(item);
+      })();
+      const { nodeData } = mainPointToPointPolyline;
+      totalCore = nodeData.totalCore;
+      usedCore = nodeData.usedCore;
+    }
+
     const polyline = new google.maps.Polyline({
       path: allCoordinates,
       geodesic: true,
