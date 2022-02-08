@@ -1,5 +1,5 @@
 const submitForm = () => {
-  const totalCore = document.getElementById('totalCoreForm').value;
+  const totalCore = Number(document.getElementById('totalCoreForm').value);
   const connectionType = document.querySelector(
     'input[name="connectionType"]:checked'
   ).value;
