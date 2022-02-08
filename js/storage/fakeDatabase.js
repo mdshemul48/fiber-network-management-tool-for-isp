@@ -1,6 +1,5 @@
 import Graph from './Graph.js';
 import uuidv4 from '../util/uuid.js';
-import createError from '../util/error.js';
 class Database {
   storage = null;
   constructor() {
