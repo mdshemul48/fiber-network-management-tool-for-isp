@@ -10,6 +10,7 @@ class Database {
   }
 
   addPointToPoint(parentPolylineKey, polylineInfo) {
+    // this will add only point to point connection
     if (parentPolylineKey) {
       const uniqueId = uuidv4();
       this.storage.addVertex(uniqueId, polylineInfo);
@@ -20,6 +21,7 @@ class Database {
     }
     this.saveOnLocalStorage();
   }
+
   addLocalLine(parentPolylineKey, polylineInfo) {
     const parentPolyline = this.storage.getVertexByKey(parentPolylineKey);
 
@@ -30,7 +32,7 @@ class Database {
       this.storage.addVertex(uniqueId, polylineInfo);
       this.storage.addEdge(parentPolylineKey, uniqueId);
     } else if (parentPolyline.nodeData.connectionType === 'pointToPoint') {
-      // if prev connection point to point update used kore and add new local.
+      // if prev connection point to point update used core and add new local.
       if (
         !(parentPolyline.nodeData.usedCore < parentPolyline.nodeData.totalCore)
       ) {

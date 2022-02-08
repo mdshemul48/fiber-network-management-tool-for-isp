@@ -30,6 +30,7 @@ const submitLocalHandler = (
       'parentKeyError',
       'you have not entered valid parent polyline key'
     );
+  console.log(connectionType, allCoordinates);
   db.addLocalLine(parentPolylineKey, { connectionType, allCoordinates });
 };
 

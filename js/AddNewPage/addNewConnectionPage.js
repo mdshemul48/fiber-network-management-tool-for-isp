@@ -48,12 +48,7 @@ document.getElementById('submit-form').addEventListener('submit', (event) => {
   const { totalCore, connectionType } = submitFormData();
   const allCoordinates = editablePolyline.getAllThePath();
   if (selectedPolyline && connectionType === 'local') {
-    submitLocalHandler(
-      selectedPolyline,
-      totalCore,
-      connectionType,
-      allCoordinates
-    );
+    submitLocalHandler(selectedPolyline, connectionType, allCoordinates);
   } else if (!selectedPolyline && connectionType === 'pointToPoint') {
     submitPointToPointHandler(totalCore, connectionType, allCoordinates);
   }

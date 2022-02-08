@@ -6,12 +6,13 @@ const drawAndAddEventListener = (map, callback) => {
 
   const getAllThePath = graph.getAllVertices();
   getAllThePath.forEach((item) => {
+    console.log(item);
     const { currentNode, nodeData } = item;
-    const { allCoordinates } = nodeData;
+    const { allCoordinates, connectionType } = nodeData;
     const polyline = new google.maps.Polyline({
       path: allCoordinates,
       geodesic: true,
-      strokeColor: '#FF0000',
+      strokeColor: connectionType === 'local' ? '#2EB086' : '#B8405E',
       strokeOpacity: 1.0,
       strokeWeight: 4,
     });
