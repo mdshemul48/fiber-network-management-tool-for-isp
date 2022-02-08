@@ -49,8 +49,13 @@ document.getElementById('submit-form').addEventListener('submit', (event) => {
   const allCoordinates = editablePolyline.getAllThePath();
   if (selectedPolyline && connectionType === 'local') {
     submitLocalHandler(selectedPolyline, connectionType, allCoordinates);
-  } else if (!selectedPolyline && connectionType === 'pointToPoint') {
-    submitPointToPointHandler(totalCore, connectionType, allCoordinates);
+  } else if (connectionType === 'pointToPoint') {
+    submitPointToPointHandler(
+      selectedPolyline,
+      totalCore,
+      connectionType,
+      allCoordinates
+    );
   }
 });
 // Append the 'script' element to 'head'

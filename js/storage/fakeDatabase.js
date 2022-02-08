@@ -24,6 +24,17 @@ class Database {
 
   addLocalLine(parentPolylineKey, polylineInfo) {
     const parentPolyline = this.storage.getVertexByKey(parentPolylineKey);
+    const ref = this.storage;
+    // this function will get the main point to point location
+    const mainPointToPointPolyline = (() => {
+      function findPolyline(parentPolyline) {
+        if (parentPolyline.nodeData.totalCore > 0) {
+          return parentPolyline;
+        }
+        return findPolyline(ref.getVertexByKey(parentPolyline.prevNode));
+      }
+      return findPolyline(parentPolyline);
+    })();
 
     const uniqueId = uuidv4();
 
@@ -34,7 +45,10 @@ class Database {
     } else if (parentPolyline.nodeData.connectionType === 'pointToPoint') {
       // if prev connection point to point update used core and add new local.
       if (
-        !(parentPolyline.nodeData.usedCore < parentPolyline.nodeData.totalCore)
+        !(
+          mainPointToPointPolyline.nodeData.usedCore <
+          mainPointToPointPolyline.nodeData.totalCore
+        )
       ) {
         throw new createError(
           'insufficientCore',
@@ -42,7 +56,7 @@ class Database {
         );
       } else {
         {
-          parentPolyline.nodeData.usedCore++;
+          mainPointToPointPolyline.nodeData.usedCore++;
           this.storage.addVertex(uniqueId, polylineInfo);
           this.storage.addEdge(parentPolylineKey, uniqueId);
         }

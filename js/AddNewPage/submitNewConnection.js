@@ -3,20 +3,21 @@ import createError from '../util/error.js';
 
 const db = new Database();
 const submitPointToPointHandler = (
+  selectedPolyline,
   totalCore,
   connectionType,
   allCoordinates
 ) => {
   console.log(totalCore, connectionType, allCoordinates);
 
-  if (!totalCore || totalCore < 1)
+  if (!selectedPolyline && (!totalCore || totalCore < 1))
     throw new createError('invalidCore', 'you have not entered valid core.');
 
-  db.addPointToPoint(null, {
-    totalCore,
+  db.addPointToPoint(selectedPolyline, {
+    totalCore: totalCore > 0 ? totalCore : undefined,
     connectionType,
     allCoordinates,
-    usedCore: 0,
+    usedCore: totalCore > 0 ? 0 : undefined,
   });
 };
 
