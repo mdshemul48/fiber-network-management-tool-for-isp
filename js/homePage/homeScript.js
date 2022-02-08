@@ -1,4 +1,4 @@
-import drawAllPolyline from './drawAllPolyline.js';
+import drawAllPolyline from '../googleMap/drawAllPolyline.js';
 
 let map;
 

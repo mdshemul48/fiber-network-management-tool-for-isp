@@ -1,4 +1,5 @@
 import EditablePolyline from '../googleMap/editablePolyline.js';
+import drawAllPolyline from '../googleMap/drawAllPolyline.js';
 import submitFormData from './submitFormData.js';
 import submitNewHandler from './submitNewConnection.js';
 
@@ -18,6 +19,8 @@ window.initMap = function () {
 
     zoom: 15,
   });
+
+  drawAllPolyline();
 
   editablePolyline = new EditablePolyline();
   editablePolyline.setMap(map);
