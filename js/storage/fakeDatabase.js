@@ -4,7 +4,8 @@ import createError from '../util/error.js';
 class Database {
   storage = null;
   constructor() {
-    this.storage = new Graph();
+    const savedData = JSON.parse(localStorage.getItem('siteData'));
+    this.storage = new Graph(savedData);
   }
 
   addPointToPoint(id, polylineInfo) {
@@ -16,6 +17,8 @@ class Database {
       const uniqueId = uuidv4();
       this.storage.addVertex(uniqueId, polylineInfo);
     }
+    const graphData = JSON.stringify(this.storage);
+    localStorage.setItem('siteData', graphData);
   }
 }
 

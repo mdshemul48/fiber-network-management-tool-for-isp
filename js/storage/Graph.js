@@ -1,9 +1,13 @@
 class Graph {
   head = null;
   numberOfNodes = 0;
-  constructor() {
-    this.numberOfNodes = 0;
-    this.adjacentList = {};
+  adjacentList = {};
+  constructor(initialData = null) {
+    if (initialData !== null) {
+      this.adjacentList = initialData.adjacentList;
+      this.numberOfNodes = initialData.numberOfNodes;
+      this.head = initialData.head;
+    }
   }
   addVertex(VertexKey, nodeData) {
     this.adjacentList[VertexKey] = {
