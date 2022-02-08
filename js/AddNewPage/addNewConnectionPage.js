@@ -32,10 +32,9 @@ window.initMap = function () {
 
   // this will draw all the old polyline and will set an click listener on them
   drawAndAddEventListener(map, (clickedPolylineId, vertexKey) => {
-    console.log(selectedPolyline);
+    const latLng = clickedPolylineId.latLng;
+    editablePolyline.addVertex(latLng);
     if (!selectedPolyline) {
-      const latLng = clickedPolylineId.latLng;
-      editablePolyline.addVertex(latLng);
       const connectedPolyline = document.getElementById('connectedPolyline');
       connectedPolyline.value = vertexKey;
       selectedPolyline = vertexKey;
@@ -50,7 +49,7 @@ document.getElementById('submit-form').addEventListener('submit', (event) => {
   const allCoordinates = editablePolyline.getAllThePath();
   if (selectedPolyline && connectionType === 'local') {
     submitLocalHandler(
-      parentPolylineKey,
+      selectedPolyline,
       totalCore,
       connectionType,
       allCoordinates
