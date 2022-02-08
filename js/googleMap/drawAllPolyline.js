@@ -36,9 +36,13 @@ const drawAllPolyline = (map) => {
     );
     const infoWindow = new google.maps.InfoWindow({
       content: `
-        <p>Type: ${connectionType}</p>
-      ${totalCore ? `<p>Core Used: ${usedCore}/${totalCore}</p>` : ''}
-      <p>Distance: ${Math.ceil(lengthInMeters)}m</p>
+        <p class="mb-1">Type: ${connectionType}</p>
+      ${
+        totalCore
+          ? `<p class="mb-1">Core Used: ${usedCore}/${totalCore}</p>`
+          : ''
+      }
+      <p class="mb-1">Distance: ${Math.ceil(lengthInMeters)}m</p>
       `,
     });
     polyline.addListener('mouseover', (event) => {
