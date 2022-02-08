@@ -1,12 +1,10 @@
 class Graph {
-  head = null;
   numberOfNodes = 0;
   adjacentList = {};
   constructor(initialData = null) {
     if (initialData !== null) {
       this.adjacentList = initialData.adjacentList;
       this.numberOfNodes = initialData.numberOfNodes;
-      this.head = initialData.head;
     }
   }
   addVertex(VertexKey, nodeData) {
@@ -16,9 +14,6 @@ class Graph {
       currentNode: VertexKey,
       prevNode: null,
     };
-    if (this.numberOfNodes === 0) {
-      this.head = this.adjacentList[VertexKey];
-    }
     this.numberOfNodes++;
   }
   addEdge(node1, node2) {

@@ -4,7 +4,7 @@ let map;
 
 const script = document.createElement('script');
 script.src =
-  'https://maps.googleapis.com/maps/api/js?key=AIzaSyCzBmP_s-e1BUzOyvk9YnoZtIX40PwWfoM&callback=initMap';
+  'https://maps.googleapis.com/maps/api/js?key=AIzaSyCzBmP_s-e1BUzOyvk9YnoZtIX40PwWfoM&libraries=geometry&callback=initMap';
 script.async = true;
 
 window.initMap = function () {

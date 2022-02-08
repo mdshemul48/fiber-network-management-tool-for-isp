@@ -6,13 +6,31 @@ const drawAllPolyline = (map) => {
 
   const getAllThePath = graph.getAllVertices();
   getAllThePath.forEach((item) => {
-    const { allCoordinates, connectionType } = item.nodeData;
+    const { allCoordinates, connectionType, totalCore, usedCore } =
+      item.nodeData;
     const polyline = new google.maps.Polyline({
       path: allCoordinates,
       geodesic: true,
       strokeColor: connectionType === 'local' ? '#2EB086' : '#B8405E',
       strokeOpacity: 1.0,
       strokeWeight: 3,
+    });
+    const lengthInMeters = google.maps.geometry.spherical.computeLength(
+      polyline.getPath()
+    );
+    const infoWindow = new google.maps.InfoWindow({
+      content: `
+        <p>Type: ${connectionType}</p>
+      ${totalCore ? `<p>Core Used: ${usedCore}/${totalCore}</p>` : ''}
+      <p>Distance: ${Math.ceil(lengthInMeters)}m</p>
+      `,
+    });
+    polyline.addListener('mouseover', (event) => {
+      infoWindow.setPosition(event.latLng);
+      infoWindow.open(map);
+    });
+    polyline.addListener('mouseout', () => {
+      infoWindow.close();
     });
     polyline.setMap(map);
   });
