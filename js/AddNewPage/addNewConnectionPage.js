@@ -45,17 +45,23 @@ window.initMap = function () {
 document.getElementById('submit-form').addEventListener('submit', (event) => {
   event.preventDefault();
 
-  const { totalCore, connectionType } = submitFormData();
-  const allCoordinates = editablePolyline.getAllThePath();
-  if (selectedPolyline && connectionType === 'local') {
-    submitLocalHandler(selectedPolyline, connectionType, allCoordinates);
-  } else if (connectionType === 'pointToPoint') {
-    submitPointToPointHandler(
-      selectedPolyline,
-      totalCore,
-      connectionType,
-      allCoordinates
-    );
+  try {
+    const { totalCore, connectionType } = submitFormData();
+    const allCoordinates = editablePolyline.getAllThePath();
+
+    if (selectedPolyline && connectionType === 'local') {
+      submitLocalHandler(selectedPolyline, connectionType, allCoordinates);
+    } else if (connectionType === 'pointToPoint') {
+      submitPointToPointHandler(
+        selectedPolyline,
+        totalCore,
+        connectionType,
+        allCoordinates
+      );
+    }
+    window.location.href = '/';
+  } catch (err) {
+    alert(err.message);
   }
 });
 // Append the 'script' element to 'head'

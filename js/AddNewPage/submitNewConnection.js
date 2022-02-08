@@ -8,7 +8,12 @@ const submitPointToPointHandler = (
   connectionType,
   allCoordinates
 ) => {
-  console.log(totalCore, connectionType, allCoordinates);
+  if (!allCoordinates || allCoordinates.length <= 1) {
+    throw new createError(
+      'invalidPolyline',
+      `You haven't completed basic polyline. At lest add 2 position.`
+    );
+  }
 
   if (!selectedPolyline && (!totalCore || totalCore < 1))
     throw new createError('invalidCore', 'you have not entered valid core.');
@@ -26,6 +31,13 @@ const submitLocalHandler = (
   connectionType,
   allCoordinates
 ) => {
+  if (!allCoordinates || allCoordinates.length <= 1) {
+    throw new createError(
+      'invalidPolyline',
+      `You haven't completed basic polyline. At lest add 2 position.`
+    );
+  }
+
   if (!parentPolylineKey)
     throw new createError(
       'parentKeyError',
