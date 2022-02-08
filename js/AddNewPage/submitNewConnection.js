@@ -1,6 +1,11 @@
 import Database from '../storage/fakeDatabase.js';
 import createError from '../util/error.js';
-const submitNewHandler = (totalCore, connectionType, allCoordinates) => {
+
+const submitPointToPointHandler = (
+  totalCore,
+  connectionType,
+  allCoordinates
+) => {
   const db = new Database();
   console.log(totalCore, connectionType, allCoordinates);
 
@@ -9,4 +14,12 @@ const submitNewHandler = (totalCore, connectionType, allCoordinates) => {
 
   db.addPointToPoint(null, { totalCore, connectionType, allCoordinates });
 };
-export default submitNewHandler;
+
+const submitLocalHandler = (
+  parentPolylineKey,
+  totalCore,
+  connectionType,
+  allCoordinates
+) => {};
+
+export { submitPointToPointHandler, submitLocalHandler };

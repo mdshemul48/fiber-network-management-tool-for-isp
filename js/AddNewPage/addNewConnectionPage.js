@@ -1,7 +1,10 @@
 import EditablePolyline from '../googleMap/editablePolyline.js';
 import drawAndAddEventListener from './drawAndAddEventListener.js';
 import submitFormData from './submitFormData.js';
-import submitNewHandler from './submitNewConnection.js';
+import {
+  submitPointToPointHandler,
+  submitLocalHandler,
+} from './submitNewConnection.js';
 
 let map;
 let editablePolyline;
@@ -17,7 +20,6 @@ script.async = true;
 window.initMap = function () {
   map = new google.maps.Map(document.getElementById('map'), {
     center: { lat: 23.919524586722066, lng: 90.25663246242456 },
-
     zoom: 15,
   });
 
@@ -43,9 +45,19 @@ window.initMap = function () {
 
 document.getElementById('submit-form').addEventListener('submit', (event) => {
   event.preventDefault();
+
   const { totalCore, connectionType } = submitFormData();
   const allCoordinates = editablePolyline.getAllThePath();
-  submitNewHandler(totalCore, connectionType, allCoordinates);
+  if (selectedPolyline && connectionType === 'local') {
+    submitLocalHandler(
+      parentPolylineKey,
+      totalCore,
+      connectionType,
+      allCoordinates
+    );
+  } else if (!selectedPolyline && connectionType === 'pointToPoint') {
+    submitPointToPointHandler(totalCore, connectionType, allCoordinates);
+  }
 });
 // Append the 'script' element to 'head'
 document.head.appendChild(script);
