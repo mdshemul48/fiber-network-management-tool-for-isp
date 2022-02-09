@@ -36,4 +36,9 @@ window.deleteConnection = (vertexKey) => {
   }
 };
 
+window.disableConnection = (vertexKey) => {
+  const localData = JSON.parse(localStorage.getItem('siteData'));
+  const graph = new Graph(localData);
+};
+
 document.head.appendChild(script);
