@@ -12,6 +12,13 @@ class Database {
   addPointToPoint(parentPolylineKey, polylineInfo) {
     // this will add only point to point connection
     if (parentPolylineKey) {
+      const parentPolyline = this.storage.getVertexByKey(parentPolylineKey);
+      if (parentPolyline.nodeData.connectionType !== 'pointToPoint') {
+        throw new createError(
+          'wrongParentPolyline',
+          'You are connecting from local connection. point to point can be connected with only point to point connection'
+        );
+      }
       const uniqueId = uuidv4();
       this.storage.addVertex(uniqueId, polylineInfo);
       this.storage.addEdge(parentPolylineKey, uniqueId);
