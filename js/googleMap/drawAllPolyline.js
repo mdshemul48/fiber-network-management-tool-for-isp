@@ -40,6 +40,7 @@ const drawAllPolyline = (map) => {
       content: `
 
         <p class="mb-1">Status: ${status}</p>
+        <hr class="my-1" />
         <p class="mb-1">Type: ${connectionType}</p>
       ${
         totalCore
