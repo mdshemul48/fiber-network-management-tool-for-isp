@@ -7,7 +7,8 @@ const drawAllPolyline = (map) => {
   const getAllThePath = graph.getAllVertices();
 
   getAllThePath.forEach((item) => {
-    let { allCoordinates, connectionType, totalCore, usedCore } = item.nodeData;
+    const { nodeData, currentNode } = item;
+    let { allCoordinates, connectionType, totalCore, usedCore } = nodeData;
 
     if (connectionType === 'pointToPoint' && !totalCore) {
       const mainPointToPointPolyline = (() => {
@@ -43,6 +44,7 @@ const drawAllPolyline = (map) => {
           : ''
       }
       <p class="mb-1">Distance: ${Math.ceil(lengthInMeters)}m</p>
+      <button onClick="deleteConnection('${currentNode}')"> click here</button>
       `,
     });
     polyline.addListener('mouseover', (event) => {
