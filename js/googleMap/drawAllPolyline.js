@@ -8,7 +8,8 @@ const drawAllPolyline = (map) => {
 
   getAllThePath.forEach((item) => {
     const { nodeData, currentNode } = item;
-    let { allCoordinates, connectionType, totalCore, usedCore } = nodeData;
+    let { allCoordinates, connectionType, totalCore, usedCore, status } =
+      nodeData;
 
     if (connectionType === 'pointToPoint' && !totalCore) {
       const mainPointToPointPolyline = (() => {
@@ -37,6 +38,8 @@ const drawAllPolyline = (map) => {
     );
     const infoWindow = new google.maps.InfoWindow({
       content: `
+
+        <p class="mb-1">Status: ${status}</p>
         <p class="mb-1">Type: ${connectionType}</p>
       ${
         totalCore

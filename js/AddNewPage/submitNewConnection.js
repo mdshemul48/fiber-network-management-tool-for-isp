@@ -19,6 +19,7 @@ const submitPointToPointHandler = (
     throw new createError('invalidCore', 'you have not entered valid core.');
 
   db.addPointToPoint(selectedPolyline, {
+    status: 'active',
     totalCore: totalCore > 0 ? totalCore : undefined,
     connectionType,
     allCoordinates,
@@ -44,7 +45,11 @@ const submitLocalHandler = (
       'you have not entered valid parent polyline key'
     );
   console.log(connectionType, allCoordinates);
-  db.addLocalLine(parentPolylineKey, { connectionType, allCoordinates });
+  db.addLocalLine(parentPolylineKey, {
+    connectionType,
+    allCoordinates,
+    status: 'active',
+  });
 };
 
 export { submitPointToPointHandler, submitLocalHandler };
