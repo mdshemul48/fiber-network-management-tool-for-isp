@@ -39,6 +39,23 @@ window.deleteConnection = (vertexKey) => {
 window.disableConnection = (vertexKey) => {
   const localData = JSON.parse(localStorage.getItem('siteData'));
   const graph = new Graph(localData);
+
+  const targetVertex = graph.getVertexByKey(vertexKey);
+
+  const confirmValue = confirm('Are you sure you want to delete?');
+  if (confirmValue) {
+    (function disableAllTheChildConnection(headNode) {
+      headNode.nodeData.status = 'disabled';
+      for (let i = 0; i < headNode.children.length; i++) {
+        disableAllTheChildConnection(
+          graph.getVertexByKey(headNode.children[i])
+        );
+      }
+    })(targetVertex);
+
+    localStorage.setItem('siteData', JSON.stringify(graph));
+    location.reload();
+  }
 };
 
 document.head.appendChild(script);

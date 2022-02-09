@@ -29,7 +29,14 @@ const drawAllPolyline = (map) => {
     const polyline = new google.maps.Polyline({
       path: allCoordinates,
       geodesic: true,
-      strokeColor: connectionType === 'local' ? '#2EB086' : '#B8405E',
+      strokeColor:
+        status === 'active'
+          ? connectionType === 'local'
+            ? '#2EB086'
+            : '#B8405E'
+          : connectionType === 'local'
+          ? '#146356'
+          : '#000B49',
       strokeOpacity: 1.0,
       strokeWeight: 3,
     });
