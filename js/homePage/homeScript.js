@@ -42,10 +42,31 @@ window.disableConnection = (vertexKey) => {
 
   const targetVertex = graph.getVertexByKey(vertexKey);
 
-  const confirmValue = confirm('Are you sure you want to delete?');
+  const confirmValue = confirm('Are you sure you want to disable?');
   if (confirmValue) {
     (function disableAllTheChildConnection(headNode) {
       headNode.nodeData.status = 'disabled';
+      for (let i = 0; i < headNode.children.length; i++) {
+        disableAllTheChildConnection(
+          graph.getVertexByKey(headNode.children[i])
+        );
+      }
+    })(targetVertex);
+
+    localStorage.setItem('siteData', JSON.stringify(graph));
+    location.reload();
+  }
+};
+
+window.enableConnection = (vertexKey) => {
+  const localData = JSON.parse(localStorage.getItem('siteData'));
+  const graph = new Graph(localData);
+
+  const targetVertex = graph.getVertexByKey(vertexKey);
+  const confirmValue = confirm('Are you sure you want to enable?');
+  if (confirmValue) {
+    (function disableAllTheChildConnection(headNode) {
+      headNode.nodeData.status = 'active';
       for (let i = 0; i < headNode.children.length; i++) {
         disableAllTheChildConnection(
           graph.getVertexByKey(headNode.children[i])

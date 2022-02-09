@@ -56,9 +56,23 @@ const drawAllPolyline = (map) => {
       }
       <p class="mb-1">Distance: ${Math.ceil(lengthInMeters)}m</p>
 
-      <button class="badge mb-1 bg-danger border-0" onClick="deleteConnection('${currentNode}')">Delete</button>
+      <button class="badge mb-1 bg-danger border-0" onClick="deleteConnection( '${currentNode}')">Delete</button>
       
-      <button class="badge mb-1 bg-dark border-0" onClick="disableConnection('${currentNode}')">Disable</button>
+      ${
+        status === 'active'
+          ? ` <button
+          class='badge mb-1 bg-dark border-0'
+          onClick="disableConnection('${currentNode}')"
+        >
+          Disable
+        </button>`
+          : ` <button
+        class='badge mb-1 bg-success border-0'
+        onClick="enableConnection('${currentNode}')"
+      >
+        Enable
+      </button>`
+      }
       `,
     });
     polyline.addListener('mouseover', (event) => {
