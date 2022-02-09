@@ -46,7 +46,9 @@ const drawAllPolyline = (map) => {
     const infoWindow = new google.maps.InfoWindow({
       content: `
 
-        <p class="mb-1">Status: ${status}</p>
+        <p class="mb-1">Status: <span class="${
+          status === 'active' ? 'text-success' : 'text-danger'
+        } fw-bold">${status}</span></p>
         <hr class="my-1" />
         <p class="mb-1">Type: ${connectionType}</p>
       ${
