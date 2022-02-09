@@ -1,9 +1,11 @@
 class Graph {
-  head = null;
   numberOfNodes = 0;
-  constructor() {
-    this.numberOfNodes = 0;
-    this.adjacentList = {};
+  adjacentList = {};
+  constructor(initialData = null) {
+    if (initialData !== null) {
+      this.adjacentList = initialData.adjacentList;
+      this.numberOfNodes = initialData.numberOfNodes;
+    }
   }
   addVertex(VertexKey, nodeData) {
     this.adjacentList[VertexKey] = {
@@ -12,9 +14,6 @@ class Graph {
       currentNode: VertexKey,
       prevNode: null,
     };
-    if (this.numberOfNodes === 0) {
-      this.head = this.adjacentList[VertexKey];
-    }
     this.numberOfNodes++;
   }
   addEdge(node1, node2) {
