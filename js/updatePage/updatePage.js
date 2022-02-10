@@ -1,5 +1,9 @@
-let map = null;
+import Graph from '../storage/Graph.js';
+import EditablePolyline from '../googleMap/editablePolyline.js';
 
+let map = null;
+let editablePolyline = null;
+let targetPolylineObj = null;
 const getPolylineKey = () => {
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);
@@ -16,11 +20,28 @@ function importGoogleMapApi() {
 }
 importGoogleMapApi();
 
+const loadingTargetPolyline = (polylineKey) => {
+  const localStoredData = JSON.parse(localStorage.getItem('siteData'));
+  const graph = new Graph(localStoredData);
+  const targetPolyline = graph.getVertexByKey(polylineKey);
+  return targetPolyline;
+};
+
 window.initMap = () => {
   map = new google.maps.Map(document.getElementById('map'), {
     center: { lat: 23.919524586722066, lng: 90.25663246242456 },
     zoom: 15,
   });
-};
+  // getting vertex key from url
+  const targetPolylineKey = getPolylineKey();
+  targetPolylineObj = loadingTargetPolyline(targetPolylineKey);
 
-getPolylineKey();
+  editablePolyline = new EditablePolyline(
+    targetPolylineObj.nodeData.allCoordinates
+  );
+  editablePolyline.setMap(map);
+  map.addListener('click', (event) => {
+    const latLng = event.latLng;
+    editablePolyline.addVertex(latLng);
+  });
+};

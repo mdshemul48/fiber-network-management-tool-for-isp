@@ -1,8 +1,8 @@
 class EditablePolyline {
   polyline = null;
-  constructor() {
+  constructor(polylinePath) {
     this.polyline = new window.google.maps.Polyline({
-      path: [],
+      path: polylinePath || [],
       editable: true,
       strokeColor: '#313552',
       strokeOpacity: 1.0,
