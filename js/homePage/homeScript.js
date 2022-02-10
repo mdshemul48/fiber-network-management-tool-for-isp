@@ -79,4 +79,8 @@ window.enableConnection = (vertexKey) => {
   }
 };
 
+window.UpdatePolylineButton = (vertexKey) => {
+  location.href = `/updateConnection.html?polylineKey=${vertexKey}`;
+};
+
 document.head.appendChild(script);

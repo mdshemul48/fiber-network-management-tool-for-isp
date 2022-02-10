@@ -75,6 +75,7 @@ const drawAllPolyline = (map) => {
         Enable
       </button>`
       }
+      <button class="badge mb-1 bg-warning border-0" onClick="UpdatePolylineButton( '${currentNode}')">Update</button>
       `,
     });
     polyline.addListener('mouseover', (event) => {
