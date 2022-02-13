@@ -1,7 +1,10 @@
 import EditablePolyline from './GoogleMap/EditablePolyline.js';
 
-console.log('hello world');
+// all the from submit functions
+import addNewMainConnection from './addNewMainConnection/addNewMainConnection.js';
+
 let map;
+let editablePolyline;
 
 const insertScript = () => {
   const script = document.createElement('script');
@@ -18,7 +21,7 @@ window.initMap = function () {
     zoom: 15,
   });
 
-  const editablePolyline = new EditablePolyline();
+  editablePolyline = new EditablePolyline();
 
   map.addListener('click', (event) => {
     editablePolyline.addVertex(event.latLng);
@@ -26,3 +29,12 @@ window.initMap = function () {
 
   editablePolyline.setMap(map);
 };
+
+// all the connections form
+document
+  .getElementById('newMainConnectionForm')
+  .addEventListener('submit', (event) => {
+    event.preventDefault();
+    const polylineCoordinates = editablePolyline.getAllThePath();
+    addNewMainConnection(polylineCoordinates);
+  });
