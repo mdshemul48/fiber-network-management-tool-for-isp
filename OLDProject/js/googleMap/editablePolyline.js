@@ -20,8 +20,9 @@ class EditablePolyline {
     path.push(LetLng);
   }
   removeVertex(event) {
-    const path = this.getPath();
-    path.removeAt(event.vertex);
+    console.log(event);
+    // const path = this.getPath();
+    // path.removeAt(event.vertex);
   }
   getAllThePath() {
     const path = this.polyline.getPath();

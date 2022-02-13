@@ -1,3 +1,5 @@
+import EditablePolyline from './GoogleMap/EditablePolyline.js';
+
 console.log('hello world');
 let map;
 
@@ -15,4 +17,12 @@ window.initMap = function () {
     center: { lat: 23.919524586722066, lng: 90.25663246242456 },
     zoom: 15,
   });
+
+  const editablePolyline = new EditablePolyline();
+
+  map.addListener('click', (event) => {
+    editablePolyline.addVertex(event.latLng);
+  });
+
+  editablePolyline.setMap(map);
 };
