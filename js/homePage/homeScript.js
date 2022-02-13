@@ -83,13 +83,14 @@ window.updatePolylineButton = (vertexKey) => {
   const localData = JSON.parse(localStorage.getItem('siteData'));
   const graph = new Graph(localData);
   const targetVertex = graph.getVertexByKey(vertexKey);
+  console.log(targetVertex);
   if (targetVertex.children.length > 0) {
     alert(
       "You can't update connection with it children connection. First delete all the children connection and then you can update."
     );
+  } else {
+    location.href = `/updateConnection.html?polylineKey=${vertexKey}`;
   }
-
-  // location.href = `/updateConnection.html?polylineKey=${vertexKey}`;
 };
 
 document.head.appendChild(script);
