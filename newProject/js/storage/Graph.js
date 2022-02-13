@@ -2,17 +2,26 @@ class Graph {
   numberOfNodes = 0;
   adjacentList = {};
   constructor(initialData = null) {
+    console.log('this is the graph constructor', initialData);
     if (initialData !== null) {
       this.adjacentList = initialData.adjacentList;
       this.numberOfNodes = initialData.numberOfNodes;
     }
   }
   addVertex(VertexKey, nodeData) {
+    console.log(
+      {
+        currentNode: VertexKey,
+        prevNode: null,
+        ...nodeData,
+      },
+      'this is good'
+    );
+    console.log(this.adjacentList);
     this.adjacentList[VertexKey] = {
-      children: [],
-      nodeData,
       currentNode: VertexKey,
       prevNode: null,
+      ...nodeData,
     };
     this.numberOfNodes++;
   }

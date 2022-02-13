@@ -1,5 +1,7 @@
-import coreColor from '../utility/coreColor.js';
+import uuidv4 from '../utility/uuid.js';
 
+import Graph from '../storage/Graph.js';
+import coreColor from '../utility/coreColor.js';
 // this will get only the form data
 const formData = () => {
   const connectionName = document.getElementById('mainConnectionName').value;
@@ -27,5 +29,10 @@ export default (coordinates) => {
     childrenConnection: connectionCoreColor,
   };
 
-  console.log(mainConnection);
+  const graph = new Graph();
+
+  const uuid = uuidv4();
+
+  graph.addVertex(uuid, mainConnection);
+  console.log(graph);
 };
