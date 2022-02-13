@@ -23,16 +23,17 @@ export default (coordinates) => {
 
   const mainConnection = {
     connectionName,
+    connectionType: 'mainConnection',
     totalCore: connectionTotalCore,
     totalCodeUsed: 0,
     coordinates,
     childrenConnection: connectionCoreColor,
   };
 
-  const graph = new Graph();
+  const graph = new Graph(JSON.parse(localStorage.getItem('siteData')) || null);
 
   const uuid = uuidv4();
 
   graph.addVertex(uuid, mainConnection);
-  console.log(graph);
+  localStorage.setItem('siteData', JSON.stringify(graph));
 };
