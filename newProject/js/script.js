@@ -11,7 +11,6 @@ const insertScript = () => {
 insertScript();
 
 window.initMap = function () {
-  console.log('hello world');
   map = new google.maps.Map(document.getElementById('map'), {
     center: { lat: 23.919524586722066, lng: 90.25663246242456 },
     zoom: 15,
