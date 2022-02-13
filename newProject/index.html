@@ -15,8 +15,7 @@
 </head>
 
 <body>
-    <button class="btn btn-light add-button">Add</button>
-    <!-- Button trigger modal -->
+    <!-- dropdown button manu -->
     <button type="button" class="btn btn-light add-button" data-bs-toggle="modal" data-bs-target="#exampleModal">
         Add
     </button>
@@ -27,23 +26,38 @@
             Add Connections
         </button>
         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-            <li><button class="dropdown-item">Add Main Cable</button></li>
+            <li><button class="dropdown-item" data-bs-toggle="modal" data-bs-target="#exampleModal">Add Main
+                    Cable</button></li>
             <li><button class="dropdown-item">Add Company (Point to Point)</button></li>
             <li><button class="dropdown-item">Add Main Local</button></li>
             <li><button class="dropdown-item">Add Local Splitter</button></li>
             <li><button class="dropdown-item">Add Home Connection</button></li>
         </ul>
     </div>
+
+
+
     <!-- Modal -->
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Add New Connection</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Add Main Connection</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-
+                    <div class="input-group mb-3">
+                        <label class="input-group-text" for="inputGroupSelect01">Cable Core:</label>
+                        <select class="form-select" id="inputGroupSelect01">
+                            <option selected>Choose...</option>
+                            <option value="2">2</option>
+                            <option value="4">4</option>
+                            <option value="8">8</option>
+                            <option value="12">12</option>
+                            <option value="16">16</option>
+                            <option value="24">24</option>
+                        </select>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
