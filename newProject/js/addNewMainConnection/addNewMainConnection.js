@@ -19,10 +19,13 @@ export default (coordinates) => {
     connectionCoreColor[item.colorName] = null;
   });
 
-  console.log(
-    coordinates,
+  const mainConnection = {
     connectionName,
-    connectionTotalCore,
-    connectionCoreColor
-  );
+    totalCore: connectionTotalCore,
+    totalCodeUsed: 0,
+    coordinates,
+    childrenConnection: connectionCoreColor,
+  };
+
+  console.log(mainConnection);
 };
