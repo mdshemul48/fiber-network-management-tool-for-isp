@@ -9,15 +9,6 @@ class Graph {
     }
   }
   addVertex(VertexKey, nodeData) {
-    console.log(
-      {
-        currentNode: VertexKey,
-        prevNode: null,
-        ...nodeData,
-      },
-      'this is good'
-    );
-    console.log(this.adjacentList);
     this.adjacentList[VertexKey] = {
       currentNode: VertexKey,
       prevNode: null,

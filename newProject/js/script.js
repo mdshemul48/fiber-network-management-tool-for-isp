@@ -2,6 +2,7 @@ import EditablePolyline from './GoogleMap/EditablePolyline.js';
 
 // all the from submit functions
 import addNewMainConnection from './addNewMainConnection/addNewMainConnection.js';
+import printAllThePolylines from './GoogleMap/printAllThePolylines.js';
 
 let map;
 let editablePolyline;
@@ -28,6 +29,8 @@ window.initMap = function () {
   });
 
   editablePolyline.setMap(map);
+
+  printAllThePolylines(map);
 };
 
 // all the connections form
