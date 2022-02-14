@@ -26,4 +26,5 @@ export default (polylineKey, coordinates) => {
   graph.addVertex(uuid, pointToPointPolyline);
   graph.addEdge(polylineKey, uuid, coreColor);
   localStorage.setItem('siteData', JSON.stringify(graph));
+  location.reload();
 };

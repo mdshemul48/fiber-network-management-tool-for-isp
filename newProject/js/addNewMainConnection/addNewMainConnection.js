@@ -36,4 +36,5 @@ export default (coordinates) => {
 
   graph.addVertex(uuid, mainConnection);
   localStorage.setItem('siteData', JSON.stringify(graph));
+  location.reload();
 };

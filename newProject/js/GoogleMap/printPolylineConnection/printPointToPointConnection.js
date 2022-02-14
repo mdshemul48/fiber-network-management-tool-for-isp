@@ -1,3 +1,5 @@
+import allTheCoreColor from '../../utility/coreColor.js';
+
 export default function (connection, map) {
   console.log(connection, 'this is good');
   const { companyName, coordinates, connectionType, portNo, coreColor } =
@@ -5,7 +7,8 @@ export default function (connection, map) {
   const polyline = new google.maps.Polyline({
     path: coordinates,
     geodesic: true,
-    strokeColor: coreColor,
+    strokeColor: allTheCoreColor.find((item) => item.colorName === coreColor)
+      .colorCode,
     strokeOpacity: 1.0,
     strokeWeight: 3,
   });

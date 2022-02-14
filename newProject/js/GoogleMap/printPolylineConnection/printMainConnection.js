@@ -11,7 +11,7 @@ export default function (connection, map) {
   const polyline = new google.maps.Polyline({
     path: coordinates,
     geodesic: true,
-    strokeColor: '#FF5959',
+    strokeColor: '#142F43',
     strokeOpacity: 1.0,
     strokeWeight: 3,
   });
