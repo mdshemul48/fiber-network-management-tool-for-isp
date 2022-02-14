@@ -10,17 +10,15 @@ class Graph {
   addVertex(VertexKey, nodeData) {
     this.adjacentList[VertexKey] = {
       currentNodeKey: VertexKey,
-      prevNode: null,
+      parentNodeKey: null,
       ...nodeData,
     };
     this.numberOfNodes++;
   }
   addEdge(parentNode, childNode, coreColor) {
     this.adjacentList[childNode].parentNodeKey = parentNode;
-
-    console.log(parentNode, childNode, coreColor);
-
     this.adjacentList[parentNode].childrenConnection[coreColor] = childNode;
+    this.adjacentList[parentNode].totalCodeUsed++;
   }
   showConnections() {
     const allNodes = Object.keys(this.adjacentList);

@@ -1,4 +1,5 @@
 export default function (connection, map) {
+  console.log(connection, 'this is good');
   const {
     currentNodeKey,
     coordinates,
@@ -24,25 +25,25 @@ export default function (connection, map) {
 
   const infoWindow = new google.maps.InfoWindow({
     content: `
-    <p class="mb-1 fw-bold">${connectionName}</p>
-    <hr class="my-1" />
-    <p class="mb-1"><span class="fw-bold">Connection Type:</span> ${connectionType}</p>
-    <p class="mb-1"><span class=" fw-bold">total Used Core:</span> ${totalCodeUsed}/${totalCore}</p>
-    <p class="mb-1"><span class=" fw-bold">Distance:</span> ${Math.ceil(
-      lengthInMeters
-    )}m</p>
-    <p class="mb-1 fw-bold">Core Available: </p>
-    <hr class="my-1 w-50" />
-      ${(() => {
-        let string = '';
-        for (let color in childrenConnection) {
-          string += `<p class="mb-1">${color} : ${
-            childrenConnection[color] == null ? 'available' : 'used'
-          }</p>`;
-        }
-        return string;
-      })()}
-    `,
+      <p class="mb-1 fw-bold">${connectionName}</p>
+      <hr class="my-1" />
+      <p class="mb-1"><span class="fw-bold">Connection Type:</span> ${connectionType}</p>
+      <p class="mb-1"><span class=" fw-bold">total Used Core:</span> ${totalCodeUsed}/${totalCore}</p>
+      <p class="mb-1"><span class=" fw-bold">Distance:</span> ${Math.ceil(
+        lengthInMeters
+      )}m</p>
+      <p class="mb-1 fw-bold">Core Available: </p>
+      <hr class="my-1 w-50" />
+        ${(() => {
+          let string = '';
+          for (let color in childrenConnection) {
+            string += `<p class="mb-1">${color} : ${
+              childrenConnection[color] == null ? 'available' : 'used'
+            }</p>`;
+          }
+          return string;
+        })()}
+      `,
   });
 
   google.maps.event.addListener(polyline, 'click', function (event) {
