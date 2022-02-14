@@ -6,6 +6,7 @@ import printAllThePolylines from './GoogleMap/printAllThePolylines.js';
 
 let map;
 let editablePolyline;
+let selectedPolyline = null;
 
 const insertScript = () => {
   const script = document.createElement('script');
@@ -41,3 +42,11 @@ document
     const polylineCoordinates = editablePolyline.getAllThePath();
     addNewMainConnection(polylineCoordinates);
   });
+
+window.selectPolyline = (latLng, polylineId) => {
+  console.log(latLng, polylineId);
+  if (!selectedPolyline) {
+    editablePolyline.addVertex(latLng);
+    selectedPolyline = polylineId;
+  }
+};
