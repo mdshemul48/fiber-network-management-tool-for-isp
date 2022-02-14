@@ -9,4 +9,17 @@ export default function (connection, map) {
   });
 
   polyline.setMap(map);
+
+  const infoWindow = new google.maps.InfoWindow({
+    content: `hello world`,
+  });
+
+  polyline.addListener('mouseover', (event) => {
+    infoWindow.setPosition(event.latLng);
+    infoWindow.open(map);
+  });
+
+  polyline.addListener('mouseout', () => {
+    infoWindow.close();
+  });
 }
