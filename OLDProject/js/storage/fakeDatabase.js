@@ -69,7 +69,6 @@ class Database {
         }
       }
     }
-    console.log(this.storage);
     this.saveOnLocalStorage();
   }
   saveOnLocalStorage() {

@@ -6,7 +6,6 @@ const drawAndAddEventListener = (map, callback) => {
 
   const getAllThePath = graph.getAllVertices();
   getAllThePath.forEach((item) => {
-    console.log(item);
     const { currentNode, nodeData } = item;
     const { allCoordinates, connectionType } = nodeData;
     const polyline = new google.maps.Polyline({

@@ -1,7 +1,6 @@
 import allTheCoreColor from '../../utility/coreColor.js';
 
 export default function (connection, map) {
-  console.log(connection, 'this is good');
   const { companyName, coordinates, connectionType, portNo, coreColor } =
     connection;
   const polyline = new google.maps.Polyline({
