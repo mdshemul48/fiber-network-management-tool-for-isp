@@ -1,8 +1,9 @@
 import EditablePolyline from './GoogleMap/EditablePolyline.js';
+import printAllThePolylines from './GoogleMap/printAllThePolylines.js';
 
 // all the from submit functions
 import addNewMainConnection from './addNewMainConnection/addNewMainConnection.js';
-import printAllThePolylines from './GoogleMap/printAllThePolylines.js';
+import addPointToPoint from './addNewMainConnection/AddPointToPoint.js';
 
 let map;
 let editablePolyline;
@@ -55,5 +56,5 @@ document
   .getElementById('addPointToPoint')
   .addEventListener('submit', (event) => {
     event.preventDefault();
-    console.log(event)
+    addPointToPoint(selectedPolyline, editablePolyline.getAllThePath());
   });
