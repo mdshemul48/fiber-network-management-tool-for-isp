@@ -1,5 +1,4 @@
 export default function (connection, map) {
-  console.log(connection);
   const {
     coordinates,
     connectionName,

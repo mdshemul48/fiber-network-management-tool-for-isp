@@ -2,7 +2,6 @@ class Graph {
   numberOfNodes = 0;
   adjacentList = {};
   constructor(initialData = null) {
-    console.log('this is the graph constructor', initialData);
     if (initialData !== null) {
       this.adjacentList = initialData.adjacentList;
       this.numberOfNodes = initialData.numberOfNodes;
