@@ -1,17 +1,28 @@
-export default (polylineKey, polylineCoordinates) => {
+import Graph from '../storage/Graph.js';
+import uuidv4 from '../utility/uuid.js';
+
+export default (polylineKey, coordinates) => {
   const companyName = document.getElementById(
     'addPointToPointCompanyName'
   ).value;
   const portNo = document.getElementById('addPointToPointPortNo').value;
-  const coreColorOptions = document.getElementById(
-    'addPointToPointCoreOptions'
-  ).value;
+  const coreColor = document.getElementById('addPointToPointCoreOptions').value;
 
-  console.log(
+  const pointToPointPolyline = {
     companyName,
+    connectionType: 'PointToPoint',
     portNo,
-    coreColorOptions,
-    polylineKey,
-    polylineCoordinates
-  );
+    coreColor,
+    coordinates,
+    parentNodeKey: polylineKey,
+  };
+  console.log(pointToPointPolyline);
+
+  const graph = new Graph(JSON.parse(localStorage.getItem('siteData')) || null);
+
+  const uuid = uuidv4();
+
+  graph.addVertex(uuid, pointToPointPolyline);
+  graph.addEdge(polylineKey, uuid, coreColor);
+  localStorage.setItem('siteData', JSON.stringify(graph));
 };

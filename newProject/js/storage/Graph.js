@@ -15,9 +15,9 @@ class Graph {
     };
     this.numberOfNodes++;
   }
-  addEdge(node1, node2) {
-    this.adjacentList[node2].prevNode = node1;
-    this.adjacentList[node1].children.push(node2);
+  addEdge(parentNode, childNode, coreColor) {
+    this.adjacentList[childNode].prevNode = parentNode;
+    console.log(this.adjacentList[parentNode]);
   }
   showConnections() {
     const allNodes = Object.keys(this.adjacentList);
