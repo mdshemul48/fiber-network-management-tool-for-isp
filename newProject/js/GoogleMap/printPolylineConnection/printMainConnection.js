@@ -1,7 +1,7 @@
 export default function (connection, map) {
   console.log(connection);
   const {
-    currentNode,
+    currentNodeKey,
     coordinates,
     connectionName,
     connectionType,
@@ -47,7 +47,7 @@ export default function (connection, map) {
   });
 
   google.maps.event.addListener(polyline, 'click', function (event) {
-    window.selectPolyline(event.latLng, currentNode);
+    window.selectPolyline(event.latLng, currentNodeKey);
   });
 
   polyline.addListener('mouseover', (event) => {

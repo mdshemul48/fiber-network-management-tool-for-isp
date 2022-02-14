@@ -14,13 +14,14 @@ export default (polylineKey, coordinates) => {
     portNo,
     coreColor,
     coordinates,
-    parentNodeKey: polylineKey,
   };
   console.log(pointToPointPolyline);
 
   const graph = new Graph(JSON.parse(localStorage.getItem('siteData')) || null);
 
   const uuid = uuidv4();
+
+  console.log(polylineKey, uuid, coreColor, 'this is good');
 
   graph.addVertex(uuid, pointToPointPolyline);
   graph.addEdge(polylineKey, uuid, coreColor);
