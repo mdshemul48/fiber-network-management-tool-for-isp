@@ -14,10 +14,14 @@ export default function (connection, map) {
     geodesic: true,
     strokeColor: '#FF0000',
     strokeOpacity: 1.0,
-    strokeWeight: 2,
+    strokeWeight: 3,
   });
 
   polyline.setMap(map);
+
+  const lengthInMeters = google.maps.geometry.spherical.computeLength(
+    polyline.getPath()
+  );
 
   const infoWindow = new google.maps.InfoWindow({
     content: `
@@ -25,6 +29,9 @@ export default function (connection, map) {
     <hr class="my-1" />
     <p class="mb-1"><span class="fw-bold">Connection Type:</span> ${connectionType}</p>
     <p class="mb-1"><span class=" fw-bold">total Used Core:</span> ${totalCodeUsed}/${totalCore}</p>
+    <p class="mb-1"><span class=" fw-bold">Distance:</span> ${Math.ceil(
+      lengthInMeters
+    )}m</p>
     <p class="mb-1 fw-bold">Core Available: </p>
     <hr class="my-1 w-50" />
       ${(() => {

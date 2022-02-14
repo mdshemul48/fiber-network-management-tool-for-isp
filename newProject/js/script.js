@@ -44,7 +44,7 @@ document
   });
 
 window.selectPolyline = (latLng, polylineId) => {
-  console.log(latLng, polylineId);
+  console.log(latLng, polylineId, 'clicked');
   if (!selectedPolyline) {
     editablePolyline.addVertex(latLng);
     selectedPolyline = polylineId;
