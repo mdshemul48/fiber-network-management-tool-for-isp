@@ -7,6 +7,9 @@ export default (polylineKey, coordinates) => {
   ).value;
 
   const portNo = document.getElementById('addLocalConnectionPortNo').value;
+  const connectionType = document.querySelector(
+    'input[name="addLocalConnectionType"]:checked'
+  ).value;
 
-  console.log(connectionName, oldSwitchNumber, portNo);
+  console.log(connectionName, oldSwitchNumber, portNo, connectionType);
 };
