@@ -19,8 +19,6 @@ export default (polylineKey, coordinates) => {
     'addLocalConnectionCoreOption'
   ).value;
 
-  console.log(coreColor);
-
   const newConnection = {
     connectionName,
     oldSwitchNumber,
@@ -38,5 +36,6 @@ export default (polylineKey, coordinates) => {
   const uuid = uuidv4();
   graph.addVertex(uuid, newConnection);
   graph.addEdge(polylineKey, uuid, coreColor);
-  console.log(graph);
+  localStorage.setItem('siteData', JSON.stringify(graph));
+  location.reload();
 };
