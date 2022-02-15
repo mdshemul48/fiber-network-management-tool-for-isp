@@ -27,7 +27,8 @@
             <li><button class="dropdown-item" data-bs-toggle="modal" data-bs-target="#addPointToPoint">Add Company
                     (Point
                     to Point)</button></li>
-            <li><button class="dropdown-item">Add Main Local</button></li>
+            <li><button class="dropdown-item" data-bs-toggle="modal" data-bs-target="#AddMainLocal">Add Main
+                    Local</button></li>
             <li><button class="dropdown-item">Add Local Splitter</button></li>
             <li><button class="dropdown-item">Add Home Connection</button></li>
         </ul>
@@ -117,6 +118,53 @@
         </div>
     </div>
 
+
+
+
+
+    <div class="modal fade" id="AddMainLocal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add Main Local Connection</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="addMainLocalSubmition">
+                    <div class="modal-body">
+                        <div class="mb-2">
+                            <input type="text" class="form-control" id="addPointToPointPortNo"
+                                placeholder="Olt Switch No">
+                        </div>
+                        <div class="mb-2">
+                            <input type="text" class="form-control" id="addPointToPointPortNo" placeholder="Port No">
+                        </div>
+                        <div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="flexRadioDefault"
+                                    id="flexRadioDefault1">
+                                <label class="form-check-label" for="flexRadioDefault1">
+                                    EPON
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="flexRadioDefault"
+                                    id="flexRadioDefault2" checked>
+                                <label class="form-check-label" for="flexRadioDefault2">
+                                    GPON
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+
+
+                </form>
+            </div>
+        </div>
+    </div>
 
 
 
