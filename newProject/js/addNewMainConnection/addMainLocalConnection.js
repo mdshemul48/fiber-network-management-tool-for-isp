@@ -5,7 +5,7 @@ export default (polylineKey, coordinates) => {
   const connectionName = document.getElementById(
     'addLocalConnectionName'
   ).value;
-  const oldSwitchNumber = document.getElementById(
+  const oltSwitchNumber = document.getElementById(
     'addLocalConnectionOltSwitchNo'
   ).value;
 
@@ -21,7 +21,7 @@ export default (polylineKey, coordinates) => {
 
   const newConnection = {
     connectionName,
-    oldSwitchNumber,
+    oltSwitchNumber,
     portNo,
     connectionType: 'mainLocal',
     switchType: connectionType,
