@@ -11,5 +11,15 @@ export default (polylineKey, coordinates) => {
     'input[name="addLocalConnectionType"]:checked'
   ).value;
 
-  console.log(connectionName, oldSwitchNumber, portNo, connectionType);
+  const newConnection = {
+    connectionName,
+    oldSwitchNumber,
+    portNo,
+    connectionType,
+    coordinates,
+    totalConnection: connectionType === 'epon' ? 64 : 128,
+    childrenConnection: {},
+    totalConnectionUsed: 0,
+  };
+  console.log(newConnection);
 };
