@@ -4,6 +4,7 @@ import printAllThePolylines from './GoogleMap/printAllThePolylines.js';
 // all the from submit functions
 import addNewMainConnection from './addNewMainConnection/addNewMainConnection.js';
 import addPointToPoint from './addNewMainConnection/AddPointToPoint.js';
+import addMainLocalConnection from './addNewMainConnection/addMainLocalConnection.js';
 
 let map;
 let editablePolyline;
@@ -56,4 +57,11 @@ document
   .addEventListener('submit', (event) => {
     event.preventDefault();
     addPointToPoint(selectedPolyline, editablePolyline.getAllThePath());
+  });
+
+document
+  .getElementById('addMainLocalSubmission')
+  .addEventListener('submit', (event) => {
+    event.preventDefault();
+    addMainLocalConnection(selectedPolyline, editablePolyline.getAllThePath());
   });
