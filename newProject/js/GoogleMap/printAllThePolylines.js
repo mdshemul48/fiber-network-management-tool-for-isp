@@ -1,6 +1,7 @@
 import Graph from '../storage/Graph.js';
 
 import printMainConnection from './printPolylineConnection/printMainConnection.js';
+import printMainLocalConnection from './printPolylineConnection/printMainLocalConnection.js';
 import printPointToPointConnection from './printPolylineConnection/printPointToPointConnection.js';
 
 const printAllThePolylines = (map) => {
@@ -14,6 +15,8 @@ const printAllThePolylines = (map) => {
       printMainConnection(connection, map);
     else if (connection.connectionType === 'PointToPoint')
       printPointToPointConnection(connection, map);
+    else if (connection.connectionType === 'mainLocal')
+      printMainLocalConnection(connection, map);
   });
 };
 
