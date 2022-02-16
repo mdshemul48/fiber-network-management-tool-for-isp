@@ -30,7 +30,7 @@ export default function (connection, map) {
     <p class="mb-1"><span class="fw-bold">Port No:</span> ${portNo}</p>
     <p class="mb-1"><span class="fw-bold"> Switch Type:</span> ${switchType}</p>
     <p class="mb-1"><span class="fw-bold"> total Connection Used:</span> ${totalConnectionUsed}/${totalConnection}</p>
-    <p class="mb-1"><span class="fw-bold"> oldSwitchNumber:</span> ${switchType}</p>
+    <p class="mb-1"><span class="fw-bold"> oltSwitchNumber:</span> ${switchType}</p>
     `,
   });
 
