@@ -62,4 +62,15 @@ export default function (connection, map) {
   polyline.addListener('mouseout', () => {
     infoWindow.close();
   });
+
+  const endPoint = new google.maps.Circle({
+    strokeColor: '#364F6B',
+    strokeOpacity: 0.8,
+    strokeWeight: 2,
+    fillColor: '#142F43',
+    fillOpacity: 1,
+    map,
+    center: coordinates[coordinates.length - 1],
+    radius: 30,
+  });
 }

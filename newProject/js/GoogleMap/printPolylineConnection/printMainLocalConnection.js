@@ -49,4 +49,20 @@ export default function (connection, map) {
   });
 
   polyline.setMap(map);
+
+  const endPoint = new google.maps.Circle({
+    strokeColor: '#364F6B',
+    strokeOpacity: 0.8,
+    strokeWeight: 2,
+    fillColor: allTheCoreColor.find((item) => item.colorName === coreColor)
+      .colorCode,
+    fillOpacity: 1,
+    map,
+    center: coordinates[coordinates.length - 1],
+    radius: 30,
+  });
+
+  google.maps.event.addListener(endPoint, 'click', function (event) {
+    window.selectPolyline(event.latLng, currentNodeKey);
+  });
 }
