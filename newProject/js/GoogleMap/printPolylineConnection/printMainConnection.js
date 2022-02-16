@@ -5,7 +5,7 @@ export default function (connection, map) {
     connectionName,
     connectionType,
     totalCore,
-    totalCodeUsed,
+    totalCoreUsed,
     childrenConnection,
   } = connection;
   const polyline = new google.maps.Polyline({
@@ -27,7 +27,7 @@ export default function (connection, map) {
     <p class="mb-1 fw-bold">${connectionName}</p>
     <hr class="my-1" />
     <p class="mb-1"><span class="fw-bold">Connection Type:</span> ${connectionType}</p>
-    <p class="mb-1"><span class=" fw-bold">total Used Core:</span> ${totalCodeUsed}/${totalCore}</p>
+    <p class="mb-1"><span class=" fw-bold">total Used Core:</span> ${totalCoreUsed}/${totalCore}</p>
     <p class="mb-1"><span class=" fw-bold">Distance:</span> ${Math.ceil(
       lengthInMeters
     )}m</p>

@@ -18,7 +18,8 @@ class Graph {
   addEdge(parentNode, childNode, coreColor) {
     this.adjacentList[childNode].parentNodeKey = parentNode;
     this.adjacentList[parentNode].childrenConnection[coreColor] = childNode;
-    this.adjacentList[parentNode].totalCodeUsed++;
+    if (this.adjacentList[parentNode].connectionType !== 'mainLocal')
+      this.adjacentList[parentNode].totalCoreUsed++;
   }
   showConnections() {
     const allNodes = Object.keys(this.adjacentList);

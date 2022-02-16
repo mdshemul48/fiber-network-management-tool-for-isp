@@ -25,7 +25,7 @@ export default (coordinates) => {
     connectionName,
     connectionType: 'mainConnection',
     totalCore: connectionTotalCore,
-    totalCodeUsed: 0,
+    totalCoreUsed: 0,
     coordinates,
     childrenConnection: connectionCoreColor,
   };
