@@ -40,6 +40,7 @@ const mainLocal = {
 const localSplitter = {
   splitterType: '1/4',
   coordinates: [],
+  oltPort: 1,
   coreUsed: {
     blue: null,
     orange: null,

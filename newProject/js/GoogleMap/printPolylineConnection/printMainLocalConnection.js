@@ -3,6 +3,7 @@ import allTheCoreColor from '../../utility/coreColor.js';
 export default function (connection, map) {
   console.log(connection);
   const {
+    currentNodeKey,
     connectionName,
     connectionType,
     coordinates,
@@ -11,6 +12,7 @@ export default function (connection, map) {
     switchType,
     totalConnectionUsed,
     totalConnection,
+    oltSwitchNumber,
   } = connection;
 
   const polyline = new google.maps.Polyline({
@@ -30,7 +32,7 @@ export default function (connection, map) {
     <p class="mb-1"><span class="fw-bold">Port No:</span> ${portNo}</p>
     <p class="mb-1"><span class="fw-bold"> Switch Type:</span> ${switchType}</p>
     <p class="mb-1"><span class="fw-bold"> total Connection Used:</span> ${totalConnectionUsed}/${totalConnection}</p>
-    <p class="mb-1"><span class="fw-bold"> oltSwitchNumber:</span> ${switchType}</p>
+    <p class="mb-1"><span class="fw-bold"> oltSwitchNumber:</span> ${oltSwitchNumber}</p>
     `,
   });
 
@@ -48,6 +50,4 @@ export default function (connection, map) {
   });
 
   polyline.setMap(map);
-
-  console.log(connection, map);
 }

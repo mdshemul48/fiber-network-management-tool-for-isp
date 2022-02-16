@@ -37,6 +37,7 @@ window.initMap = function () {
 };
 // this will called when the user will click on new polyline
 window.selectPolyline = (latLng, polylineId) => {
+  console.log(polylineId);
   if (!selectedPolyline) {
     editablePolyline.addVertex(latLng);
     selectedPolyline = polylineId;
