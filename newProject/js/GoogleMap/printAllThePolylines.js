@@ -1,4 +1,5 @@
 import Graph from '../storage/Graph.js';
+import printLocalSplitter from './printPolylineConnection/printLocalSplitter.js';
 
 import printMainConnection from './printPolylineConnection/printMainConnection.js';
 import printMainLocalConnection from './printPolylineConnection/printMainLocalConnection.js';
@@ -17,6 +18,8 @@ const printAllThePolylines = (map) => {
       printPointToPointConnection(connection, map);
     else if (connection.connectionType === 'mainLocal')
       printMainLocalConnection(connection, map);
+    else if (connection.connectionType === 'localSplitter')
+      printLocalSplitter(connection, map);
   });
 };
 
