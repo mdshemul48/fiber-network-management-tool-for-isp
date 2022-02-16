@@ -5,6 +5,7 @@ import printAllThePolylines from './GoogleMap/printAllThePolylines.js';
 import addNewMainConnection from './addNewMainConnection/addNewMainConnection.js';
 import addPointToPoint from './addNewMainConnection/AddPointToPoint.js';
 import addMainLocalConnection from './addNewMainConnection/addMainLocalConnection.js';
+import addLocalSplitter from './addNewMainConnection/addLocalSplitter.js';
 
 let map;
 let editablePolyline;
@@ -65,4 +66,11 @@ document
   .addEventListener('submit', (event) => {
     event.preventDefault();
     addMainLocalConnection(selectedPolyline, editablePolyline.getAllThePath());
+  });
+
+document
+  .getElementById('addLocalSplitterSubmission')
+  .addEventListener('submit', (event) => {
+    event.preventDefault();
+    addLocalSplitter(selectedPolyline, editablePolyline.getAllThePath());
   });
