@@ -43,5 +43,6 @@ export default (polylineKey, coordinates) => {
   } else {
   }
 
-  console.log(graph);
+  localStorage.setItem('siteData', JSON.stringify(graph));
+  location.reload();
 };
