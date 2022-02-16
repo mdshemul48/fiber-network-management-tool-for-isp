@@ -12,6 +12,7 @@ export default function (connection, map) {
     totalConnectionUsed,
     totalConnection,
     oltSwitchNumber,
+    childrenConnection,
   } = connection;
 
   const polyline = new google.maps.Polyline({
@@ -31,7 +32,19 @@ export default function (connection, map) {
     <p class="mb-1"><span class="fw-bold">Port No:</span> ${portNo}</p>
     <p class="mb-1"><span class="fw-bold"> Switch Type:</span> ${switchType}</p>
     <p class="mb-1"><span class="fw-bold"> total Connection Used:</span> ${totalConnectionUsed}/${totalConnection}</p>
+    
     <p class="mb-1"><span class="fw-bold"> oltSwitchNumber:</span> ${oltSwitchNumber}</p>
+    <p class="mb-1 fw-bold">Port Used: </p>
+    <hr class="my-1 w-50" />
+    ${(() => {
+      let string = '';
+      for (let color in childrenConnection) {
+        string += `<p class="mb-1">${color} : ${
+          childrenConnection[color] == null ? 'available' : 'used'
+        }</p>`;
+      }
+      return string;
+    })()}
     `,
   });
 
