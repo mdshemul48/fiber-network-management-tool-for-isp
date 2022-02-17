@@ -1,3 +1,5 @@
+import allTheCoreColor from '../../utility/coreColor.js';
+
 export default function (connection, map) {
   console.log(connection);
   const {
@@ -16,7 +18,9 @@ export default function (connection, map) {
   const polyline = new google.maps.Polyline({
     path: coordinates,
     geodesic: true,
-    strokeColor: '#142F43',
+    strokeColor: CoreColor
+      ? allTheCoreColor.find((item) => item.colorName === CoreColor).colorCode
+      : '#000000',
     strokeOpacity: 1.0,
     strokeWeight: 3,
   });
