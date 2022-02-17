@@ -75,4 +75,7 @@ export default function (connection, map) {
     center: coordinates[coordinates.length - 1],
     radius: 30,
   });
+  google.maps.event.addListener(endPoint, 'click', function (event) {
+    window.selectPolyline(event.latLng, currentNodeKey);
+  });
 }
