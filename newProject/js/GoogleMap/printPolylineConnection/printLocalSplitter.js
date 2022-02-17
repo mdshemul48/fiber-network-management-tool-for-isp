@@ -20,7 +20,7 @@ export default function (connection, map) {
     geodesic: true,
     strokeColor: CoreColor
       ? allTheCoreColor.find((item) => item.colorName === CoreColor).colorCode
-      : '#000000',
+      : '#524A4E',
     strokeOpacity: 1.0,
     strokeWeight: 3,
   });
