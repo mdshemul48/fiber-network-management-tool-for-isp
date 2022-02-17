@@ -6,6 +6,7 @@ import addNewMainConnection from './addNewMainConnection/addNewMainConnection.js
 import addPointToPoint from './addNewMainConnection/AddPointToPoint.js';
 import addMainLocalConnection from './addNewMainConnection/addMainLocalConnection.js';
 import addLocalSplitter from './addNewMainConnection/addLocalSplitter.js';
+import addLocalHomeConnection from './addNewMainConnection/addLocalHomeConnection.js';
 
 let map;
 let editablePolyline;
@@ -73,4 +74,11 @@ document
   .addEventListener('submit', (event) => {
     event.preventDefault();
     addLocalSplitter(selectedPolyline, editablePolyline.getAllThePath());
+  });
+
+document
+  .getElementById('addLocalHomeConnectionSubmit')
+  .addEventListener('submit', (event) => {
+    event.preventDefault();
+    addLocalHomeConnection(selectedPolyline, editablePolyline.getAllThePath());
   });

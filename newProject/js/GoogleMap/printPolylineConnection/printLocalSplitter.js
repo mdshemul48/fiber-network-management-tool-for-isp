@@ -1,7 +1,6 @@
 import allTheCoreColor from '../../utility/coreColor.js';
 
 export default function (connection, map) {
-  console.log(connection);
   const {
     currentNodeKey,
     coordinates,

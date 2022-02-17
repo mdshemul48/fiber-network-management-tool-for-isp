@@ -31,7 +31,8 @@
                     Local</button></li>
             <li><button class="dropdown-item" data-bs-toggle="modal" data-bs-target="#addLocalSplitter">Add Local
                     Splitter</button></li>
-            <li><button class="dropdown-item">Add Home Connection</button></li>
+            <li><button class="dropdown-item" data-bs-toggle="modal" data-bs-target="#addLocalHomeConnection">Add Home
+                    Connection</button></li>
         </ul>
     </div>
 
@@ -247,9 +248,6 @@
                                 <option value="aqua">aqua</option>
                             </select>
                         </div>
-
-
-
                         <div>
                             <div class=" mt-2">
                                 <select class="form-select" aria-label="Default select example"
@@ -269,8 +267,6 @@
                         <button type="submit" class="btn btn-primary">Submit</button>
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     </div>
-
-
                 </form>
             </div>
         </div>
@@ -279,6 +275,51 @@
 
 
 
+    <div class="modal fade" id="addLocalHomeConnection" tabindex="-1" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add Home Connection</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="addLocalHomeConnectionSubmit">
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <input type="text" class="form-control" id="addLocalHomeConnectionName" placeholder="Name">
+                        </div>
+                        <div class="mb-1">
+                            <input type="text" class="form-control" id="addLocalHomeConnectionOnuNo"
+                                placeholder="ONU Number">
+                        </div>
+                    </div>
+                    <div class="px-3 mb-3">
+                        <select class="form-select" aria-label="Default select example"
+                            id="addLocalHomeConnectionOptions">
+                            <option selected>Select Core Color</option>
+                            <option value="blue">blue</option>
+                            <option value="orange">orange</option>
+                            <option value="green">green</option>
+                            <option value="brown">brown</option>
+                            <option value="slate">slate</option>
+                            <option value="white">white</option>
+                            <option value="red">red</option>
+                            <option value="black">black</option>
+                            <option value="yellow">yellow</option>
+                            <option value="violet">violet</option>
+                            <option value="rose">rose</option>
+                            <option value="aqua">aqua</option>
+                        </select>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
 
 
