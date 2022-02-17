@@ -22,7 +22,15 @@ export default (polylineKey, coordinates) => {
   const graph = new Graph(JSON.parse(localStorage.getItem('siteData')) || null);
   const uuid = uuidv4();
 
+  const parentOlt = (function parentOlt(node) {
+    if (node.connectionType === 'mainLocal') return node;
+    else return parentOlt(graph.adjacentList[node.parentNodeKey]);
+  })(graph.adjacentList[polylineKey]);
+
+  parentOlt.totalConnectionUsed++;
+
   graph.addVertex(uuid, newLocalConnection);
   graph.addEdge(polylineKey, uuid, coreOption);
-  console.log(graph);
+  localStorage.setItem('siteData', JSON.stringify(graph));
+  location.reload();
 };
