@@ -11,6 +11,7 @@ export default function (connection, map) {
     connectedWith,
     portNo,
     localSplitterType,
+    CoreColor,
   } = connection;
   const polyline = new google.maps.Polyline({
     path: coordinates,
@@ -33,8 +34,16 @@ export default function (connection, map) {
       <p class="mb-1"><span class="fw-bold">Connected with:</span> ${connectedWith}</p>
       <p class="mb-1"><span class="fw-bold">Splitter Type:</span> ${localSplitterType}</p>
       <p class="mb-1"><span class="fw-bold">Connection Type:</span> ${connectionType}</p>
-      <p class="mb-1"><span class="fw-bold">Port No:</span> ${portNo}</p>
-      <p class="mb-1"><span class=" fw-bold">total Used Core:</span> ${totalCoreUsed}/${totalConnection}</p>
+${
+  portNo
+    ? `<p class='mb-1'>
+    <span class='fw-bold'>Port No:</span> ${portNo}
+  </p>`
+    : `<p class='mb-1'>
+    <span class='fw-bold'>Connected Core Color:</span> ${CoreColor}
+  </p>`
+} 
+       <p class="mb-1"><span class=" fw-bold">total Used Core:</span> ${totalCoreUsed}/${totalConnection}</p>
       <p class="mb-1"><span class=" fw-bold">Distance:</span> ${Math.ceil(
         lengthInMeters
       )}m</p>

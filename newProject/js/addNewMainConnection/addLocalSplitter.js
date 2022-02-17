@@ -14,6 +14,10 @@ export default (polylineKey, coordinates) => {
     'input[name="addLocalSplitterConnectedWith"]:checked'
   ).value;
 
+  const connectedCoreColor = document.getElementById(
+    'addLocalSplitterConnection'
+  ).value;
+
   const selectedCoreColor = coreColor.slice(0, localSplitterType);
 
   const connectionCoreColor = {};
@@ -41,7 +45,11 @@ export default (polylineKey, coordinates) => {
     graph.addVertex(uuid, newSplitterConnection);
     graph.addEdge(polylineKey, uuid, localSplitterPortNo);
   } else {
+    newSplitterConnection.CoreColor = connectedCoreColor;
+    graph.addVertex(uuid, newSplitterConnection);
+    graph.addEdge(polylineKey, uuid, connectedCoreColor);
   }
+  console.log(graph);
 
   localStorage.setItem('siteData', JSON.stringify(graph));
   location.reload();
