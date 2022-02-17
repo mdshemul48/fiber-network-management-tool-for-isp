@@ -64,30 +64,44 @@ ${
       `,
   });
 
-  google.maps.event.addListener(polyline, 'click', function (event) {
-    window.selectPolyline(event.latLng, currentNodeKey);
+  // const endPoint = new google.maps.Circle({
+  //   strokeColor: '#364F6B',
+  //   strokeOpacity: 0.8,
+  //   strokeWeight: 2,
+  //   fillColor: '#142F43',
+  //   fillOpacity: 1,
+  //   map,
+  //   center: coordinates[coordinates.length - 1],
+  //   radius: 30,
+  // });
+
+  // google.maps.event.addListener(endPoint, 'click', function (event) {
+  //   window.selectPolyline(event.latLng, currentNodeKey);
+  // });
+
+  const icon = {
+    url: '../../../assets/img/splitter.png',
+    scaledSize: new google.maps.Size(30, 30),
+    origin: new google.maps.Point(0, 0),
+    anchor: new google.maps.Point(15, 15),
+  };
+
+  const marker = new google.maps.Marker({
+    position: coordinates[coordinates.length - 1],
+    map,
+    icon: icon,
   });
 
-  polyline.addListener('mouseover', (event) => {
+  marker.addListener('mouseover', (event) => {
     infoWindow.setPosition(event.latLng);
     infoWindow.open(map);
   });
 
-  polyline.addListener('mouseout', () => {
+  marker.addListener('mouseout', () => {
     infoWindow.close();
   });
 
-  const endPoint = new google.maps.Circle({
-    strokeColor: '#364F6B',
-    strokeOpacity: 0.8,
-    strokeWeight: 2,
-    fillColor: '#142F43',
-    fillOpacity: 1,
-    map,
-    center: coordinates[coordinates.length - 1],
-    radius: 30,
-  });
-  google.maps.event.addListener(endPoint, 'click', function (event) {
+  google.maps.event.addListener(marker, 'click', function (event) {
     window.selectPolyline(event.latLng, currentNodeKey);
   });
 }
