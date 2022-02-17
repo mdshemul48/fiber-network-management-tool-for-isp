@@ -1,9 +1,10 @@
 import Graph from '../storage/Graph.js';
-import printLocalSplitter from './printPolylineConnection/printLocalSplitter.js';
 
 import printMainConnection from './printPolylineConnection/printMainConnection.js';
 import printMainLocalConnection from './printPolylineConnection/printMainLocalConnection.js';
 import printPointToPointConnection from './printPolylineConnection/printPointToPointConnection.js';
+import printLocalSplitter from './printPolylineConnection/printLocalSplitter.js';
+import printHomeConnection from './printPolylineConnection/printHomeConnection.js';
 
 const printAllThePolylines = (map) => {
   const savedData = JSON.parse(localStorage.getItem('siteData'));
@@ -20,6 +21,8 @@ const printAllThePolylines = (map) => {
       printMainLocalConnection(connection, map);
     else if (connection.connectionType === 'localSplitter')
       printLocalSplitter(connection, map);
+    else if (connection.connectionType === 'localHome')
+      printHomeConnection(connection, map);
   });
 };
 
