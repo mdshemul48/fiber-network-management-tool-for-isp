@@ -18,7 +18,7 @@ export default function (connection, map) {
     path: coordinates,
     geodesic: true,
     strokeColor: CoreColor
-      ? allTheCoreColor.find((item) => item.colorName === CoreColor).colorCode
+      ? allTheCoreColor.find((item) => item.colorName === CoreColor)?.colorCode
       : '#524A4E',
     strokeOpacity: 1.0,
     strokeWeight: 3,
