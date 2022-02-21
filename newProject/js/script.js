@@ -8,6 +8,9 @@ import addMainLocalConnection from './addNewMainConnection/addMainLocalConnectio
 import addLocalSplitter from './addNewMainConnection/addLocalSplitter.js';
 import addLocalHomeConnection from './addNewMainConnection/addLocalHomeConnection.js';
 
+// all the delete functions
+import deleteHomeConnection from './deletePolyline/deleteHomeConnection.js';
+
 let map;
 let editablePolyline;
 let selectedPolyline = null;
@@ -82,3 +85,5 @@ document
     event.preventDefault();
     addLocalHomeConnection(selectedPolyline, editablePolyline.getAllThePath());
   });
+
+window.deleteHomeConnection = deleteHomeConnection;

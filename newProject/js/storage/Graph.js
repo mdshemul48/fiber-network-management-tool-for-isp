@@ -22,34 +22,23 @@ class Graph {
       this.adjacentList[parentNode].totalCoreUsed++;
     }
   }
-  showConnections() {
-    const allNodes = Object.keys(this.adjacentList);
-    for (let node of allNodes) {
-      let nodeConnections = this.adjacentList[node];
-      let connections = '';
-      let vertex;
-      for (vertex of nodeConnections.children) {
-        connections += vertex + ' ';
-      }
-      console.log(node + '-->' + connections);
-    }
-  }
+
   getVertexByKey(vertexKey) {
     return this.adjacentList[vertexKey];
   }
 
   deleteVertex(vertexKey) {
-    const currentNode = this.adjacentList[vertexKey];
-    const { prevNode: prevNodeKey } = currentNode;
-    if (currentNode.prevNode !== null) {
-      const filtered = this.adjacentList[prevNodeKey].children.filter(
-        (currentKey) => {
-          return currentKey !== vertexKey;
-        }
-      );
-      this.adjacentList[prevNodeKey].children = filtered;
-    }
-
+    // const currentNode = this.adjacentList[vertexKey];
+    // const { prevNode: prevNodeKey } = currentNode;
+    // if (currentNode.prevNode !== null) {
+    //   console.log(this.adjacentList[prevNodeKey].childrenConnection);
+    //   const filtered = this.adjacentList[prevNodeKey].childrenConnection.filter(
+    //     (currentKey) => {
+    //       return currentKey !== vertexKey;
+    //     }
+    //   );
+    //   this.adjacentList[prevNodeKey].childrenConnection = filtered;
+    // }
     delete this.adjacentList[vertexKey];
     this.numberOfNodes--;
   }
