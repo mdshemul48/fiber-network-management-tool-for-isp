@@ -10,6 +10,7 @@ import addLocalHomeConnection from './addNewMainConnection/addLocalHomeConnectio
 
 // all the delete functions
 import deleteHomeConnection from './deletePolyline/deleteHomeConnection.js';
+import deleteSplitterConnection from './deletePolyline/deleteSplitterConnection.js';
 
 let map;
 let editablePolyline;
@@ -87,3 +88,4 @@ document
   });
 
 window.deleteHomeConnection = deleteHomeConnection;
+window.deleteSplitterConnection = deleteSplitterConnection;
