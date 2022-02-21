@@ -34,6 +34,8 @@ export default function (connection, map) {
     <p class="mb-1"><span class="fw-bold"> total Connection Used:</span> ${totalConnectionUsed}/${totalConnection}</p>
     
     <p class="mb-1"><span class="fw-bold"> oltSwitchNumber:</span> ${oltSwitchNumber}</p>
+    <button class="badge mb-1 bg-danger border-0" onclick="deleteHomeConnection('${currentNodeKey}')">Delete</button>
+
     <p class="mb-1 fw-bold">Port Used: </p>
     <hr class="my-1 w-50" />
     ${(() => {
@@ -54,22 +56,6 @@ export default function (connection, map) {
 
   polyline.setMap(map);
 
-  // const endPoint = new google.maps.Circle({
-  //   strokeColor: '#364F6B',
-  //   strokeOpacity: 0.8,
-  //   strokeWeight: 2,
-  //   fillColor: allTheCoreColor.find((item) => item.colorName === coreColor)
-  //     .colorCode,
-  //   fillOpacity: 1,
-  //   map,
-  //   center: coordinates[coordinates.length - 1],
-  //   radius: 30,
-  // });
-
-  // google.maps.event.addListener(endPoint, 'click', function (event) {
-  //   window.selectPolyline(event.latLng, currentNodeKey);
-  // });
-
   const icon = {
     url: '../../../assets/img/olt.png',
     scaledSize: new google.maps.Size(35, 50),
@@ -89,6 +75,15 @@ export default function (connection, map) {
   });
 
   marker.addListener('mouseout', () => {
+    infoWindow.close();
+  });
+
+  polyline.addListener('mouseover', (event) => {
+    infoWindow.setPosition(event.latLng);
+    infoWindow.open(map);
+  });
+
+  polyline.addListener('mouseout', () => {
     infoWindow.close();
   });
   google.maps.event.addListener(marker, 'click', function (event) {
