@@ -8,13 +8,15 @@ export default (primaryKey) => {
 
   const targetVertex = graph.getVertexByKey(primaryKey);
   const parentVertex = graph.getVertexByKey(targetVertex.parentNodeKey);
-  console.log(targetVertex, parentVertex);
 
   if (targetVertex.connectedWith === 'LocalSplitter') {
     parentVertex.totalCoreUsed--;
     parentVertex.childrenConnection[targetVertex.CoreColor] = null;
-    graph.deleteVertex(primaryKey);
-  } else {
+  } else if (targetVertex.connectedWith === 'olt') {
+    delete parentVertex.childrenConnection[targetVertex.portNo];
   }
-  console.log(parentVertex);
+  graph.deleteVertex(primaryKey);
+
+  localStorage.setItem('siteData', JSON.stringify(graph));
+  location.reload();
 };
