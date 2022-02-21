@@ -34,7 +34,7 @@ export default function (connection, map) {
     <p class="mb-1"><span class="fw-bold"> total Connection Used:</span> ${totalConnectionUsed}/${totalConnection}</p>
     
     <p class="mb-1"><span class="fw-bold"> oltSwitchNumber:</span> ${oltSwitchNumber}</p>
-    <button class="badge mb-1 bg-danger border-0" onclick="deleteHomeConnection('${currentNodeKey}')">Delete</button>
+    <button class="badge mb-1 bg-danger border-0" onclick="deleteMainLocalConnection('${currentNodeKey}')">Delete</button>
 
     <p class="mb-1 fw-bold">Port Used: </p>
     <hr class="my-1 w-50" />
