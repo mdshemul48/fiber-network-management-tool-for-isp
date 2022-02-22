@@ -1,8 +1,14 @@
 import allTheCoreColor from '../../utility/coreColor.js';
 
 export default function (connection, map) {
-  const { companyName, coordinates, connectionType, portNo, coreColor } =
-    connection;
+  const {
+    currentNodeKey,
+    companyName,
+    coordinates,
+    connectionType,
+    portNo,
+    coreColor,
+  } = connection;
   const polyline = new google.maps.Polyline({
     path: coordinates,
     geodesic: true,
@@ -28,6 +34,8 @@ export default function (connection, map) {
       <p class="mb-1"><span class=" fw-bold">Distance:</span> ${Math.ceil(
         lengthInMeters
       )}m</p>
+      <button class="badge mb-1 bg-danger border-0" onclick="deleteMainLocalConnection('${currentNodeKey}')">Delete</button>
+
       `,
   });
 
@@ -51,6 +59,15 @@ export default function (connection, map) {
     position: coordinates[coordinates.length - 1],
     map,
     icon: icon,
+  });
+
+  polyline.addListener('mouseover', (event) => {
+    infoWindow.setPosition(event.latLng);
+    infoWindow.open(map);
+  });
+
+  polyline.addListener('mouseout', () => {
+    infoWindow.close();
   });
 
   marker.addListener('mouseover', (event) => {

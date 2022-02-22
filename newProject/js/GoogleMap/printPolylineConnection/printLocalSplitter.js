@@ -51,6 +51,7 @@ ${
         lengthInMeters
       )}m</p>
       <p class="mb-1 fw-bold">Core Available: </p>
+      <button class="badge mb-1 bg-danger border-0" onclick="deleteSplitterConnection('${currentNodeKey}')">Delete</button>
       <hr class="my-1 w-50" />
         ${(() => {
           let string = '';
@@ -63,21 +64,6 @@ ${
         })()}
       `,
   });
-
-  // const endPoint = new google.maps.Circle({
-  //   strokeColor: '#364F6B',
-  //   strokeOpacity: 0.8,
-  //   strokeWeight: 2,
-  //   fillColor: '#142F43',
-  //   fillOpacity: 1,
-  //   map,
-  //   center: coordinates[coordinates.length - 1],
-  //   radius: 30,
-  // });
-
-  // google.maps.event.addListener(endPoint, 'click', function (event) {
-  //   window.selectPolyline(event.latLng, currentNodeKey);
-  // });
 
   const icon = {
     url: '../../../assets/img/splitter.png',
@@ -98,6 +84,15 @@ ${
   });
 
   marker.addListener('mouseout', () => {
+    infoWindow.close();
+  });
+
+  polyline.addListener('mouseover', (event) => {
+    infoWindow.setPosition(event.latLng);
+    infoWindow.open(map);
+  });
+
+  polyline.addListener('mouseout', () => {
     infoWindow.close();
   });
 
