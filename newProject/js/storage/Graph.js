@@ -28,17 +28,6 @@ class Graph {
   }
 
   deleteVertex(vertexKey) {
-    // const currentNode = this.adjacentList[vertexKey];
-    // const { prevNode: prevNodeKey } = currentNode;
-    // if (currentNode.prevNode !== null) {
-    //   console.log(this.adjacentList[prevNodeKey].childrenConnection);
-    //   const filtered = this.adjacentList[prevNodeKey].childrenConnection.filter(
-    //     (currentKey) => {
-    //       return currentKey !== vertexKey;
-    //     }
-    //   );
-    //   this.adjacentList[prevNodeKey].childrenConnection = filtered;
-    // }
     delete this.adjacentList[vertexKey];
     this.numberOfNodes--;
   }
