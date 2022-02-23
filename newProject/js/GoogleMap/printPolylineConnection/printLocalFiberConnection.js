@@ -53,5 +53,9 @@ export default function (connection, map) {
     infoWindow.close();
   });
 
+  google.maps.event.addListener(polyline, 'click', function (event) {
+    window.selectPolyline(event.latLng, currentNodeKey);
+  });
+
   polyline.setMap(map);
 }

@@ -21,6 +21,7 @@ export default (polylineKey, coordinates) => {
   const localFiberConnection = {
     connectionName,
     connectionType: 'localFiberConnection',
+    parentNodeKey: polylineKey,
     totalCore: connectionTotalCore,
     totalCoreUsed: 0,
     coordinates,
@@ -32,7 +33,7 @@ export default (polylineKey, coordinates) => {
   const uuid = uuidv4();
 
   graph.addVertex(uuid, localFiberConnection);
-  graph.addEdge(polylineKey, uuid, connectionTotalCore);
+  // graph.addEdge(polylineKey, uuid, connectionTotalCore);
 
   localStorage.setItem('siteData', JSON.stringify(graph));
   location.reload();
