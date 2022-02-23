@@ -7,6 +7,7 @@ import addPointToPoint from './addNewMainConnection/AddPointToPoint.js';
 import addMainLocalConnection from './addNewMainConnection/addMainLocalConnection.js';
 import addLocalSplitter from './addNewMainConnection/addLocalSplitter.js';
 import addLocalHomeConnection from './addNewMainConnection/addLocalHomeConnection.js';
+import addLocalFiberConnection from './addNewMainConnection/addLocalFiberConnection.js';
 
 // all the delete functions
 import deleteHomeConnection from './deletePolyline/deleteHomeConnection.js';
@@ -88,6 +89,14 @@ document
     addLocalHomeConnection(selectedPolyline, editablePolyline.getAllThePath());
   });
 
+document
+  .getElementById('addLocalFiberConnection')
+  .addEventListener('submit', (event) => {
+    event.preventDefault();
+    addLocalFiberConnection(selectedPolyline, editablePolyline.getAllThePath());
+  });
+
+// all the delete functions
 window.deleteHomeConnection = deleteHomeConnection;
 window.deleteSplitterConnection = deleteSplitterConnection;
 window.deleteMainLocalConnection = deleteMainLocalConnection;
