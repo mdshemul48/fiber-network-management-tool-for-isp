@@ -5,6 +5,7 @@ import printMainLocalConnection from './printPolylineConnection/printMainLocalCo
 import printPointToPointConnection from './printPolylineConnection/printPointToPointConnection.js';
 import printLocalSplitter from './printPolylineConnection/printLocalSplitter.js';
 import printHomeConnection from './printPolylineConnection/printHomeConnection.js';
+import printLocalFiberConnection from './printPolylineConnection/printLocalFiberConnection.js';
 
 const printAllThePolylines = (map) => {
   const savedData = JSON.parse(localStorage.getItem('siteData'));
@@ -23,6 +24,8 @@ const printAllThePolylines = (map) => {
       printLocalSplitter(connection, map);
     else if (connection.connectionType === 'localHome')
       printHomeConnection(connection, map);
+    else if (connection.connectionType === 'localFiberConnection')
+      printLocalFiberConnection(connection, map);
   });
 };
 
