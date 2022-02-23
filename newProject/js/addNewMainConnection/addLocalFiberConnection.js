@@ -1,3 +1,4 @@
+import Graph from '../storage/Graph.js';
 import coreColor from '../utility/coreColor.js';
 
 export default (polylineKey, coordinates) => {
@@ -15,4 +16,17 @@ export default (polylineKey, coordinates) => {
   selectedCoreColor.forEach((item) => {
     connectionCoreColor[item.colorName] = null;
   });
+
+  const localFiberConnection = {
+    connectionName,
+    connectionType: 'localFiberConnection',
+    totalCore: connectionTotalCore,
+    totalCoreUsed: 0,
+    coordinates,
+    childrenConnection: connectionCoreColor,
+  };
+
+  const graph = new Graph(JSON.parse(localStorage.getItem('siteData')) || null);
+  const oltSwitch = graph.getVertexByKey(polylineKey);
+  console.log(oltSwitch);
 };
