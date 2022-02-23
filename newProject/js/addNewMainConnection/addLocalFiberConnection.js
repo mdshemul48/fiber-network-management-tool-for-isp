@@ -1,5 +1,6 @@
 import Graph from '../storage/Graph.js';
 import coreColor from '../utility/coreColor.js';
+import uuidv4 from '../utility/uuid.js';
 
 export default (polylineKey, coordinates) => {
   const connectionName = document.getElementById(
@@ -27,6 +28,12 @@ export default (polylineKey, coordinates) => {
   };
 
   const graph = new Graph(JSON.parse(localStorage.getItem('siteData')) || null);
-  const oltSwitch = graph.getVertexByKey(polylineKey);
-  console.log(oltSwitch);
+
+  const uuid = uuidv4();
+
+  graph.addVertex(uuid, localFiberConnection);
+  graph.addEdge(polylineKey, uuid, connectionTotalCore);
+
+  localStorage.setItem('siteData', JSON.stringify(graph));
+  location.reload();
 };
