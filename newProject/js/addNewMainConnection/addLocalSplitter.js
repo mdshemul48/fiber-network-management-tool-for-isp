@@ -41,9 +41,15 @@ export default (polylineKey, coordinates) => {
   const uuid = uuidv4();
 
   if (connectedWith === 'olt') {
+    const parentOlt = (function parentOlt(node) {
+      if (node.connectionType === 'mainLocal') return node;
+      else return parentOlt(graph.adjacentList[node.parentNodeKey]);
+    })(graph.adjacentList[polylineKey]);
+
     newSplitterConnection.portNo = localSplitterPortNo;
     graph.addVertex(uuid, newSplitterConnection);
-    graph.addEdge(polylineKey, uuid, localSplitterPortNo);
+    graph.addEdge(parentOlt.currentNodeKey, uuid, localSplitterPortNo);
+    graph.addEdge(polylineKey, uuid, connectedCoreColor);
   } else {
     newSplitterConnection.CoreColor = connectedCoreColor;
     graph.addVertex(uuid, newSplitterConnection);
