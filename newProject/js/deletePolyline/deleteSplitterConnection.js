@@ -7,13 +7,26 @@ export default (primaryKey) => {
   // deleting from splitter
 
   const targetVertex = graph.getVertexByKey(primaryKey);
-  const parentVertex = graph.getVertexByKey(targetVertex.parentNodeKey);
 
   if (targetVertex.connectedWith === 'LocalSplitter') {
+    const parentVertex = graph.getVertexByKey(targetVertex.parentNodeKey);
     parentVertex.totalCoreUsed--;
     parentVertex.childrenConnection[targetVertex.CoreColor] = null;
   } else if (targetVertex.connectedWith === 'olt') {
-    delete parentVertex.childrenConnection[targetVertex.portNo];
+    const parentOlt = (function parentOlt(node) {
+      if (node.connectionType === 'mainLocal') return node;
+      else return parentOlt(graph.adjacentList[node.parentNodeKey]);
+    })(graph.adjacentList[targetVertex.parentNodeKey]);
+
+    delete parentOlt.childrenConnection[targetVertex.portNo];
+
+    if (
+      graph.getVertexByKey(targetVertex.parentNodeKey).connectionType !==
+      'mainLocal'
+    ) {
+      graph.getVertexByKey(targetVertex.parentNodeKey)[targetVertex.CoreColor] =
+        null;
+    }
   }
   graph.deleteVertex(primaryKey);
 

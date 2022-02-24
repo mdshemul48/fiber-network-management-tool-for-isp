@@ -47,10 +47,15 @@ export default (polylineKey, coordinates) => {
     })(graph.adjacentList[polylineKey]);
 
     newSplitterConnection.portNo = localSplitterPortNo;
+
+    if (graph.getVertexByKey(polylineKey).connectionType !== 'mainLocal')
+      newSplitterConnection.CoreColor = connectedCoreColor;
+
     graph.addVertex(uuid, newSplitterConnection);
     graph.addEdge(parentOlt.currentNodeKey, uuid, localSplitterPortNo);
 
     if (graph.getVertexByKey(polylineKey).connectionType !== 'mainLocal') {
+      newSplitterConnection.CoreColor = connectedCoreColor;
       graph.addEdge(polylineKey, uuid, connectedCoreColor);
     }
   } else {
