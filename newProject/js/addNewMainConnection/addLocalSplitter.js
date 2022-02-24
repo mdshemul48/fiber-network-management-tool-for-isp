@@ -49,7 +49,10 @@ export default (polylineKey, coordinates) => {
     newSplitterConnection.portNo = localSplitterPortNo;
     graph.addVertex(uuid, newSplitterConnection);
     graph.addEdge(parentOlt.currentNodeKey, uuid, localSplitterPortNo);
-    graph.addEdge(polylineKey, uuid, connectedCoreColor);
+
+    if (graph.getVertexByKey(polylineKey).connectionType !== 'mainLocal') {
+      graph.addEdge(polylineKey, uuid, connectedCoreColor);
+    }
   } else {
     newSplitterConnection.CoreColor = connectedCoreColor;
     graph.addVertex(uuid, newSplitterConnection);
