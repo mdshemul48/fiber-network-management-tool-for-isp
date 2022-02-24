@@ -1,3 +1,5 @@
+import Graph from '../../storage/Graph.js';
+
 export default function (connection, map) {
   const {
     currentNodeKey,
@@ -56,5 +58,28 @@ export default function (connection, map) {
 
   polyline.addListener('mouseout', () => {
     infoWindow.close();
+  });
+
+  // printing tj box on the map
+
+  const icon = {
+    url: '../../../assets/img/tj.png',
+    scaledSize: new google.maps.Size(30, 30),
+    origin: new google.maps.Point(0, 0),
+    anchor: new google.maps.Point(15, 15),
+  };
+
+  const graph = new Graph(JSON.parse(localStorage.getItem('siteData')) || null);
+
+  const allTheConnection = Object.values(childrenConnection);
+  allTheConnection.forEach((item) => {
+    if (item != null) {
+      const marker = new google.maps.Marker({
+        position: graph.getVertexByKey(item).coordinates[0],
+        map,
+        icon,
+      });
+      console.log(marker);
+    }
   });
 }
