@@ -71,14 +71,22 @@ export default function (connection, map) {
   const graph = new Graph(JSON.parse(localStorage.getItem('siteData')) || null);
 
   const allTheConnection = Object.values(childrenConnection);
+  const tjBoxAdded = {};
   allTheConnection.forEach((item) => {
-    if (item != null) {
+    if (
+      item != null &&
+      !tjBoxAdded[graph.getVertexByKey(item).coordinates[0]['lat']]
+    ) {
       const marker = new google.maps.Marker({
         position: graph.getVertexByKey(item).coordinates[0],
         map,
         icon,
       });
-      console.log(marker);
+
+      google.maps.event.addListener(marker, 'click', function (event) {
+        window.selectPolyline(event.latLng, currentNodeKey);
+      });
+      tjBoxAdded[graph.getVertexByKey(item).coordinates[0]['lat']] = true;
     }
   });
 
