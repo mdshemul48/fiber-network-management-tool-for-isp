@@ -13,6 +13,7 @@ export default (primaryKey) => {
   } else if (targetVertex.connectedWith === 'olt') {
     // deleting from olt and parent connection
     (function parentOlt(node) {
+      console.log(node);
       if (node.connectionType === 'mainLocal') {
         delete node.childrenConnection[targetVertex.portNo];
         return;

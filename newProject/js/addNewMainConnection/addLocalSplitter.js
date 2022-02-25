@@ -44,6 +44,7 @@ export default (polylineKey, coordinates) => {
     newSplitterConnection.portNo = localSplitterPortNo;
 
     if (graph.getVertexByKey(polylineKey).connectionType !== 'mainLocal') {
+      newSplitterConnection.CoreColor = connectedCoreColor;
       graph.addVertex(uuid, newSplitterConnection);
       graph.addEdge(polylineKey, uuid, connectedCoreColor);
       newSplitterConnection.CoreColor = connectedCoreColor;
