@@ -31,8 +31,8 @@ export default function (connection, map) {
       <p class="mb-1"><span class=" fw-bold">Distance:</span> ${Math.ceil(
         lengthInMeters
       )}m</p>
-      <p class="mb-1 fw-bold">Core Available: </p>
       <button class="badge mb-1 bg-danger border-0" onclick="deleteSplitterConnection('${currentNodeKey}')">Delete</button>
+      <p class="mb-1 fw-bold">Core Available: </p>
       <hr class="my-1 w-50" />
         ${(() => {
           let string = '';
