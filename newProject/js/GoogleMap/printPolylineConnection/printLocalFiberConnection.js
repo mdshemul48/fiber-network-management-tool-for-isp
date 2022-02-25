@@ -34,7 +34,6 @@ export default function (connection, map) {
     return findMainConnection(targetNode.parentNodeKey);
   })(currentNodeKey);
 
-  console.log(mainConnection, connectionName);
   const infoWindow = new google.maps.InfoWindow({
     content: `
       <p class="mb-1 fw-bold">${connectionName}</p>
@@ -58,7 +57,6 @@ export default function (connection, map) {
                 : 'used'
             }</p>`;
           }
-          console.log(string);
           return string;
         })()}
       `,

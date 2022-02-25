@@ -60,12 +60,17 @@ export default (polylineKey, coordinates) => {
           return;
         }
         parentNode.childrenConnection[connectedCoreColor] = uuid;
+        parentNode.totalCoreUsed++;
         return findMainLocalLine(
           parentNode.parentNodeKey,
           uuid,
           connectedCoreColor
         );
-      })(polylineKey, uuid, connectedCoreColor);
+      })(
+        graph.getVertexByKey(polylineKey).parentNodeKey,
+        uuid,
+        connectedCoreColor
+      );
     } else {
       graph.addVertex(uuid, newSplitterConnection);
       graph.addEdge(polylineKey, uuid, localSplitterPortNo);
