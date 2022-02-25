@@ -73,10 +73,12 @@ export default function (connection, map) {
   const allTheConnection = Object.values(childrenConnection);
   const tjBoxAdded = {};
   allTheConnection.forEach((item) => {
+    console.log(tjBoxAdded[graph.getVertexByKey(item)?.coordinates[0]['lat']]);
     if (
       item != null &&
-      !tjBoxAdded[graph.getVertexByKey(item).coordinates[0]['lat']]
+      !tjBoxAdded[graph.getVertexByKey(item)?.coordinates[0]['lat']]
     ) {
+      console.log(graph.getVertexByKey(item), item, 'gg');
       const marker = new google.maps.Marker({
         position: graph.getVertexByKey(item).coordinates[0],
         map,

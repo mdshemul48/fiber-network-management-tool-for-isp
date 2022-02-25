@@ -54,9 +54,23 @@ export default (polylineKey, coordinates) => {
     graph.addVertex(uuid, newSplitterConnection);
     graph.addEdge(parentOlt.currentNodeKey, uuid, localSplitterPortNo);
 
+    const findMainLocalLine = (parentKey) => {
+      const parentNode = graph.getVertexByKey(parentKey);
+      if (
+        graph.getVertexByKey(parentNode.parentNodeKey).connectionType ===
+        'mainLocal'
+      ) {
+        return parentNode;
+      }
+      return findMainLocalLine(parentNode.parentNodeKey);
+    };
+
+    const mainLocalLine = findMainLocalLine(polylineKey);
+    console.log(mainLocalLine);
     if (graph.getVertexByKey(polylineKey).connectionType !== 'mainLocal') {
       newSplitterConnection.CoreColor = connectedCoreColor;
-      graph.addEdge(polylineKey, uuid, connectedCoreColor);
+      // graph.addEdge(polylineKey, uuid, connectedCoreColor);
+      graph.addEdge(mainLocalLine.currentNodeKey, uuid, connectedCoreColor);
     }
   } else {
     newSplitterConnection.CoreColor = connectedCoreColor;
