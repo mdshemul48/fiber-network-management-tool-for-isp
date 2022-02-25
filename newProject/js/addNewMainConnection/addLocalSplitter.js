@@ -54,23 +54,22 @@ export default (polylineKey, coordinates) => {
     graph.addVertex(uuid, newSplitterConnection);
     graph.addEdge(parentOlt.currentNodeKey, uuid, localSplitterPortNo);
 
-    const findMainLocalLine = (parentKey) => {
-      const parentNode = graph.getVertexByKey(parentKey);
-      if (
-        graph.getVertexByKey(parentNode.parentNodeKey).connectionType ===
-        'mainLocal'
-      ) {
-        return parentNode;
-      }
-      return findMainLocalLine(parentNode.parentNodeKey);
-    };
-
-    const mainLocalLine = findMainLocalLine(polylineKey);
-    console.log(mainLocalLine);
     if (graph.getVertexByKey(polylineKey).connectionType !== 'mainLocal') {
       newSplitterConnection.CoreColor = connectedCoreColor;
-      // graph.addEdge(polylineKey, uuid, connectedCoreColor);
-      graph.addEdge(mainLocalLine.currentNodeKey, uuid, connectedCoreColor);
+
+      // updating all the parent about this line
+      (function findMainLocalLine(parentKey, uuid, connectedCoreColor) {
+        const parentNode = graph.getVertexByKey(parentKey);
+        if (parentNode.connectionType === 'mainLocal') {
+          return;
+        }
+        graph.addEdge(parentNode.currentNodeKey, uuid, connectedCoreColor);
+        return findMainLocalLine(
+          parentNode.parentNodeKey,
+          uuid,
+          connectedCoreColor
+        );
+      })(polylineKey, uuid, connectedCoreColor);
     }
   } else {
     newSplitterConnection.CoreColor = connectedCoreColor;
