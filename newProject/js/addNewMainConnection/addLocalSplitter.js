@@ -67,6 +67,8 @@ export default (polylineKey, coordinates) => {
         );
       })(polylineKey, uuid, connectedCoreColor);
     } else {
+      graph.addVertex(uuid, newSplitterConnection);
+      graph.addEdge(polylineKey, uuid, localSplitterPortNo);
     }
   } else {
     newSplitterConnection.CoreColor = connectedCoreColor;
