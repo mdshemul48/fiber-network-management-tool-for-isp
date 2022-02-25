@@ -10,6 +10,7 @@ export default function (connection, map) {
     totalCoreUsed,
     childrenConnection,
   } = connection;
+  const graph = new Graph(JSON.parse(localStorage.getItem('siteData')) || null);
   const polyline = new google.maps.Polyline({
     path: coordinates,
     geodesic: true,
@@ -22,12 +23,26 @@ export default function (connection, map) {
     polyline.getPath()
   );
 
+  const mainConnection = (function findMainConnection(parentKey) {
+    const targetNode = graph.getVertexByKey(parentKey);
+    if (
+      graph.getVertexByKey(targetNode.parentNodeKey).connectionType ===
+      'mainLocal'
+    ) {
+      return targetNode;
+    }
+    return findMainConnection(targetNode.parentNodeKey);
+  })(currentNodeKey);
+
+  console.log(mainConnection, connectionName);
   const infoWindow = new google.maps.InfoWindow({
     content: `
       <p class="mb-1 fw-bold">${connectionName}</p>
       <hr class="my-1" />
       <p class="mb-1"><span class="fw-bold">Connection Type:</span> ${connectionType}</p>
-       <p class="mb-1"><span class=" fw-bold">total Used Core:</span> ${totalCoreUsed}/${totalCore}</p>
+       <p class="mb-1"><span class=" fw-bold">total Used Core:</span> ${
+         mainConnection.totalCoreUsed
+       }/${mainConnection.totalCore}</p>
       <p class="mb-1"><span class=" fw-bold">Distance:</span> ${Math.ceil(
         lengthInMeters
       )}m</p>
@@ -36,11 +51,14 @@ export default function (connection, map) {
       <hr class="my-1 w-50" />
         ${(() => {
           let string = '';
-          for (let color in childrenConnection) {
+          for (let color in mainConnection.childrenConnection) {
             string += `<p class="mb-1">${color} : ${
-              childrenConnection[color] == null ? 'available' : 'used'
+              mainConnection.childrenConnection[color] === null
+                ? 'available'
+                : 'used'
             }</p>`;
           }
+          console.log(string);
           return string;
         })()}
       `,
@@ -67,8 +85,6 @@ export default function (connection, map) {
     origin: new google.maps.Point(0, 0),
     anchor: new google.maps.Point(15, 15),
   };
-
-  const graph = new Graph(JSON.parse(localStorage.getItem('siteData')) || null);
 
   const allTheConnection = Object.values(childrenConnection);
   const tjBoxAdded = {};
