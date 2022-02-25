@@ -41,42 +41,37 @@ export default (polylineKey, coordinates) => {
   const uuid = uuidv4();
 
   if (connectedWith === 'olt') {
-    const parentOlt = (function parentOlt(node) {
-      if (node.connectionType === 'mainLocal') return node;
-      else return parentOlt(graph.adjacentList[node.parentNodeKey]);
-    })(graph.adjacentList[polylineKey]);
-
     newSplitterConnection.portNo = localSplitterPortNo;
 
-    if (graph.getVertexByKey(polylineKey).connectionType !== 'mainLocal')
-      newSplitterConnection.CoreColor = connectedCoreColor;
-
-    graph.addVertex(uuid, newSplitterConnection);
-    graph.addEdge(parentOlt.currentNodeKey, uuid, localSplitterPortNo);
-
     if (graph.getVertexByKey(polylineKey).connectionType !== 'mainLocal') {
+      graph.addVertex(uuid, newSplitterConnection);
+      graph.addEdge(polylineKey, uuid, connectedCoreColor);
       newSplitterConnection.CoreColor = connectedCoreColor;
 
       // updating all the parent about this line
+
       (function findMainLocalLine(parentKey, uuid, connectedCoreColor) {
         const parentNode = graph.getVertexByKey(parentKey);
         if (parentNode.connectionType === 'mainLocal') {
+          graph.adjacentList[parentKey].childrenConnection[
+            localSplitterPortNo
+          ] = uuid;
           return;
         }
-        graph.addEdge(parentNode.currentNodeKey, uuid, connectedCoreColor);
+        parentNode.childrenConnection[connectedCoreColor] = uuid;
         return findMainLocalLine(
           parentNode.parentNodeKey,
           uuid,
           connectedCoreColor
         );
       })(polylineKey, uuid, connectedCoreColor);
+    } else {
     }
   } else {
     newSplitterConnection.CoreColor = connectedCoreColor;
     graph.addVertex(uuid, newSplitterConnection);
     graph.addEdge(polylineKey, uuid, connectedCoreColor);
   }
-
   localStorage.setItem('siteData', JSON.stringify(graph));
   location.reload();
 };

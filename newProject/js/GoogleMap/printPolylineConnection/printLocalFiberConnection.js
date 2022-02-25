@@ -78,7 +78,7 @@ export default function (connection, map) {
       !tjBoxAdded[graph.getVertexByKey(item)?.coordinates[0]['lat']]
     ) {
       const marker = new google.maps.Marker({
-        position: graph.getVertexByKey(item).coordinates[0],
+        position: graph.getVertexByKey(item)?.coordinates[0],
         map,
         icon,
       });
@@ -86,7 +86,7 @@ export default function (connection, map) {
       google.maps.event.addListener(marker, 'click', function (event) {
         window.selectPolyline(event.latLng, currentNodeKey);
       });
-      tjBoxAdded[graph.getVertexByKey(item).coordinates[0]['lat']] = true;
+      tjBoxAdded[graph.getVertexByKey(item)?.coordinates[0]['lat']] = true;
     }
   });
 

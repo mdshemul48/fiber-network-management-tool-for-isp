@@ -1,0 +1,100 @@
+{
+  "numberOfNodes": 5,
+  "adjacentList": {
+    "b8e53869-4966-47ab-9c6d-2a4d9c0482b1": {
+      "currentNodeKey": "b8e53869-4966-47ab-9c6d-2a4d9c0482b1",
+      "parentNodeKey": null,
+      "connectionName": "main connection",
+      "connectionType": "mainConnection",
+      "totalCore": 4,
+      "totalCoreUsed": 1,
+      "coordinates": [
+        { "lat": 23.91946574231458, "lng": 90.27246822444852 },
+        { "lat": 23.916131182093658, "lng": 90.25049556819852 },
+        { "lat": 23.912325755279916, "lng": 90.24268497554715 }
+      ],
+      "childrenConnection": {
+        "blue": "3eb0a03e-805c-4c50-9067-0e4d0ea99434",
+        "orange": null,
+        "green": null,
+        "brown": null
+      }
+    },
+    "3eb0a03e-805c-4c50-9067-0e4d0ea99434": {
+      "currentNodeKey": "3eb0a03e-805c-4c50-9067-0e4d0ea99434",
+      "parentNodeKey": "b8e53869-4966-47ab-9c6d-2a4d9c0482b1",
+      "connectionName": "main connection",
+      "oltSwitchNumber": "324230493840238",
+      "portNo": "3",
+      "connectionType": "mainLocal",
+      "switchType": "epon",
+      "coordinates": [
+        { "lat": 23.91325948796145, "lng": 90.24461070763753 },
+        { "lat": 23.907710650016845, "lng": 90.25047205922243 }
+      ],
+      "coreColor": "blue",
+      "totalConnection": 64,
+      "childrenConnection": { "2": "13a6ac54-07e5-4f1f-9ad3-95d5ca36adde" },
+      "totalConnectionUsed": 0
+    },
+    "2bf050cd-ddd2-4a7c-b09c-9b347c75dadd": {
+      "currentNodeKey": "2bf050cd-ddd2-4a7c-b09c-9b347c75dadd",
+      "parentNodeKey": "3eb0a03e-805c-4c50-9067-0e4d0ea99434",
+      "connectionName": "1st fiber",
+      "connectionType": "localFiberConnection",
+      "totalCore": 4,
+      "totalCoreUsed": 0,
+      "coordinates": [
+        { "lat": 23.907710650016845, "lng": 90.25047205922243 },
+        { "lat": 23.905895055423624, "lng": 90.24625565114175 },
+        { "lat": 23.904914208349545, "lng": 90.24256493153726 }
+      ],
+      "childrenConnection": {
+        "blue": "13a6ac54-07e5-4f1f-9ad3-95d5ca36adde",
+        "orange": null,
+        "green": null,
+        "brown": null
+      }
+    },
+    "09cdeaeb-8b16-4ab5-bc81-0b68edd172e5": {
+      "currentNodeKey": "09cdeaeb-8b16-4ab5-bc81-0b68edd172e5",
+      "parentNodeKey": "2bf050cd-ddd2-4a7c-b09c-9b347c75dadd",
+      "connectionName": "2nd fiber",
+      "connectionType": "localFiberConnection",
+      "totalCore": 4,
+      "totalCoreUsed": 1,
+      "coordinates": [
+        { "lat": 23.905368986366565, "lng": 90.24429645656461 },
+        { "lat": 23.899624463481068, "lng": 90.24488536320631 }
+      ],
+      "childrenConnection": {
+        "blue": "13a6ac54-07e5-4f1f-9ad3-95d5ca36adde",
+        "orange": null,
+        "green": null,
+        "brown": null
+      }
+    },
+    "13a6ac54-07e5-4f1f-9ad3-95d5ca36adde": {
+      "currentNodeKey": "13a6ac54-07e5-4f1f-9ad3-95d5ca36adde",
+      "parentNodeKey": "09cdeaeb-8b16-4ab5-bc81-0b68edd172e5",
+      "connectionName": "3rd no splitter",
+      "connectionType": "localSplitter",
+      "coordinates": [
+        { "lat": 23.90174691438834, "lng": 90.2446682642369 },
+        { "lat": 23.90137506080729, "lng": 90.2418681857984 },
+        { "lat": 23.901178885128818, "lng": 90.23950784186529 }
+      ],
+      "localSplitterType": "1/4",
+      "connectedWith": "olt",
+      "childrenConnection": {
+        "blue": null,
+        "orange": null,
+        "green": null,
+        "brown": null
+      },
+      "totalConnection": 4,
+      "totalCoreUsed": 0,
+      "portNo": 2
+    }
+  }
+}
