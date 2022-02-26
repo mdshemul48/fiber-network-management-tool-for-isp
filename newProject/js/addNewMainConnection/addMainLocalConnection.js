@@ -34,8 +34,10 @@ export default (polylineKey, coordinates) => {
 
   const graph = new Graph(JSON.parse(localStorage.getItem('siteData')) || null);
   const uuid = uuidv4();
+
   graph.addVertex(uuid, newConnection);
   graph.addEdge(polylineKey, uuid, coreColor);
+
   localStorage.setItem('siteData', JSON.stringify(graph));
   location.reload();
 };
