@@ -21,7 +21,7 @@ export default function (connection, map) {
     strokeColor: allTheCoreColor.find((item) => item.colorName === coreColor)
       .colorCode,
     strokeOpacity: 1.0,
-    strokeWeight: 3,
+    strokeWeight: 4,
   });
 
   const infoWindow = new google.maps.InfoWindow({

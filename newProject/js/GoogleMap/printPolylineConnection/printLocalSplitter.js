@@ -21,7 +21,7 @@ export default function (connection, map) {
       ? allTheCoreColor.find((item) => item.colorName === CoreColor)?.colorCode
       : '#24A19C',
     strokeOpacity: 1.0,
-    strokeWeight: 3,
+    strokeWeight: 4,
   });
 
   polyline.setMap(map);
