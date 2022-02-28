@@ -16,7 +16,7 @@ export default function (connection, map) {
     geodesic: true,
     strokeColor: '#142F43',
     strokeOpacity: 1.0,
-    strokeWeight: 3,
+    strokeWeight: 4,
   });
 
   polyline.setMap(map);
