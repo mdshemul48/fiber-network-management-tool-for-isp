@@ -37,6 +37,6 @@ export default (polylineKey, coordinates) => {
   graph.addVertex(uuid, newLocalConnection);
   graph.addEdge(polylineKey, uuid, coreOption);
   console.log(graph);
-  // localStorage.setItem('siteData', JSON.stringify(graph));
-  // location.reload();
+  localStorage.setItem('siteData', JSON.stringify(graph));
+  location.reload();
 };

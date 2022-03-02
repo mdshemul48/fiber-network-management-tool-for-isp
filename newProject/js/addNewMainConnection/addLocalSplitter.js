@@ -87,7 +87,7 @@ export default (polylineKey, coordinates) => {
     graph.addVertex(uuid, newSplitterConnection);
     graph.addEdge(polylineKey, uuid, connectedCoreColor);
   }
-  console.log(graph);
+
   localStorage.setItem('siteData', JSON.stringify(graph));
   location.reload();
 };
