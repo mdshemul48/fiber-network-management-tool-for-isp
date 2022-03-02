@@ -2,7 +2,6 @@ import Graph from '../storage/Graph.js';
 import uuidv4 from '../utility/uuid.js';
 
 export default (polylineKey, coordinates) => {
-  console.log(polylineKey, coordinates);
   const connectionName = document.getElementById(
     'addLocalHomeConnectionName'
   ).value;
@@ -27,10 +26,17 @@ export default (polylineKey, coordinates) => {
     else return parentOlt(graph.adjacentList[node.parentNodeKey]);
   })(graph.adjacentList[polylineKey]);
 
+  const connectedPortNo = (function findPortNo(polylineVertex) {
+    if (polylineVertex.portNo !== undefined) return polylineVertex.portNo;
+    return findPortNo(graph.getVertexByKey(polylineVertex.parentNodeKey));
+  })(graph.getVertexByKey(polylineKey));
+
+  parentOlt.childrenConnection[connectedPortNo].connectionUsed++;
   parentOlt.totalConnectionUsed++;
 
   graph.addVertex(uuid, newLocalConnection);
   graph.addEdge(polylineKey, uuid, coreOption);
+  console.log(graph);
   localStorage.setItem('siteData', JSON.stringify(graph));
   location.reload();
 };

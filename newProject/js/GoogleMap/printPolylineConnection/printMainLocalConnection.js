@@ -31,7 +31,7 @@ export default function (connection, map) {
     <p class="mb-1"><span class="fw-bold">Core Color:</span> ${coreColor}</p>
     <p class="mb-1"><span class="fw-bold">Port No:</span> ${portNo}</p>
     <p class="mb-1"><span class="fw-bold"> Switch Type:</span> ${switchType}</p>
-    <p class="mb-1"><span class="fw-bold"> total Connection Used:</span> ${totalConnectionUsed}/${totalConnection}</p>
+    <p class="mb-1"><span class="fw-bold"> total Connection Used:</span> ${totalConnectionUsed}</p>
     
     <p class="mb-1"><span class="fw-bold"> oltSwitchNumber:</span> ${oltSwitchNumber}</p>
     <button class="badge mb-1 bg-danger border-0" onclick="deleteMainLocalConnection('${currentNodeKey}')">Delete</button>
@@ -41,8 +41,12 @@ export default function (connection, map) {
     ${(() => {
       let string = '';
       for (let color in childrenConnection) {
+        const { childID, connectionType, connectionUsed } =
+          childrenConnection[color];
         string += `<p class="mb-1">${color} : ${
-          childrenConnection[color] == null ? 'available' : 'used'
+          childrenConnection[color] == null
+            ? 'available'
+            : `${connectionUsed}/${totalConnection}`
         }</p>`;
       }
       return string;

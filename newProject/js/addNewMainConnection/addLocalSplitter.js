@@ -56,7 +56,7 @@ export default (polylineKey, coordinates) => {
         if (parentNode.connectionType === 'mainLocal') {
           graph.adjacentList[parentKey].childrenConnection[
             localSplitterPortNo
-          ] = uuid;
+          ] = { childID: uuid, connectionType: 'splitter', connectionUsed: 0 };
           return;
         }
         parentNode.childrenConnection[connectedCoreColor] = uuid;
@@ -72,14 +72,22 @@ export default (polylineKey, coordinates) => {
         connectedCoreColor
       );
     } else {
+      newSplitterConnection.parentNodeKey = polylineKey;
       graph.addVertex(uuid, newSplitterConnection);
-      graph.addEdge(polylineKey, uuid, localSplitterPortNo);
+
+      graph.adjacentList[polylineKey].childrenConnection[localSplitterPortNo] =
+        {
+          childID: uuid,
+          connectionType: 'splitter',
+          connectionUsed: 0,
+        };
     }
   } else {
     newSplitterConnection.CoreColor = connectedCoreColor;
     graph.addVertex(uuid, newSplitterConnection);
     graph.addEdge(polylineKey, uuid, connectedCoreColor);
   }
+
   localStorage.setItem('siteData', JSON.stringify(graph));
   location.reload();
 };

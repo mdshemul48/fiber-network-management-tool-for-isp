@@ -23,12 +23,12 @@
         </button>
         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
             <li><button class="dropdown-item" data-bs-toggle="modal" data-bs-target="#exampleModal">Add Main
-                    Cable</button></li>
-            <li><button class="dropdown-item" data-bs-toggle="modal" data-bs-target="#addPointToPoint">Add Company
-                    (Point
+                    Cable (Point
                     to Point)</button></li>
-            <li><button class="dropdown-item" data-bs-toggle="modal" data-bs-target="#AddMainLocal">Add Main
-                    Local</button></li>
+            <li><button class="dropdown-item" data-bs-toggle="modal" data-bs-target="#addPointToPoint">Add Company
+                </button></li>
+            <li><button class="dropdown-item" data-bs-toggle="modal" data-bs-target="#AddMainLocal">Add Reseller
+                    (OLT)</button></li>
             <li><button class="dropdown-item" data-bs-toggle="modal" data-bs-target="#addLocalFiber">Add Local
                     Fiber</button></li>
             <li><button class="dropdown-item" data-bs-toggle="modal" data-bs-target="#addLocalSplitter">Add Local
@@ -47,7 +47,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Add Main Connection</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Add Main Connection (PTP)</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form id="newMainConnectionForm">
@@ -82,9 +82,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Add Company
-                        (Point
-                        to Point)</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Add Company</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form id="addPointToPoint">
@@ -132,7 +130,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Add Main Local Connection</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Add Reseller (OLT)</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form id="addMainLocalSubmission">
