@@ -9,10 +9,7 @@ export default (primaryKey) => {
   const targetVertex = graph.getVertexByKey(primaryKey);
   const parentVertex = graph.getVertexByKey(targetVertex.parentNodeKey);
 
-  console.log(targetVertex, parentVertex);
-
   parentVertex.childrenConnection[targetVertex.CoreColor] = null;
-  graph.deleteVertex(primaryKey);
 
   parentVertex.totalCoreUsed--;
 
@@ -22,8 +19,15 @@ export default (primaryKey) => {
     else return parentOlt(graph.getVertexByKey(node.parentNodeKey));
   })(graph.getVertexByKey(targetVertex.parentNodeKey));
 
+  const connectedPortNo = (function findPortNo(polylineVertex) {
+    if (polylineVertex.portNo !== undefined) return polylineVertex.portNo;
+    return findPortNo(graph.getVertexByKey(polylineVertex.parentNodeKey));
+  })(graph.getVertexByKey(primaryKey));
+
+  parentOlt.childrenConnection[connectedPortNo].connectionUsed--;
   parentOlt.totalConnectionUsed--;
 
+  graph.deleteVertex(primaryKey);
   localStorage.setItem('siteData', JSON.stringify(graph));
   location.reload();
 };
