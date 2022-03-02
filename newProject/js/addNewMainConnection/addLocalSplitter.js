@@ -88,6 +88,6 @@ export default (polylineKey, coordinates) => {
     graph.addEdge(polylineKey, uuid, connectedCoreColor);
   }
   console.log(graph);
-  // localStorage.setItem('siteData', JSON.stringify(graph));
-  // location.reload();
+  localStorage.setItem('siteData', JSON.stringify(graph));
+  location.reload();
 };
