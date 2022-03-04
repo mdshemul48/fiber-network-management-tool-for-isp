@@ -13,6 +13,7 @@ import addLocalFiberConnection from './addNewMainConnection/addLocalFiberConnect
 import deleteHomeConnection from './deletePolyline/deleteHomeConnection.js';
 import deleteSplitterConnection from './deletePolyline/deleteSplitterConnection.js';
 import deleteMainLocalConnection from './deletePolyline/deleteMainLocalConnection.js';
+import Graph from './storage/Graph.js';
 
 let map;
 let editablePolyline;
@@ -86,7 +87,37 @@ document
   .getElementById('addLocalHomeConnectionSubmit')
   .addEventListener('submit', (event) => {
     event.preventDefault();
-    addLocalHomeConnection(selectedPolyline, editablePolyline.getAllThePath());
+    // addLocalHomeConnection(selectedPolyline, editablePolyline.getAllThePath());
+
+    const savedData = JSON.parse(localStorage.getItem('siteData'));
+    const graph = new Graph(savedData);
+    console.log(
+      graph
+        .getVertexByKey('91224ad8-9194-46bf-8820-0b97f7e43e99')
+        .coordinates.map((item) => [item.lng, item.lat])
+    );
+    var line = turf.lineString(
+      graph
+        .getVertexByKey('91224ad8-9194-46bf-8820-0b97f7e43e99')
+        .coordinates.map((item) => [item.lng, item.lat])
+    );
+    console.log(editablePolyline.polyline.getPath().Ed[0].lat());
+    var pt = turf.point([
+      editablePolyline.polyline.getPath().Ed[0].lng(),
+      editablePolyline.polyline.getPath().Ed[0].lat(),
+    ]);
+    var snapped = turf.pointOnLine(line, pt);
+
+    var pstnOnLine = {
+      lat: snapped.geometry.coordinates[1],
+      lng: snapped.geometry.coordinates[0],
+    };
+    var distToLine = snapped.properties.dist;
+    new google.maps.Marker({
+      position: pstnOnLine,
+      map,
+      title: 'Hello World!',
+    });
   });
 
 document
