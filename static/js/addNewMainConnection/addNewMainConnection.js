@@ -23,11 +23,8 @@ export default async (coordinates) => {
 
   const mainConnection = {
     name: connectionName,
-    connectionType: 'PTP',
     totalCore: connectionTotalCore,
-    totalCoreUsed: 0,
     coordinates,
-    childrenConnection: connectionCoreColor,
   };
 
   const response = await fetch('/api/create-ptp-connection', {
