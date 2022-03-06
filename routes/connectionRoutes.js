@@ -6,6 +6,6 @@ const {
 } = require('../controllers/connectionControllers/pointToPointController.js');
 
 // creating routes
-router.get('/create-ptp-connection', createPointToPointConnection);
+router.post('/create-ptp-connection', createPointToPointConnection);
 
 module.exports = router;

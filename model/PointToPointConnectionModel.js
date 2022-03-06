@@ -1,14 +1,14 @@
-const { Schema, model } = require('mongoose');
+const {
+  Schema,
+  model,
+  Types: { ObjectId },
+} = require('mongoose');
 
 const pointToPointConnectionSchema = new Schema(
   {
     name: {
       type: String,
       required: true,
-    },
-
-    description: {
-      type: String,
     },
 
     type: {
@@ -31,10 +31,13 @@ const pointToPointConnectionSchema = new Schema(
 
     location: {
       type: {
-        type: [[Number]],
+        type: String,
         default: 'LineString',
       },
-      coordinates: Array,
+      coordinates: {
+        type: [[Number]],
+        required: true,
+      },
     },
 
     childrenConnection: [
@@ -49,7 +52,7 @@ const pointToPointConnectionSchema = new Schema(
           enum: ['reseller', 'corporate'],
         },
         child: {
-          type: mongoose.Types.ObjectId,
+          type: ObjectId,
           required: true,
           refPath: 'connectionType',
         },

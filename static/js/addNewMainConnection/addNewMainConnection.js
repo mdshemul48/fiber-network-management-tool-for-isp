@@ -12,7 +12,7 @@ const formData = () => {
 };
 
 // this wil do all the process of adding the new main connection
-export default (coordinates) => {
+export default async (coordinates) => {
   const { connectionName, connectionTotalCore } = formData();
   const selectedCoreColor = coreColor.slice(0, connectionTotalCore);
 
@@ -23,18 +23,28 @@ export default (coordinates) => {
 
   const mainConnection = {
     connectionName,
-    connectionType: 'mainConnection',
+    connectionType: 'PTP',
     totalCore: connectionTotalCore,
     totalCoreUsed: 0,
     coordinates,
     childrenConnection: connectionCoreColor,
   };
 
-  const graph = new Graph(JSON.parse(localStorage.getItem('siteData')) || null);
+  const response = await fetch('/api/create-ptp-connection', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(mainConnection),
+  });
+  const data = await response.text();
+  console.log(data);
 
-  const uuid = uuidv4();
+  // const graph = new Graph(JSON.parse(localStorage.getItem('siteData')) || null);
 
-  graph.addVertex(uuid, mainConnection);
-  localStorage.setItem('siteData', JSON.stringify(graph));
-  location.reload();
+  // const uuid = uuidv4();
+
+  // graph.addVertex(uuid, mainConnection);
+  // localStorage.setItem('siteData', JSON.stringify(graph));
+  // location.reload();
 };
