@@ -1,5 +1,6 @@
+require('dotenv').config();
 const express = require('express');
-
+const connectMongo = require('./config/connectDB.js');
 // creating app
 const app = express();
 const port = process.env.PORT || 3000;
@@ -10,6 +11,8 @@ app.get('/api', (req, res) => {
   res.send('Hello World!');
 });
 
-app.listen(port, () => {
-  console.log(`Example app listening on http://localhost:${port}`);
+connectMongo(() => {
+  app.listen(port, () => {
+    console.log(`Example app listening on http://localhost:${port}`);
+  });
 });
