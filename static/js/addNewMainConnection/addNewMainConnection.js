@@ -37,14 +37,6 @@ export default async (coordinates) => {
     },
     body: JSON.stringify(mainConnection),
   });
-  const data = await response.text();
+  const data = await response.json();
   console.log(data);
-
-  // const graph = new Graph(JSON.parse(localStorage.getItem('siteData')) || null);
-
-  // const uuid = uuidv4();
-
-  // graph.addVertex(uuid, mainConnection);
-  // localStorage.setItem('siteData', JSON.stringify(graph));
-  // location.reload();
 };
