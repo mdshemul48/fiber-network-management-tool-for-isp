@@ -3,18 +3,18 @@ const pointToPointConnectionModel = require('../../model/pointToPointConnectionM
 
 // point to point connection validation array
 exports.createPointToPointConnectionValidation = [
-  body('name').isEmpty().withMessage('name is required'),
+  body('name').notEmpty().withMessage('name is required'),
 
   body('totalCore')
-    .isEmpty()
+    .notEmpty()
     .withMessage('totalCore is required')
     .isInt({ min: 2 })
     .withMessage('totalCore must be an integer or greater than 2'),
 
   body('coordinates')
-    .isEmpty()
+    .notEmpty()
     .withMessage('coordinates is required')
-    .isArray()
+    .notEmpty()
     .withMessage('coordinates must be an array')
     .isLength({ min: 2 }),
 ];
