@@ -48,6 +48,20 @@ window.initMap = function () {
 window.selectPolyline = (latLng, polylineId) => {
   console.log(polylineId);
   if (!selectedPolyline) {
+    Toastify({
+      text: 'A Cable Selected',
+      duration: 3000,
+      close: true,
+      gravity: 'top',
+      position: 'right',
+      stopOnFocus: true,
+      style: {
+        color: 'black',
+        background: 'white',
+      },
+      onClick: function () {}, // Callback after click
+    }).showToast();
+
     editablePolyline.addVertex(latLng);
     selectedPolyline = polylineId;
   }
