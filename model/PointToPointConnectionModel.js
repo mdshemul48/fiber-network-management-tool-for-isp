@@ -13,18 +13,23 @@ const pointToPointConnectionSchema = new Schema(
       type: String,
       default: 'PTP',
     },
+
     totalCore: {
       type: Number,
       required: true,
     },
+
     totalConnected: {
       type: Number,
       default: 0,
+      required: () => {
+        return this.totalConnected < this.totalCore;
+      },
     },
 
     location: {
       type: {
-        type: String,
+        type: [[Number]],
         default: 'LineString',
       },
       coordinates: Array,
