@@ -1,5 +1,5 @@
 {
-  "name": "Circle GEO Map",
+  "name": "circle_geo_map",
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
