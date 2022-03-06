@@ -1,8 +1,7 @@
 const { body, validationResult } = require('express-validator');
 const pointToPointConnectionModel = require('../../model/pointToPointConnectionModel.js');
 
-// creating all the main point to point connection controller functions
-
+// point to point connection validation array
 exports.createPointToPointConnectionValidation = [
   body('name').isEmpty().withMessage('name is required'),
 
@@ -19,6 +18,7 @@ exports.createPointToPointConnectionValidation = [
     .withMessage('coordinates must be an array'),
 ];
 
+// point to point connection controller functions
 exports.createPointToPointConnection = async (req, res) => {
   try {
     // validating the request body
