@@ -22,7 +22,7 @@ export default async (coordinates) => {
   });
 
   const mainConnection = {
-    connectionName,
+    name: connectionName,
     connectionType: 'PTP',
     totalCore: connectionTotalCore,
     totalCoreUsed: 0,
