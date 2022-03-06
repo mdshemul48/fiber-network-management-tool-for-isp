@@ -15,7 +15,8 @@ exports.createPointToPointConnectionValidation = [
     .isEmpty()
     .withMessage('coordinates is required')
     .isArray()
-    .withMessage('coordinates must be an array'),
+    .withMessage('coordinates must be an array')
+    .isLength({ min: 2 }),
 ];
 
 // point to point connection controller functions
