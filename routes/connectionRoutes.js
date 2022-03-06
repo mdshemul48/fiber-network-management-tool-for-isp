@@ -1,7 +1,9 @@
 const router = require('express').Router();
 
-router.get('/', (req, res) => {
-  return res.send('this is the connection route');
-});
+const {
+  createPointToPointConnection,
+} = require('../controllers/connectionControllers/pointToPointController.js');
+
+router.get('/create-ptp-connection', createPointToPointConnection);
 
 module.exports = router;
