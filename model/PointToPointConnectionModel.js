@@ -40,7 +40,7 @@ const pointToPointConnectionSchema = new Schema(
       },
     },
 
-    childrenConnection: [
+    childrens: [
       {
         color: {
           type: String,
