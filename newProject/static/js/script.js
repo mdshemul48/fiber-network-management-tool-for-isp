@@ -87,7 +87,7 @@ document
   .getElementById('addLocalHomeConnectionSubmit')
   .addEventListener('submit', (event) => {
     event.preventDefault();
-    // addLocalHomeConnection(selectedPolyline, editablePolyline.getAllThePath());
+    addLocalHomeConnection(selectedPolyline, editablePolyline.getAllThePath());
 
     // const savedData = JSON.parse(localStorage.getItem('siteData'));
     // const graph = new Graph(savedData);
