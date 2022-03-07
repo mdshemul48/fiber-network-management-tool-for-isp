@@ -34,6 +34,19 @@ exports.createCorporateConnection = async (req, res) => {
 
     const parentConnection = await pointToPointConnectionModel.findById(parent);
 
+    if (!parentConnection) {
+      return res.status(400).json({
+        status: 'error',
+        message: 'parent connection does not exist',
+      });
+    }
+
+    if (!(parentConnection.totalConnected < parentConnection.totalCore))
+      return res.status(400).json({
+        status: 'error',
+        message: 'parent connection is full',
+      });
+
     const coordinatesLatLngArr = coordinates.map((item) => {
       return [item.lat, item.lng];
     });
