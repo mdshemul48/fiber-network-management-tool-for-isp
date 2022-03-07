@@ -1,18 +1,13 @@
 import Graph from '../../storage/Graph.js';
+import coreColor from '../../utility/coreColor.js';
 
 export default function (connection, map) {
-  const {
-    currentNodeKey,
-    coordinates,
-    connectionName,
-    connectionType,
-    totalCore,
-    totalCoreUsed,
-    childrenConnection,
-  } = connection;
-
+  const { name, location, totalCore, totalConnected, type, childrens, _id } =
+    connection;
   const polyline = new google.maps.Polyline({
-    path: coordinates,
+    path: location.coordinates.map((item) => {
+      return { lat: item[0], lng: item[1] };
+    }),
     geodesic: true,
     strokeColor: '#142F43',
     strokeOpacity: 1.0,
@@ -21,35 +16,45 @@ export default function (connection, map) {
 
   polyline.setMap(map);
 
+  const colorCores = coreColor.slice(0, totalCore);
+
+  let coreUsed = '';
+  colorCores.forEach((item) => {
+    const targetColor = childrens.find(
+      (child) => child.color === item.colorName
+    );
+    if (targetColor) {
+      coreUsed += `
+        <p class="mb-1">${item.colorName} : used</p>
+        `;
+    } else {
+      coreUsed += `
+        <p class="mb-1">${item.colorName} : available</p>
+        `;
+    }
+  });
+
   const lengthInMeters = google.maps.geometry.spherical.computeLength(
     polyline.getPath()
   );
 
   const infoWindow = new google.maps.InfoWindow({
     content: `
-    <p class="mb-1 fw-bold">${connectionName}</p>
+    <p class="mb-1 fw-bold">${name}</p>
     <hr class="my-1" />
-    <p class="mb-1"><span class="fw-bold">Connection Type:</span> ${connectionType}</p>
-    <p class="mb-1"><span class=" fw-bold">total Used Core:</span> ${totalCoreUsed}/${totalCore}</p>
+    <p class="mb-1"><span class="fw-bold">Connection Type:</span> ${type}</p>
+    <p class="mb-1"><span class=" fw-bold">total Used Core:</span> ${totalConnected}/${totalCore}</p>
     <p class="mb-1"><span class=" fw-bold">Distance:</span> ${Math.ceil(
       lengthInMeters
     )}m</p>
     <p class="mb-1 fw-bold">Core Available: </p>
     <hr class="my-1 w-50" />
-      ${(() => {
-        let string = '';
-        for (let color in childrenConnection) {
-          string += `<p class="mb-1">${color} : ${
-            childrenConnection[color] == null ? 'available' : 'used'
-          }</p>`;
-        }
-        return string;
-      })()}
+    ${coreUsed}
     `,
   });
 
   google.maps.event.addListener(polyline, 'click', function (event) {
-    window.selectPolyline(event.latLng, currentNodeKey);
+    window.selectPolyline(event.latLng, _id);
   });
 
   polyline.addListener('mouseover', (event) => {

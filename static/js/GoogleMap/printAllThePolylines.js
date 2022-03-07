@@ -7,14 +7,18 @@ import printLocalSplitter from './printPolylineConnection/printLocalSplitter.js'
 import printHomeConnection from './printPolylineConnection/printHomeConnection.js';
 import printLocalFiberConnection from './printPolylineConnection/printLocalFiberConnection.js';
 
-const printAllThePolylines = (map) => {
+const printAllThePolylines = async (map) => {
   const savedData = JSON.parse(localStorage.getItem('siteData'));
   const graph = new Graph(savedData);
 
-  const getAllThePath = graph.getAllVertices();
+  const response = await fetch('/api/getAllConnection');
+  const { data: allThePath } = await response.json();
+  // console.log(data);
 
-  getAllThePath.forEach((connection) => {
-    if (connection.connectionType === 'mainConnection')
+  // const getAllThePath = graph.getAllVertices();
+
+  allThePath.forEach((connection) => {
+    if (connection.type === 'pointToPoint')
       printMainConnection(connection, map);
     else if (connection.connectionType === 'PointToPoint')
       printPointToPointConnection(connection, map);
