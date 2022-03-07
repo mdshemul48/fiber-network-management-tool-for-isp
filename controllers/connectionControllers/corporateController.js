@@ -80,7 +80,9 @@ exports.createCorporateConnection = async (req, res) => {
       connectionType: 'corporate',
       child: createdCorporateConnection._id.toString(),
     });
-
+    parentConnection.markers.push({
+      coordinates: coordinatesLatLngArr[0],
+    });
     parentConnection.totalConnected++;
     parentConnection.save();
 
