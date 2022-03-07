@@ -83,7 +83,6 @@ exports.createCorporateConnection = async (req, res) => {
     const markerPoint = parentConnection.markers.find((item) => {
       return item.location.coordinates[0] === coordinatesLatLngArr[0][0];
     });
-    console.log(markerPoint);
     if (!markerPoint) {
       parentConnection.markers.push({
         location: { coordinates: coordinatesLatLngArr[0] },
