@@ -7,7 +7,7 @@ const {
 const corporateConnectionSchema = new Schema({
   parentType: {
     type: String,
-    default: 'ptp',
+    default: 'pointToPoint',
   },
   parent: { type: ObjectId, refPath: 'parentType' },
 
@@ -43,4 +43,4 @@ const corporateConnectionSchema = new Schema({
   },
 });
 
-module.exports = model('CorporateConnection', corporateConnectionSchema);
+module.exports = model('corporate', corporateConnectionSchema);

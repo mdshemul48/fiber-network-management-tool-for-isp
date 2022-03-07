@@ -13,7 +13,7 @@ const pointToPointConnectionSchema = new Schema(
 
     type: {
       type: String,
-      default: 'ptp',
+      default: 'pointToPoint',
     },
 
     totalCore: {
@@ -62,4 +62,4 @@ const pointToPointConnectionSchema = new Schema(
   { timestamps: true }
 );
 
-module.exports = model('PointToPointConnection', pointToPointConnectionSchema);
+module.exports = model('pointToPoint', pointToPointConnectionSchema);

@@ -11,7 +11,7 @@ module.exports.createCorporateConnection = async (req, res) => {
     return [item.lat, item.lng];
   });
 
-  const createdCorporateConnection = corporateConnectionModel.create({
+  const createdCorporateConnection = await corporateConnectionModel.create({
     parentType: parentConnection.type,
     parent: parentConnection._id.toString(),
     name,
@@ -19,5 +19,9 @@ module.exports.createCorporateConnection = async (req, res) => {
     coreColor,
     location: { coordinates: coordinatesLatLngArr },
   });
-  res.send(createdCorporateConnection);
+
+  return res.status(201).json({
+    status: 'success',
+    data: createdCorporateConnection,
+  });
 };
