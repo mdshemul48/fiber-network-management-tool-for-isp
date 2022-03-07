@@ -1,9 +1,16 @@
-import Graph from '../../storage/Graph.js';
 import coreColor from '../../utility/coreColor.js';
 
 export default function (connection, map) {
-  const { name, location, totalCore, totalConnected, type, childrens, _id } =
-    connection;
+  const {
+    name,
+    location,
+    totalCore,
+    totalConnected,
+    type,
+    childrens,
+    _id,
+    markers,
+  } = connection;
   const polyline = new google.maps.Polyline({
     path: location.coordinates.map((item) => {
       return { lat: item[0], lng: item[1] };
@@ -75,25 +82,15 @@ export default function (connection, map) {
     anchor: new google.maps.Point(15, 15),
   };
 
-  // const graph = new Graph(JSON.parse(localStorage.getItem('siteData')) || null);
-
-  // const allTheConnection = Object.values(childrenConnection);
-  // const tjBoxAdded = {};
-  // allTheConnection.forEach((item) => {
-  //   if (
-  //     item != null &&
-  //     !tjBoxAdded[graph.getVertexByKey(item).coordinates[0]['lat']]
-  //   ) {
-  //     const marker = new google.maps.Marker({
-  //       position: graph.getVertexByKey(item)?.coordinates[0],
-  //       map,
-  //       icon,
-  //     });
-
-  //     google.maps.event.addListener(marker, 'click', function (event) {
-  //       window.selectPolyline(event.latLng, currentNodeKey);
-  //     });
-  //     tjBoxAdded[graph.getVertexByKey(item).coordinates[0]['lat']] = true;
-  //   }
-  // });
+  markers.forEach((item) => {
+    const [lat, lng] = item.coordinates;
+    const marker = new google.maps.Marker({
+      position: { lat, lng },
+      map,
+      icon,
+    });
+    google.maps.event.addListener(marker, 'click', function (event) {
+      window.selectPolyline(event.latLng, _id);
+    });
+  });
 }
