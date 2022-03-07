@@ -1,7 +1,7 @@
 import Graph from '../storage/Graph.js';
 import uuidv4 from '../utility/uuid.js';
 
-export default (polylineKey, coordinates) => {
+export default async (polylineKey, coordinates) => {
   const companyName = document.getElementById(
     'addPointToPointCompanyName'
   ).value;
@@ -9,6 +9,7 @@ export default (polylineKey, coordinates) => {
   const coreColor = document.getElementById('addPointToPointCoreOptions').value;
 
   const pointToPointPolyline = {
+    parentKey: polylineKey,
     companyName,
     connectionType: 'PointToPoint',
     portNo,
@@ -16,12 +17,15 @@ export default (polylineKey, coordinates) => {
     coordinates,
   };
 
-  const graph = new Graph(JSON.parse(localStorage.getItem('siteData')) || null);
+  console.log(JSON.stringify(pointToPointPolyline));
 
-  const uuid = uuidv4();
-
-  graph.addVertex(uuid, pointToPointPolyline);
-  graph.addEdge(polylineKey, uuid, coreColor);
-  localStorage.setItem('siteData', JSON.stringify(graph));
-  location.reload();
+  // const response = await fetch('/api/create-ptp-connection', {
+  //   method: 'POST',
+  //   headers: {
+  //     'Content-Type': 'application/json',
+  //   },
+  //   body: JSON.stringify(pointToPointPolyline),
+  // });
+  // const data = await response.json();
+  // console.log(data);
 };

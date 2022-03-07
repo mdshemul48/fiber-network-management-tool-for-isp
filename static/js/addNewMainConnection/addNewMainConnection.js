@@ -27,6 +27,8 @@ export default async (coordinates) => {
     coordinates,
   };
 
+  console.log(JSON.stringify(mainConnection));
+
   const response = await fetch('/api/create-ptp-connection', {
     method: 'POST',
     headers: {
