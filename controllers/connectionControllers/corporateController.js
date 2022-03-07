@@ -25,6 +25,11 @@ exports.createCorporateConnectionValidation = [
 // creating corporate connection
 exports.createCorporateConnection = async (req, res) => {
   try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
     const { parent, name, portNo, coreColor, coordinates } = req.body;
 
     const parentConnection = await pointToPointConnectionModel.findById(parent);
