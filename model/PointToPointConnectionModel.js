@@ -46,6 +46,10 @@ const pointToPointConnectionSchema = new Schema(
           type: String,
           required: true,
         },
+        portNo: {
+          type: Number,
+          required: true,
+        },
         connectionType: {
           type: String,
           required: true,

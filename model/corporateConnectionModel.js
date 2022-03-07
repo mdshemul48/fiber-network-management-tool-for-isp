@@ -9,6 +9,7 @@ const corporateConnectionSchema = new Schema(
     parentType: {
       type: String,
       default: 'pointToPoint',
+      enum: ['pointToPoint'],
     },
     parent: { type: ObjectId, refPath: 'parentType' },
 

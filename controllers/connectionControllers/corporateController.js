@@ -25,6 +25,7 @@ exports.createCorporateConnectionValidation = [
 // creating corporate connection
 exports.createCorporateConnection = async (req, res) => {
   try {
+    // validating the request body
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
@@ -47,6 +48,19 @@ exports.createCorporateConnection = async (req, res) => {
         message: 'parent connection is full',
       });
 
+    if (
+      parentConnection.childrens.find(
+        (item) => item.color === coreColor || item.portNo === portNo
+      )
+    ) {
+      return res.status(400).json({
+        status: 'error',
+        message:
+          'parent connection already has a child with the same color or port number',
+      });
+    }
+
+    // creating the connection
     const coordinatesLatLngArr = coordinates.map((item) => {
       return [item.lat, item.lng];
     });
@@ -62,6 +76,7 @@ exports.createCorporateConnection = async (req, res) => {
 
     parentConnection.childrens.push({
       color: coreColor,
+      portNo,
       connectionType: 'corporate',
       child: createdCorporateConnection._id.toString(),
     });
@@ -73,6 +88,7 @@ exports.createCorporateConnection = async (req, res) => {
       status: 'success',
       data: createdCorporateConnection,
     });
+    res.send('gg');
   } catch (err) {
     return res.status(500).json({
       status: 'error',
