@@ -11,6 +11,10 @@ const {
   createCorporateConnectionValidation,
 } = require('../controllers/connectionControllers/corporateController.js');
 
+const { getAllConnection } = require('../controllers/getAllConnection.js');
+
+router.get('/getAllConnection', getAllConnection);
+
 // creating routes
 router.post(
   '/create-ptp-connection',
