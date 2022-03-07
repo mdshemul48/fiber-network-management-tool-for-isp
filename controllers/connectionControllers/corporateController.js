@@ -80,13 +80,16 @@ exports.createCorporateConnection = async (req, res) => {
       connectionType: 'corporate',
       child: createdCorporateConnection._id.toString(),
     });
-
-    if (
-      !parentConnection.markers.coordinates.find((item) => {
-        return item[0] === coordinatesLatLngArr[0][0];
-      })
-    ) {
-      parentConnection.markers.coordinates.push(coordinatesLatLngArr[0]);
+    const markerPoint = parentConnection.markers.find((item) => {
+      return item.location.coordinates[0] === coordinatesLatLngArr[0][0];
+    });
+    console.log(markerPoint);
+    if (!markerPoint) {
+      parentConnection.markers.push({
+        location: { coordinates: coordinatesLatLngArr[0] },
+      });
+    } else {
+      markerPoint.totalConnected++;
     }
 
     parentConnection.totalConnected++;

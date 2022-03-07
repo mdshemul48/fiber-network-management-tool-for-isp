@@ -29,10 +29,24 @@ const pointToPointConnectionSchema = new Schema(
       },
     },
 
-    markers: {
-      type: { type: String, default: 'MultiPoint' },
-      coordinates: { type: [[Number]], required: true },
-    },
+    markers: [
+      {
+        totalConnected: {
+          type: Number,
+          default: 1,
+        },
+        type: {
+          type: String,
+          default: 'point',
+        },
+        location: {
+          coordinates: {
+            type: [Number],
+            required: true,
+          },
+        },
+      },
+    ],
 
     location: {
       type: {

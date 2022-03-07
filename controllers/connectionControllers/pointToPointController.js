@@ -38,7 +38,7 @@ exports.createPointToPointConnection = async (req, res) => {
       totalCore,
       location: { coordinates: coordinatesLatLngArr },
       childrenConnection: [],
-      markers: { coordinates: [] },
+      markers: [],
     });
 
     return res.status(201).json({
