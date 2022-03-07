@@ -75,25 +75,25 @@ export default function (connection, map) {
     anchor: new google.maps.Point(15, 15),
   };
 
-  const graph = new Graph(JSON.parse(localStorage.getItem('siteData')) || null);
+  // const graph = new Graph(JSON.parse(localStorage.getItem('siteData')) || null);
 
-  const allTheConnection = Object.values(childrenConnection);
-  const tjBoxAdded = {};
-  allTheConnection.forEach((item) => {
-    if (
-      item != null &&
-      !tjBoxAdded[graph.getVertexByKey(item).coordinates[0]['lat']]
-    ) {
-      const marker = new google.maps.Marker({
-        position: graph.getVertexByKey(item)?.coordinates[0],
-        map,
-        icon,
-      });
+  // const allTheConnection = Object.values(childrenConnection);
+  // const tjBoxAdded = {};
+  // allTheConnection.forEach((item) => {
+  //   if (
+  //     item != null &&
+  //     !tjBoxAdded[graph.getVertexByKey(item).coordinates[0]['lat']]
+  //   ) {
+  //     const marker = new google.maps.Marker({
+  //       position: graph.getVertexByKey(item)?.coordinates[0],
+  //       map,
+  //       icon,
+  //     });
 
-      google.maps.event.addListener(marker, 'click', function (event) {
-        window.selectPolyline(event.latLng, currentNodeKey);
-      });
-      tjBoxAdded[graph.getVertexByKey(item).coordinates[0]['lat']] = true;
-    }
-  });
+  //     google.maps.event.addListener(marker, 'click', function (event) {
+  //       window.selectPolyline(event.latLng, currentNodeKey);
+  //     });
+  //     tjBoxAdded[graph.getVertexByKey(item).coordinates[0]['lat']] = true;
+  //   }
+  // });
 }

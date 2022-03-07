@@ -29,6 +29,13 @@ const pointToPointConnectionSchema = new Schema(
       },
     },
 
+    markers: [
+      {
+        type: { type: String, default: 'Point' },
+        coordinates: { type: [Number], required: true },
+      },
+    ],
+
     location: {
       type: {
         type: String,
