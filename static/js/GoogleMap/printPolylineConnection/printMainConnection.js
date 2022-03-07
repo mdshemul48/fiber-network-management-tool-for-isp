@@ -81,7 +81,6 @@ export default function (connection, map) {
     origin: new google.maps.Point(0, 0),
     anchor: new google.maps.Point(15, 15),
   };
-  console.log(markers);
   markers.forEach((item) => {
     const [lat, lng] = item.location.coordinates;
     const marker = new google.maps.Marker({
