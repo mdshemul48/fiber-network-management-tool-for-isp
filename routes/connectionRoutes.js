@@ -8,7 +8,7 @@ const {
 
 const {
   createCorporateConnection,
-  // createCorporateConnectionValidation,
+  createCorporateConnectionValidation,
 } = require('../controllers/connectionControllers/corporateController.js');
 
 // creating routes
@@ -18,6 +18,10 @@ router.post(
   createPointToPointConnection
 );
 
-router.post('/create-corporate-connection', createCorporateConnection);
+router.post(
+  '/create-corporate-connection',
+  createCorporateConnectionValidation,
+  createCorporateConnection
+);
 
 module.exports = router;

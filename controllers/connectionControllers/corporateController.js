@@ -1,7 +1,29 @@
+const { body, validationResult } = require('express-validator');
+
 const pointToPointConnectionModel = require('../../model/pointToPointConnectionModel.js');
 const corporateConnectionModel = require('../../model/corporateConnectionModel.js');
 
-module.exports.createCorporateConnection = async (req, res) => {
+// validating the request body for create corporate connection request
+exports.createCorporateConnectionValidation = [
+  body('parent').notEmpty().withMessage('parent is required'),
+  body('name').notEmpty().withMessage('name is required'),
+  body('portNo')
+    .notEmpty()
+    .withMessage('portNo is required')
+    .isInt({ min: 1 })
+    .withMessage('portNo must be an integer or greater than 0'),
+  body('coreColor').notEmpty().withMessage('coreColor is required'),
+  body('coordinates')
+    .notEmpty()
+    .withMessage('coordinates is required')
+    .isArray()
+    .withMessage('coordinates must be an array')
+    .isLength({ min: 2 })
+    .withMessage('coordinates must be an array of at least 2 items'),
+];
+
+// creating corporate connection
+exports.createCorporateConnection = async (req, res) => {
   try {
     const { parent, name, portNo, coreColor, coordinates } = req.body;
 
