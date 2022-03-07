@@ -82,13 +82,11 @@ exports.createCorporateConnection = async (req, res) => {
     });
 
     if (
-      !parentConnection.markers.find((item) => {
-        return item.coordinates[0] === coordinatesLatLngArr[0][0];
+      !parentConnection.markers.coordinates.find((item) => {
+        return item[0] === coordinatesLatLngArr[0][0];
       })
     ) {
-      parentConnection.markers.push({
-        coordinates: coordinatesLatLngArr[0],
-      });
+      parentConnection.markers.coordinates.push(coordinatesLatLngArr[0]);
     }
 
     parentConnection.totalConnected++;
