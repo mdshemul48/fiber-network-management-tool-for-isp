@@ -9,23 +9,20 @@ export default async (polylineKey, coordinates) => {
   const coreColor = document.getElementById('addPointToPointCoreOptions').value;
 
   const pointToPointPolyline = {
-    parentKey: polylineKey,
-    companyName,
-    connectionType: 'PointToPoint',
+    parent: polylineKey,
+    name: companyName,
     portNo,
     coreColor,
     coordinates,
   };
 
-  console.log(JSON.stringify(pointToPointPolyline));
-
-  // const response = await fetch('/api/create-ptp-connection', {
-  //   method: 'POST',
-  //   headers: {
-  //     'Content-Type': 'application/json',
-  //   },
-  //   body: JSON.stringify(pointToPointPolyline),
-  // });
-  // const data = await response.json();
-  // console.log(data);
+  const response = await fetch('/api/create-corporate-connection', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(pointToPointPolyline),
+  });
+  const data = await response.json();
+  console.log(data);
 };
