@@ -81,9 +81,8 @@ export default function (connection, map) {
     origin: new google.maps.Point(0, 0),
     anchor: new google.maps.Point(15, 15),
   };
-
-  markers.forEach((item) => {
-    const [lat, lng] = item.coordinates;
+  markers.coordinates.forEach((item) => {
+    const [lat, lng] = item;
     const marker = new google.maps.Marker({
       position: { lat, lng },
       map,
