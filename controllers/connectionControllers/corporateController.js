@@ -88,7 +88,6 @@ exports.createCorporateConnection = async (req, res) => {
       status: 'success',
       data: createdCorporateConnection,
     });
-    res.send('gg');
   } catch (err) {
     return res.status(500).json({
       status: 'error',
