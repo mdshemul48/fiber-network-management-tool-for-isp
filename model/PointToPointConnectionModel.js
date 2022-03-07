@@ -13,7 +13,7 @@ const pointToPointConnectionSchema = new Schema(
 
     type: {
       type: String,
-      default: 'PTP',
+      default: 'ptp',
     },
 
     totalCore: {
