@@ -6,11 +6,18 @@ const {
   createPointToPointConnectionValidation,
 } = require('../controllers/connectionControllers/pointToPointController.js');
 
+const {
+  createCorporateConnection,
+  // createCorporateConnectionValidation,
+} = require('../controllers/connectionControllers/corporateController.js');
+
 // creating routes
 router.post(
   '/create-ptp-connection',
   createPointToPointConnectionValidation,
   createPointToPointConnection
 );
+
+router.post('/create-corporate-connection', createCorporateConnection);
 
 module.exports = router;
