@@ -50,7 +50,7 @@ exports.createCorporateConnection = async (req, res) => {
 
     if (
       parentConnection.childrens.find(
-        (item) => item.color === coreColor || item.portNo === portNo
+        (item) => item.color === coreColor || item.portNo === parseInt(portNo)
       )
     ) {
       return res.status(400).json({
