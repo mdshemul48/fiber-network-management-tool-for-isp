@@ -16,9 +16,18 @@ module.exports.createCorporateConnection = async (req, res) => {
     parent: parentConnection._id.toString(),
     name,
     portNo,
-    coreColor,
+    color: coreColor,
     location: { coordinates: coordinatesLatLngArr },
   });
+
+  parentConnection.childrens.push({
+    color: coreColor,
+    connectionType: 'corporate',
+    child: createdCorporateConnection._id.toString(),
+  });
+
+  parentConnection.totalConnected++;
+  parentConnection.save();
 
   return res.status(201).json({
     status: 'success',

@@ -21,7 +21,7 @@ const corporateConnectionSchema = new Schema({
     default: 'corporate',
   },
 
-  coreColor: {
+  color: {
     type: String,
     required: true,
   },
