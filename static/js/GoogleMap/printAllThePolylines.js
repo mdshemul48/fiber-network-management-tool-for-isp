@@ -8,14 +8,8 @@ import printHomeConnection from './printPolylineConnection/printHomeConnection.j
 import printLocalFiberConnection from './printPolylineConnection/printLocalFiberConnection.js';
 
 const printAllThePolylines = async (map) => {
-  const savedData = JSON.parse(localStorage.getItem('siteData'));
-  const graph = new Graph(savedData);
-
   const response = await fetch('/api/getAllConnection');
   const { data: allThePath } = await response.json();
-  // console.log(data);
-
-  // const getAllThePath = graph.getAllVertices();
 
   allThePath.forEach((connection) => {
     if (connection.type === 'pointToPoint')

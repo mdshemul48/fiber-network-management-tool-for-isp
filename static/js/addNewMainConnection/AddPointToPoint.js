@@ -1,6 +1,3 @@
-import Graph from '../storage/Graph.js';
-import uuidv4 from '../utility/uuid.js';
-
 export default async (polylineKey, coordinates) => {
   const companyName = document.getElementById(
     'addPointToPointCompanyName'

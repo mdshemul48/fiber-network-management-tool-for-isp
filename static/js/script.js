@@ -33,7 +33,7 @@ window.initMap = function () {
     center: { lat: 23.919524586722066, lng: 90.25663246242456 },
     zoom: 15,
   });
-
+  window.targetMap = map;
   editablePolyline = new EditablePolyline();
 
   map.addListener('click', (event) => {
