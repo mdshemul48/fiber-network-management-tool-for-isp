@@ -14,7 +14,7 @@ const printAllThePolylines = async (map) => {
   allThePath.forEach((connection) => {
     if (connection.type === 'pointToPoint')
       printMainConnection(connection, map);
-    else if (connection.connectionType === 'PointToPoint')
+    else if (connection.type === 'corporate')
       printPointToPointConnection(connection, map);
     else if (connection.connectionType === 'mainLocal')
       printMainLocalConnection(connection, map);
