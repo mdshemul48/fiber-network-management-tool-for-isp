@@ -1,11 +1,11 @@
 import Graph from '../storage/Graph.js';
 import uuidv4 from '../utility/uuid.js';
 
-export default (polylineKey, coordinates) => {
+export default async (polylineKey, coordinates) => {
   const connectionName = document.getElementById(
     'addLocalConnectionName'
   ).value;
-  const oltSwitchNumber = document.getElementById(
+  const oltSerialNumber = document.getElementById(
     'addLocalConnectionOltSwitchNo'
   ).value;
 
@@ -15,29 +15,26 @@ export default (polylineKey, coordinates) => {
     'input[name="addLocalConnectionType"]:checked'
   ).value;
 
-  const coreColor = document.getElementById(
-    'addLocalConnectionCoreOption'
-  ).value;
+  const color = document.getElementById('addLocalConnectionCoreOption').value;
 
   const newConnection = {
-    connectionName,
-    oltSwitchNumber,
+    parent: polylineKey,
+    name: connectionName,
+    oltSerialNumber,
     portNo,
-    connectionType: 'mainLocal',
-    switchType: connectionType,
+    type: 'reseller',
+    oltType: connectionType,
     coordinates,
-    coreColor,
-    totalConnection: connectionType === 'epon' ? 64 : 128,
-    childrenConnection: {},
-    totalConnectionUsed: 0,
+    color,
   };
-
-  const graph = new Graph(JSON.parse(localStorage.getItem('siteData')) || null);
-  const uuid = uuidv4();
-
-  graph.addVertex(uuid, newConnection);
-  graph.addEdge(polylineKey, uuid, coreColor);
-
-  localStorage.setItem('siteData', JSON.stringify(graph));
-  location.reload();
+  console.log(JSON.stringify(newConnection));
+  // const response = await fetch('/api/create-reseller-connection', {
+  //   method: 'POST',
+  //   headers: {
+  //     'Content-Type': 'application/json',
+  //   },
+  //   body: JSON.stringify(newConnection),
+  // });
+  // const data = await response.json();
+  // console.log(data);
 };

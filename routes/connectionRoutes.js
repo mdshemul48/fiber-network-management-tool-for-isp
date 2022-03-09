@@ -11,6 +11,11 @@ const {
   createCorporateConnectionValidation,
 } = require('../controllers/connectionControllers/corporateController.js');
 
+const {
+  createResellerConnection,
+  // createResellerConnectionValidation,
+} = require('../controllers/connectionControllers/resellerController.js');
+
 const { getAllConnection } = require('../controllers/getAllConnection.js');
 
 router.get('/getAllConnection', getAllConnection);
@@ -27,5 +32,7 @@ router.post(
   createCorporateConnectionValidation,
   createCorporateConnection
 );
+
+router.post('/create-reseller-connection', createResellerConnection);
 
 module.exports = router;

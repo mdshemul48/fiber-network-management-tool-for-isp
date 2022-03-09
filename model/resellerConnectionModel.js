@@ -79,4 +79,4 @@ const resellerConnectionSchema = new Schema({
   ],
 });
 
-exports = model('reseller', resellerConnectionSchema);
+module.exports = model('reseller', resellerConnectionSchema);
