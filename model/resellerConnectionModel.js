@@ -48,6 +48,17 @@ const resellerConnectionSchema = new Schema({
     enum: [64, 128],
   },
 
+  location: {
+    type: {
+      type: String,
+      default: 'LineString',
+    },
+    coordinates: {
+      type: [[Number]],
+      required: true,
+    },
+  },
+
   childrens: [
     {
       connectionType: {
