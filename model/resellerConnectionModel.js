@@ -40,4 +40,23 @@ const resellerConnectionSchema = new Schema({
     required: true,
     enum: [64, 128],
   },
+
+  childrens: [
+    {
+      connectionType: {
+        type: String,
+        required: true,
+        enum: ['splitter', 'localFiber'],
+      },
+      child: {
+        type: ObjectId,
+        required: true,
+        refPath: 'connectionType',
+      },
+      connectionUsed: {
+        type: Number,
+        required: false,
+      },
+    },
+  ],
 });
