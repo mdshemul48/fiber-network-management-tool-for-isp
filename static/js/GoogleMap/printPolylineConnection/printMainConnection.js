@@ -32,7 +32,7 @@ export default function (connection, map) {
     );
     if (targetColor) {
       coreUsed += `
-        <p class="mb-1">${item.colorName} : used</p>
+        <p class="mb-1">${item.colorName} : used (Port: ${targetColor.portNo})</p>
         `;
     } else {
       coreUsed += `
