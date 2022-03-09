@@ -1,6 +1,27 @@
 const pointToPointConnectionModel = require('../../model/pointToPointConnectionModel.js');
-
 const resellerConnectionModel = require('../../model/resellerConnectionModel.js');
+const { body, validationResult } = require('express-validator');
+
+exports.createResellerConnectionValidation = [
+  body('parent').notEmpty().withMessage('parent is required'),
+  body('name').notEmpty().withMessage('name is required'),
+  body('oltSerialNumber').notEmpty().withMessage('oltSerialNumber is required'),
+  body('portNo')
+    .notEmpty()
+    .withMessage('portNo is required')
+    .isInt({ min: 1 })
+    .withMessage('portNo must be an integer or greater than 0'),
+  body('type').notEmpty().withMessage('type is required'),
+  body('oltType').notEmpty().withMessage('oltType is required'),
+  body('coordinates')
+    .notEmpty()
+    .withMessage('coordinates is required')
+    .isArray()
+    .withMessage('coordinates must be an array')
+    .isLength({ min: 2 })
+    .withMessage('coordinates must have at least 2 items'),
+  body('color').notEmpty().withMessage('color is required'),
+];
 
 exports.createResellerConnection = async (req, res) => {
   const {
