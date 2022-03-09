@@ -37,7 +37,7 @@ const pointToPointConnectionSchema = new Schema(
         },
         type: {
           type: String,
-          default: 'point',
+          default: 'Point',
         },
         location: {
           coordinates: {
