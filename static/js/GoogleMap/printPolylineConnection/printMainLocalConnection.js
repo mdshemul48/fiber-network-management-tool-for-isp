@@ -13,6 +13,7 @@ export default function (connection, map) {
     connectionLimit,
     location,
     childrens,
+    connectionUsed,
   } = connection;
 
   const coordinates = location.coordinates.map((item) => {
@@ -34,7 +35,7 @@ export default function (connection, map) {
     <p class="mb-1"><span class="fw-bold">Core Color:</span> ${color}</p>
     <p class="mb-1"><span class="fw-bold">Port No:</span> ${portNo}</p>
     <p class="mb-1"><span class="fw-bold"> Olt Type:</span> ${oltType}</p>
-    <p class="mb-1"><span class="fw-bold"> total Connection Used:</span> ${connectionLimit}</p>
+    <p class="mb-1"><span class="fw-bold"> total Connection Used:</span> ${connectionUsed}</p>
     
     <p class="mb-1"><span class="fw-bold"> oltSwitchNumber:</span> ${oltSerialNumber}</p>
     <button class="badge mb-1 bg-danger border-0" onclick="deleteMainLocalConnection('${_id}')">Delete</button>
