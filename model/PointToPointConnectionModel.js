@@ -62,7 +62,7 @@ const pointToPointConnectionSchema = new Schema(
     childrens: [
       {
         color: {
-          type: String,
+          type: String || Number,
           required: true,
         },
         portNo: {
