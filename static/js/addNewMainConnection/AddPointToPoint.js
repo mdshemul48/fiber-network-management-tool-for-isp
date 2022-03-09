@@ -21,5 +21,6 @@ export default async (polylineKey, coordinates) => {
     body: JSON.stringify(pointToPointPolyline),
   });
   const data = await response.json();
-  console.log(data);
+
+  location.reload();
 };

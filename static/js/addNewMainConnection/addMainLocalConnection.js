@@ -27,14 +27,12 @@ export default async (polylineKey, coordinates) => {
     coordinates,
     color,
   };
-  console.log(JSON.stringify(newConnection));
-  // const response = await fetch('/api/create-reseller-connection', {
-  //   method: 'POST',
-  //   headers: {
-  //     'Content-Type': 'application/json',
-  //   },
-  //   body: JSON.stringify(newConnection),
-  // });
-  // const data = await response.json();
-  // console.log(data);
+  const response = await fetch('/api/create-reseller-connection', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(newConnection),
+  });
+  location.reload();
 };
