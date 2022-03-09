@@ -2,60 +2,51 @@ import allTheCoreColor from '../../utility/coreColor.js';
 
 export default function (connection, map) {
   const {
-    currentNodeKey,
-    connectionName,
-    connectionType,
-    coordinates,
-    coreColor,
+    _id,
+    parent,
+    name,
+    type,
     portNo,
-    switchType,
-    totalConnectionUsed,
-    totalConnection,
-    oltSwitchNumber,
-    childrenConnection,
+    oltType,
+    oltSerialNumber,
+    color,
+    connectionLimit,
+    location,
+    childrens,
   } = connection;
 
+  const coordinates = location.coordinates.map((item) => {
+    return { lat: item[0], lng: item[1] };
+  });
   const polyline = new google.maps.Polyline({
     path: coordinates,
     geodesic: true,
-    strokeColor: allTheCoreColor.find((item) => item.colorName === coreColor)
+    strokeColor: allTheCoreColor.find((item) => item.colorName === color)
       .colorCode,
     strokeOpacity: 1.0,
     strokeWeight: 4,
   });
 
   const infoWindow = new google.maps.InfoWindow({
-    content: `    <p class="mb-1 fw-bold">${connectionName}</p>
+    content: `    <p class="mb-1 fw-bold">${name}</p>
     <hr class="my-1" />
-    <p class="mb-1"><span class="fw-bold">Connection Type:</span> ${connectionType}</p>
-    <p class="mb-1"><span class="fw-bold">Core Color:</span> ${coreColor}</p>
+    <p class="mb-1"><span class="fw-bold">Connection Type:</span> ${type}</p>
+    <p class="mb-1"><span class="fw-bold">Core Color:</span> ${color}</p>
     <p class="mb-1"><span class="fw-bold">Port No:</span> ${portNo}</p>
-    <p class="mb-1"><span class="fw-bold"> Switch Type:</span> ${switchType}</p>
-    <p class="mb-1"><span class="fw-bold"> total Connection Used:</span> ${totalConnectionUsed}</p>
+    <p class="mb-1"><span class="fw-bold"> Olt Type:</span> ${oltType}</p>
+    <p class="mb-1"><span class="fw-bold"> total Connection Used:</span> ${connectionLimit}</p>
     
-    <p class="mb-1"><span class="fw-bold"> oltSwitchNumber:</span> ${oltSwitchNumber}</p>
-    <button class="badge mb-1 bg-danger border-0" onclick="deleteMainLocalConnection('${currentNodeKey}')">Delete</button>
+    <p class="mb-1"><span class="fw-bold"> oltSwitchNumber:</span> ${oltSerialNumber}</p>
+    <button class="badge mb-1 bg-danger border-0" onclick="deleteMainLocalConnection('${_id}')">Delete</button>
 
     <p class="mb-1 fw-bold">Port Used: </p>
     <hr class="my-1 w-50" />
-    ${(() => {
-      let string = '';
-      for (let color in childrenConnection) {
-        const { childID, connectionType, connectionUsed } =
-          childrenConnection[color];
-        string += `<p class="mb-1">${color} : ${
-          childrenConnection[color] == null
-            ? 'available'
-            : `${connectionUsed}/${totalConnection}`
-        }</p>`;
-      }
-      return string;
-    })()}
+   
     `,
   });
 
   google.maps.event.addListener(polyline, 'click', function (event) {
-    window.selectPolyline(event.latLng, currentNodeKey);
+    window.selectPolyline(event.latLng, _id);
   });
 
   polyline.setMap(map);
@@ -91,6 +82,6 @@ export default function (connection, map) {
     infoWindow.close();
   });
   google.maps.event.addListener(marker, 'click', function (event) {
-    window.selectPolyline(event.latLng, currentNodeKey);
+    window.selectPolyline(event.latLng, _id);
   });
 }

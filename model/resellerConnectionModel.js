@@ -48,6 +48,14 @@ const resellerConnectionSchema = new Schema({
     enum: [64, 128],
   },
 
+  connectionUsed: {
+    type: Number,
+    default: 0,
+    required: () => {
+      return this.connectionUsed < this.connectionLimit;
+    },
+  },
+
   location: {
     type: {
       type: String,
