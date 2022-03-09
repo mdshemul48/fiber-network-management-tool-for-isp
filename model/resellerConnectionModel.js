@@ -5,6 +5,13 @@ const {
 } = require('mongoose');
 
 const resellerConnectionSchema = new Schema({
+  parentType: {
+    type: String,
+    default: 'pointToPoint',
+    enum: ['pointToPoint'],
+  },
+  parent: { type: ObjectId, refPath: 'parentType' },
+
   name: {
     type: String,
     required: true,
@@ -60,3 +67,5 @@ const resellerConnectionSchema = new Schema({
     },
   ],
 });
+
+exports = model('reseller', resellerConnectionSchema);
