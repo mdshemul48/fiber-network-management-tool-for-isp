@@ -47,11 +47,10 @@ const localFiberConnectionSchema = new Schema(
           type: String,
           default: 'Point',
         },
-        location: {
-          coordinates: {
-            type: [Number],
-            required: true,
-          },
+
+        coordinates: {
+          type: [Number],
+          required: true,
         },
       },
     ],
