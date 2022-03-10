@@ -30,13 +30,6 @@ exports.createLocalFiberConnection = async (req, res) => {
       totalCore,
       type: 'localFiber',
       totalCore,
-      markers: [
-        {
-          totalConnected: 1,
-          type: 'Point',
-          coordinates: coordinatesLatLngArr[coordinatesLatLngArr.length - 1],
-        },
-      ],
       locations: [
         {
           coordinates: coordinatesLatLngArr,
