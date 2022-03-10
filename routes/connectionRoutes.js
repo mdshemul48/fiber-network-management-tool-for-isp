@@ -13,7 +13,7 @@ const {
 
 const {
   createResellerConnection,
-  // createResellerConnectionValidation,
+  createResellerConnectionValidation,
 } = require('../controllers/connectionControllers/resellerController.js');
 
 const { getAllConnection } = require('../controllers/getAllConnection.js');
@@ -33,6 +33,10 @@ router.post(
   createCorporateConnection
 );
 
-router.post('/create-reseller-connection', createResellerConnection);
+router.post(
+  '/create-reseller-connection',
+  createResellerConnectionValidation,
+  createResellerConnection
+);
 
 module.exports = router;
