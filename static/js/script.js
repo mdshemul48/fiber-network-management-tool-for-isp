@@ -17,6 +17,7 @@ import deleteMainLocalConnection from './deletePolyline/deleteMainLocalConnectio
 let map;
 let editablePolyline;
 let selectedPolyline = null;
+let selectedPolylineType = null;
 
 const insertScript = () => {
   const script = document.createElement('script');
@@ -44,8 +45,7 @@ window.initMap = function () {
   printAllThePolylines(map);
 };
 // this will called when the user will click on new polyline
-window.selectPolyline = (latLng, polylineId) => {
-  console.log(polylineId);
+window.selectPolyline = (latLng, { _id, type }) => {
   if (!selectedPolyline) {
     Toastify({
       text: 'A Cable Selected',
@@ -62,7 +62,8 @@ window.selectPolyline = (latLng, polylineId) => {
     }).showToast();
 
     editablePolyline.addVertex(latLng);
-    selectedPolyline = polylineId;
+    selectedPolyline = _id;
+    selectedPolylineType = type;
   }
 };
 
@@ -107,7 +108,11 @@ document
   .getElementById('addLocalFiberConnection')
   .addEventListener('submit', (event) => {
     event.preventDefault();
-    addLocalFiberConnection(selectedPolyline, editablePolyline.getAllThePath());
+    addLocalFiberConnection(
+      selectedPolyline,
+      selectedPolylineType,
+      editablePolyline.getAllThePath()
+    );
   });
 
 // all the delete functions

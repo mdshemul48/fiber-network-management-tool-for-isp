@@ -1,6 +1,6 @@
 import coreColor from '../utility/coreColor.js';
 
-export default async (polylineKey, coordinates) => {
+export default async (polylineKey, selectedPolylineType, coordinates) => {
   const name = document.getElementById('addLocalFiberConnectionName').value;
 
   const connectionTotalCore = Number(
@@ -17,6 +17,7 @@ export default async (polylineKey, coordinates) => {
   const localFiberConnection = {
     name,
     parent: polylineKey,
+    parentType: selectedPolylineType,
     totalCore: connectionTotalCore,
     coordinates,
   };
