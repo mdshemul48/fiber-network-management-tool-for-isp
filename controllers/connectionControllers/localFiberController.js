@@ -1,5 +1,7 @@
-const localFiberConnectionModel = require('../models/localFiberConnectionModel.js');
+const localFiberConnectionModel = require('../../model/localFiberConnectionModel.js');
 
 exports.createLocalFiberConnection = (req, res) => {
-  console.log('req.body: ', req.body);
+  const { name, parent, totalCore, coordinates } = req.body;
+  console.log(name, parent, totalCore, coordinates);
+  res.send({ status: 'gg' });
 };
