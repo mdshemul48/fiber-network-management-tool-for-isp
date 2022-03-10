@@ -54,10 +54,8 @@ export default function (connection, map) {
     polyline.setMap(map);
   });
 
-  markers.forEach((location) => {
-    console.log(location);
+  markers.forEach(({ coordinates }) => {
     // printing tj box on the map
-
     const icon = {
       url: '../../../assets/img/tj.png',
       scaledSize: new google.maps.Size(30, 30),
@@ -65,10 +63,16 @@ export default function (connection, map) {
       anchor: new google.maps.Point(15, 15),
     };
 
-    new google.maps.Marker({
-      position: location.coordinates[coordinates.length - 1],
+    const marker = new google.maps.Marker({
+      position: {
+        lat: coordinates[0],
+        lng: coordinates[1],
+      },
       map,
       icon: icon,
+    });
+    google.maps.event.addListener(marker, 'click', function (event) {
+      window.selectPolyline(event.latLng, { _id, type });
     });
   });
 }

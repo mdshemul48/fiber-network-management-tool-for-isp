@@ -14,6 +14,7 @@ export default function (connection, map) {
     localSplitterType,
     CoreColor,
   } = connection;
+
   const polyline = new google.maps.Polyline({
     path: coordinates,
     geodesic: true,
@@ -23,8 +24,6 @@ export default function (connection, map) {
     strokeOpacity: 1.0,
     strokeWeight: 4,
   });
-
-  polyline.setMap(map);
 
   const lengthInMeters = google.maps.geometry.spherical.computeLength(
     polyline.getPath()
@@ -99,4 +98,5 @@ ${
   google.maps.event.addListener(marker, 'click', function (event) {
     window.selectPolyline(event.latLng, { _id, type });
   });
+  polyline.setMap(map);
 }
