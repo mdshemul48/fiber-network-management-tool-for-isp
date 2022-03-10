@@ -64,5 +64,11 @@ export default function (connection, map) {
       origin: new google.maps.Point(0, 0),
       anchor: new google.maps.Point(15, 15),
     };
+
+    new google.maps.Marker({
+      position: location.coordinates[coordinates.length - 1],
+      map,
+      icon: icon,
+    });
   });
 }
