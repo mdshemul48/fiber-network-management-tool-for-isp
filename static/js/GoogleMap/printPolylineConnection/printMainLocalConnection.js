@@ -47,7 +47,7 @@ export default function (connection, map) {
   });
 
   google.maps.event.addListener(polyline, 'click', function (event) {
-    window.selectPolyline(event.latLng, _id);
+    window.selectPolyline(event.latLng, { _id, type });
   });
 
   polyline.setMap(map);
@@ -83,6 +83,6 @@ export default function (connection, map) {
     infoWindow.close();
   });
   google.maps.event.addListener(marker, 'click', function (event) {
-    window.selectPolyline(event.latLng, _id);
+    window.selectPolyline(event.latLng, { _id, type });
   });
 }

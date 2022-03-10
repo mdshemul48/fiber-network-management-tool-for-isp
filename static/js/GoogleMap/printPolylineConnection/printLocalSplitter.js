@@ -97,6 +97,6 @@ ${
   });
 
   google.maps.event.addListener(marker, 'click', function (event) {
-    window.selectPolyline(event.latLng, currentNodeKey);
+    window.selectPolyline(event.latLng, { _id, type });
   });
 }
