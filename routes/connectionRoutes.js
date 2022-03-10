@@ -13,8 +13,12 @@ const {
 
 const {
   createResellerConnection,
-  // createResellerConnectionValidation,
+  createResellerConnectionValidation,
 } = require('../controllers/connectionControllers/resellerController.js');
+
+const {
+  createLocalFiberConnection,
+} = require('../controllers/connectionControllers/localFiberController.js');
 
 const { getAllConnection } = require('../controllers/getAllConnection.js');
 
@@ -33,6 +37,12 @@ router.post(
   createCorporateConnection
 );
 
-router.post('/create-reseller-connection', createResellerConnection);
+router.post(
+  '/create-reseller-connection',
+  createResellerConnectionValidation,
+  createResellerConnection
+);
+
+router.post('/create-local-fiber-connection', createLocalFiberConnection);
 
 module.exports = router;

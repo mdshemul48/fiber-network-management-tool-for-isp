@@ -29,7 +29,7 @@ export default function (connection, map) {
   });
 
   const infoWindow = new google.maps.InfoWindow({
-    content: `    <p class="mb-1 fw-bold">${name}</p>
+    content: `<p class="mb-1 fw-bold">${name}</p>
     <hr class="my-1" />
     <p class="mb-1"><span class="fw-bold">Connection Type:</span> ${type}</p>
     <p class="mb-1"><span class="fw-bold">Core Color:</span> ${color}</p>
@@ -47,7 +47,7 @@ export default function (connection, map) {
   });
 
   google.maps.event.addListener(polyline, 'click', function (event) {
-    window.selectPolyline(event.latLng, _id);
+    window.selectPolyline(event.latLng, { _id, type });
   });
 
   polyline.setMap(map);
@@ -83,6 +83,6 @@ export default function (connection, map) {
     infoWindow.close();
   });
   google.maps.event.addListener(marker, 'click', function (event) {
-    window.selectPolyline(event.latLng, _id);
+    window.selectPolyline(event.latLng, { _id, type });
   });
 }

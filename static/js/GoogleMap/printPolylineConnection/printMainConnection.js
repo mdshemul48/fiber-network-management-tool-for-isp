@@ -61,7 +61,7 @@ export default function (connection, map) {
   });
 
   google.maps.event.addListener(polyline, 'click', function (event) {
-    window.selectPolyline(event.latLng, _id);
+    window.selectPolyline(event.latLng, { _id, type });
   });
 
   polyline.addListener('mouseover', (event) => {
@@ -89,7 +89,7 @@ export default function (connection, map) {
       icon,
     });
     google.maps.event.addListener(marker, 'click', function (event) {
-      window.selectPolyline(event.latLng, _id);
+      window.selectPolyline(event.latLng, { _id, type });
     });
   });
 }
