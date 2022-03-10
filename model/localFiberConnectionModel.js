@@ -4,8 +4,16 @@ const {
   Types: { ObjectId },
 } = require('mongoose');
 
-const pointToPointConnectionSchema = new Schema(
+const localFiberConnectionSchema = new Schema(
   {
+    parentType: {
+      type: String,
+      enum: ['reseller', 'localFiber'],
+      required: true,
+    },
+
+    parent: { type: ObjectId, refPath: 'parentType' },
+
     name: {
       type: String,
       required: true,
@@ -13,7 +21,7 @@ const pointToPointConnectionSchema = new Schema(
 
     type: {
       type: String,
-      default: 'pointToPoint',
+      default: 'localFiber',
     },
 
     totalCore: {
@@ -61,23 +69,19 @@ const pointToPointConnectionSchema = new Schema(
 
     childrens: [
       {
-        color: {
-          type: String || Number,
-          required: false,
-        },
-        portNo: {
-          type: Number,
-          required: true,
-        },
         connectionType: {
           type: String,
           required: true,
-          enum: ['reseller', 'corporate'],
+          enum: ['localFiber', 'splitter'],
         },
         child: {
           type: ObjectId,
           required: true,
           refPath: 'connectionType',
+        },
+        color: {
+          type: String || Number,
+          required: true,
         },
       },
     ],
@@ -85,4 +89,4 @@ const pointToPointConnectionSchema = new Schema(
   { timestamps: true }
 );
 
-module.exports = model('pointToPoint', pointToPointConnectionSchema);
+module.exports = model('localFiber', localFiberConnectionSchema);
