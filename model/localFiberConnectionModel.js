@@ -58,15 +58,13 @@ const localFiberConnectionSchema = new Schema(
 
     locations: [
       {
-        location: {
-          type: {
-            type: String,
-            default: 'LineString',
-          },
-          coordinates: {
-            type: [[Number]],
-            required: true,
-          },
+        type: {
+          type: String,
+          default: 'LineString',
+        },
+        coordinates: {
+          type: [[Number]],
+          required: true,
         },
       },
     ],

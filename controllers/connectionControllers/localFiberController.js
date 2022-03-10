@@ -50,5 +50,26 @@ exports.createLocalFiberConnection = async (req, res) => {
       status: 'success',
       data: createLocalFiberConnection,
     });
+  } else if (selectedParent.type === 'localFiber') {
+    const markerPoint = selectedParent.markers.find((item) => {
+      return item.location.coordinates[0] === coordinatesLatLngArr[0][0];
+    });
+    if (!markerPoint) {
+      selectedParent.markers.push({
+        location: { coordinates: coordinatesLatLngArr[0] },
+      });
+    } else {
+      markerPoint.totalConnected++;
+    }
+    selectedParent.locations.push({
+      coordinates: coordinatesLatLngArr,
+    });
+
+    await selectedParent.save();
+
+    return res.status(201).json({
+      status: 'success',
+      data: selectedParent,
+    });
   }
 };
