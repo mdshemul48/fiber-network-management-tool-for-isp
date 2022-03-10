@@ -1,11 +1,7 @@
-import Graph from '../storage/Graph.js';
 import coreColor from '../utility/coreColor.js';
-import uuidv4 from '../utility/uuid.js';
 
-export default (polylineKey, coordinates) => {
-  const connectionName = document.getElementById(
-    'addLocalFiberConnectionName'
-  ).value;
+export default async (polylineKey, coordinates) => {
+  const name = document.getElementById('addLocalFiberConnectionName').value;
 
   const connectionTotalCore = Number(
     document.getElementById('addLocalFiberConnectionCoreOptions').value
@@ -19,22 +15,20 @@ export default (polylineKey, coordinates) => {
   });
 
   const localFiberConnection = {
-    connectionName,
-    connectionType: 'localFiberConnection',
-    parentNodeKey: polylineKey,
+    name,
+    parent: polylineKey,
     totalCore: connectionTotalCore,
-    totalCoreUsed: 0,
     coordinates,
-    childrenConnection: connectionCoreColor,
   };
 
-  const graph = new Graph(JSON.parse(localStorage.getItem('siteData')) || null);
-
-  const uuid = uuidv4();
-
-  graph.addVertex(uuid, localFiberConnection);
-  // graph.addEdge(polylineKey, uuid, connectionTotalCore);
-
-  localStorage.setItem('siteData', JSON.stringify(graph));
-  location.reload();
+  const response = await fetch('/api/create-local-fiber-connection', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(localFiberConnection),
+  });
+  const data = await response.json();
+  console.log(data);
+  // location.reload();
 };
