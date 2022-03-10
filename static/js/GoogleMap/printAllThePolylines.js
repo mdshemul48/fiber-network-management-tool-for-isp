@@ -16,12 +16,12 @@ const printAllThePolylines = async (map) => {
       printPointToPointConnection(connection, map);
     else if (connection.type === 'reseller')
       printMainLocalConnection(connection, map);
+    else if (connection.type === 'localFiber')
+      printLocalFiberConnection(connection, map);
     else if (connection.connectionType === 'localSplitter')
       printLocalSplitter(connection, map);
     else if (connection.connectionType === 'localHome')
       printHomeConnection(connection, map);
-    else if (connection.connectionType === 'localFiberConnection')
-      printLocalFiberConnection(connection, map);
   });
 };
 
