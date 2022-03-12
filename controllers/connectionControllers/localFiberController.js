@@ -42,7 +42,7 @@ exports.createLocalFiberConnection = async (req, res) => {
       connectionType: 'localFiber',
     });
 
-    selectedParent.save();
+    await selectedParent.save();
 
     return res.status(201).json({
       status: 'success',
