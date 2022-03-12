@@ -92,7 +92,7 @@ exports.createCorporateConnection = async (req, res) => {
     }
 
     parentConnection.totalConnected++;
-    parentConnection.save();
+    await parentConnection.save();
 
     return res.status(201).json({
       status: 'success',
