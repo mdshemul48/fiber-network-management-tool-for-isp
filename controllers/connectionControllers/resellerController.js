@@ -1,29 +1,29 @@
+const pointToPointConnectionModel = require('../../model/pointToPointConnectionModel.js');
+const resellerConnectionModel = require('../../model/resellerConnectionModel.js');
 const { body, validationResult } = require('express-validator');
 
-const pointToPointConnectionModel = require('../../model/pointToPointConnectionModel.js');
-const corporateConnectionModel = require('../../model/corporateConnectionModel.js');
-
-// validating the request body for create corporate connection request
-exports.createCorporateConnectionValidation = [
+exports.createResellerConnectionValidation = [
   body('parent').notEmpty().withMessage('parent is required'),
   body('name').notEmpty().withMessage('name is required'),
+  body('oltSerialNumber').notEmpty().withMessage('oltSerialNumber is required'),
   body('portNo')
     .notEmpty()
     .withMessage('portNo is required')
     .isInt({ min: 1 })
     .withMessage('portNo must be an integer or greater than 0'),
-  body('coreColor').notEmpty().withMessage('coreColor is required'),
+  body('type').notEmpty().withMessage('type is required'),
+  body('oltType').notEmpty().withMessage('oltType is required'),
   body('coordinates')
     .notEmpty()
     .withMessage('coordinates is required')
     .isArray()
     .withMessage('coordinates must be an array')
     .isLength({ min: 2 })
-    .withMessage('coordinates must be an array of at least 2 items'),
+    .withMessage('coordinates must have at least 2 items'),
+  body('color').notEmpty().withMessage('color is required'),
 ];
 
-// creating corporate connection
-exports.createCorporateConnection = async (req, res) => {
+exports.createResellerConnection = async (req, res) => {
   try {
     // validating the request body
     const errors = validationResult(req);
@@ -31,7 +31,16 @@ exports.createCorporateConnection = async (req, res) => {
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { parent, name, portNo, coreColor, coordinates } = req.body;
+    const {
+      parent,
+      name,
+      oltSerialNumber,
+      portNo,
+      type,
+      oltType,
+      coordinates,
+      color,
+    } = req.body;
 
     const parentConnection = await pointToPointConnectionModel.findById(parent);
 
@@ -42,47 +51,55 @@ exports.createCorporateConnection = async (req, res) => {
       });
     }
 
+    if (parentConnection.type !== 'pointToPoint') {
+      return res.status(400).json({
+        status: 'error',
+        message: 'parent connection is not a point to point connection',
+      });
+    }
+
+    if (parentConnection.childrens.find((item) => item.color === color)) {
+      return res.status(400).json({
+        status: 'error',
+        message: 'parent connection already has a child with the same color',
+      });
+    }
+
     if (!(parentConnection.totalConnected < parentConnection.totalCore))
       return res.status(400).json({
         status: 'error',
         message: 'parent connection is full',
       });
 
-    if (
-      parentConnection.childrens.find(
-        (item) => item.color === coreColor || item.portNo === parseInt(portNo)
-      )
-    ) {
-      return res.status(400).json({
-        status: 'error',
-        message:
-          'parent connection already has a child with the same color or port number',
-      });
-    }
-
-    // creating the connection
+    // creating reseller connection
     const coordinatesLatLngArr = coordinates.map((item) => {
       return [item.lat, item.lng];
     });
 
-    const createdCorporateConnection = await corporateConnectionModel.create({
+    const createdResellerConnection = await resellerConnectionModel.create({
       parentType: parentConnection.type,
       parent: parentConnection._id.toString(),
       name,
+      oltSerialNumber,
       portNo,
-      color: coreColor,
+      type,
+      oltType,
+      connectionLimit: oltType === 'epon' ? 64 : 128,
       location: { coordinates: coordinatesLatLngArr },
+      color,
     });
 
     parentConnection.childrens.push({
-      color: coreColor,
+      color,
       portNo,
-      connectionType: 'corporate',
-      child: createdCorporateConnection._id.toString(),
+      connectionType: 'reseller',
+      child: createdResellerConnection._id.toString(),
     });
+
     const markerPoint = parentConnection.markers.find((item) => {
       return item.location.coordinates[0] === coordinatesLatLngArr[0][0];
     });
+
     if (!markerPoint) {
       parentConnection.markers.push({
         location: { coordinates: coordinatesLatLngArr[0] },
@@ -96,12 +113,12 @@ exports.createCorporateConnection = async (req, res) => {
 
     return res.status(201).json({
       status: 'success',
-      data: createdCorporateConnection,
+      data: createdResellerConnection,
     });
-  } catch (err) {
+  } catch (error) {
     return res.status(500).json({
       status: 'error',
-      message: err.message,
+      message: error.message,
     });
   }
 };
