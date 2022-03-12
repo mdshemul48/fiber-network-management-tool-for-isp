@@ -1,6 +1,3 @@
-import uuidv4 from '../utility/uuid.js';
-
-import Graph from '../storage/Graph.js';
 import coreColor from '../utility/coreColor.js';
 // this will get only the form data
 const formData = () => {

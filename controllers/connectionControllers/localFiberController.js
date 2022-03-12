@@ -37,6 +37,13 @@ exports.createLocalFiberConnection = async (req, res) => {
       ],
     });
 
+    selectedParent.childrens.push({
+      child: createLocalFiberConnection._id,
+      connectionType: 'localFiber',
+    });
+
+    selectedParent.save();
+
     return res.status(201).json({
       status: 'success',
       data: createLocalFiberConnection,
