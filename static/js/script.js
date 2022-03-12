@@ -22,7 +22,7 @@ let selectedPolylineType = null;
 const insertScript = () => {
   const script = document.createElement('script');
   script.src =
-    'https://maps.googleapis.com/maps/api/js?key=AIzaSyCzBmP_s-e1BUzOyvk9YnoZtIX40PwWfoM&libraries=geometry&callback=initMap';
+    'https://maps.googleapis.com/maps/api/js?key=AIzaSyDL9422bxk3GtU5z54qo2Sg-JrrSn5RGcE&libraries=geometry&callback=initMap';
   script.async = true;
   document.head.appendChild(script);
 };
