@@ -88,4 +88,4 @@ const splitterConnectionModel = new Schema(
   }
 );
 
-module.exports = model('SplitterConnection', splitterConnectionModel);
+module.exports = model('Splitter', splitterConnectionModel);
