@@ -3,7 +3,13 @@ const { body, validationResult } = require('express-validator');
 const localFiberConnectionModel = require('../../model/localFiberConnectionModel.js');
 const resellerConnectionModel = require('../../model/resellerConnectionModel.js');
 
-exports.createLocalFiberConnectionValidation = [];
+exports.createLocalFiberConnectionValidation = [
+  body('name').notEmpty().withMessage('name is required'),
+  body('parent').notEmpty().withMessage('parent is required'),
+  body('parentType').notEmpty().withMessage('parentType is required'),
+  body('totalCore').notEmpty().withMessage('totalCore is required'),
+  body('coordinates').notEmpty().withMessage('coordinates is required'),
+];
 
 exports.createLocalFiberConnection = async (req, res) => {
   const { name, parent, parentType, totalCore, coordinates } = req.body;
