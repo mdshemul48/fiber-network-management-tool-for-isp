@@ -6,7 +6,6 @@ exports.createSplitterConnection = async (req, res) => {
     parent,
     parentType,
     name,
-    type,
     coordinates,
     splitterLimit,
     color,
@@ -62,8 +61,10 @@ exports.createSplitterConnection = async (req, res) => {
       child: splitterConnection._id,
     });
     reseller.save();
-  }
 
-  console.log(req.body);
-  res.send('gggs');
+    return res.status(200).json({
+      status: 'success',
+      data: splitterConnection,
+    });
+  }
 };

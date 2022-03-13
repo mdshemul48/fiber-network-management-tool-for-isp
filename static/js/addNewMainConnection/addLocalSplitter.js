@@ -19,7 +19,6 @@ export default async (polylineKey, polylineType, coordinates) => {
     parentType: polylineType,
     parent: polylineKey,
     name: connectionName,
-    type: 'localSplitter',
     coordinates,
     splitterLimit: localSplitterType,
     color: connectedCoreColor,
