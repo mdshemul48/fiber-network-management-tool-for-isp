@@ -46,6 +46,7 @@ exports.createSplitterConnection = async (req, res) => {
       connectionType: 'splitter',
       child: splitterConnection._id,
     });
+    reseller.save();
   }
 
   console.log(req.body);
