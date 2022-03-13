@@ -39,6 +39,13 @@ exports.createSplitterConnection = async (req, res) => {
         coordinates: coordinatesLatLngArr,
       },
     });
+
+    reseller.childrens.push({
+      color,
+      portNo,
+      connectionType: 'splitter',
+      child: splitterConnection._id,
+    });
   }
 
   console.log(req.body);
