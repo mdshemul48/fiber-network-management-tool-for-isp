@@ -76,7 +76,7 @@ const resellerConnectionSchema = new Schema({
       },
       portNo: {
         type: Number,
-        required: true,
+        required: false,
       },
       child: {
         type: ObjectId,

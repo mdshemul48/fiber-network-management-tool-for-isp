@@ -62,6 +62,7 @@ exports.createSplitterConnection = async (req, res) => {
       connectionUsed: 0,
     });
 
+    console.log(reseller);
     await reseller.save();
 
     return res.status(200).json({
