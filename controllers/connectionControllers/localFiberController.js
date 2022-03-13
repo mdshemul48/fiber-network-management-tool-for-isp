@@ -1,5 +1,9 @@
+const { body, validationResult } = require('express-validator');
+
 const localFiberConnectionModel = require('../../model/localFiberConnectionModel.js');
 const resellerConnectionModel = require('../../model/resellerConnectionModel.js');
+
+exports.createLocalFiberConnectionValidation = [];
 
 exports.createLocalFiberConnection = async (req, res) => {
   const { name, parent, parentType, totalCore, coordinates } = req.body;
