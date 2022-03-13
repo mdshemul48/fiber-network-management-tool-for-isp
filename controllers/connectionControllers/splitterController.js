@@ -45,6 +45,7 @@ exports.createSplitterConnection = async (req, res) => {
     const splitterConnection = await splitterConnectionModel.create({
       parentType: 'reseller',
       parent: reseller._id,
+      reseller: reseller._id,
       name,
       splitterLimit,
       color,
