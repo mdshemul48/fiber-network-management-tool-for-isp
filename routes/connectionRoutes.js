@@ -18,6 +18,7 @@ const {
 
 const {
   createLocalFiberConnection,
+  createLocalFiberConnectionValidation,
 } = require('../controllers/connectionControllers/localFiberController.js');
 
 const { getAllConnection } = require('../controllers/getAllConnection.js');
@@ -43,6 +44,10 @@ router.post(
   createResellerConnection
 );
 
-router.post('/create-local-fiber-connection', createLocalFiberConnection);
+router.post(
+  '/create-local-fiber-connection',
+  createLocalFiberConnectionValidation,
+  createLocalFiberConnection
+);
 
 module.exports = router;
