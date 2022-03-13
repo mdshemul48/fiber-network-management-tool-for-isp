@@ -55,11 +55,12 @@ exports.createSplitterConnection = async (req, res) => {
     });
 
     reseller.childrens.push({
-      color,
       portNo,
       connectionType: 'splitter',
       child: splitterConnection._id,
+      connectionUsed: 0,
     });
+
     reseller.save();
 
     return res.status(200).json({

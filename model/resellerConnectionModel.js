@@ -74,6 +74,10 @@ const resellerConnectionSchema = new Schema({
         required: true,
         enum: ['splitter', 'localFiber'],
       },
+      portNo: {
+        type: Number,
+        required: true,
+      },
       child: {
         type: ObjectId,
         required: true,
