@@ -54,6 +54,6 @@ router.post(
   createLocalFiberConnection
 );
 
-router.get('/create-splitter-connection', createSplitterConnection);
+router.post('/create-splitter-connection', createSplitterConnection);
 
 module.exports = router;
