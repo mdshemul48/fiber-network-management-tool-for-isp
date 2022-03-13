@@ -28,6 +28,21 @@ exports.createSplitterConnection = async (req, res) => {
       });
     }
 
+    const alreadyExistSplitter = reseller.childrens.find((item) => {
+      return (
+        item.connectionType === 'splitter' &&
+        (item.color === color || item.portNo === parseInt(portNo))
+      );
+    });
+
+    if (alreadyExistSplitter) {
+      return res.status(400).json({
+        status: 'error',
+        message:
+          'reseller already has a splitter with the same color or port number',
+      });
+    }
+
     const splitterConnection = await splitterConnectionModel.create({
       parentType: 'reseller',
       parent: reseller._id,
