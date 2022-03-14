@@ -1,6 +1,6 @@
 const resellerConnectionModel = require('../../model/resellerConnectionModel.js');
 const splitterConnectionModel = require('../../model/splitterConnectionModel.js');
-
+const localFiberConnectionModel = require('../../model/localFiberConnectionModel.js');
 exports.createSplitterConnection = async (req, res) => {
   const {
     parent,
@@ -67,5 +67,13 @@ exports.createSplitterConnection = async (req, res) => {
       status: 'success',
       data: splitterConnection,
     });
+  } else if (parentType === 'localFiber') {
+    const localFiber = await localFiberConnectionModel.findById(parent);
+    if (!localFiber) {
+      return res.json({
+        status: 'error',
+        message: 'Invalid localFiber id',
+      });
+    }
   }
 };
