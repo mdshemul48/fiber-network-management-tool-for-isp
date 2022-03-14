@@ -48,7 +48,6 @@ exports.createSplitterConnection = async (req, res) => {
       reseller: reseller._id,
       name,
       splitterLimit,
-      color,
       portNo,
       location: {
         coordinates: coordinatesLatLngArr,
