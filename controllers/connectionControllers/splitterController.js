@@ -123,6 +123,13 @@ exports.createSplitterConnection = async (req, res) => {
       connectionUsed: 0,
     });
 
+    localFiber.childrens.push({
+      color,
+      connectionType: 'splitter',
+      child: splitterConnection._id,
+    });
+
+    await localFiber.save();
     await reseller.save();
 
     return res.status(200).json({
