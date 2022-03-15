@@ -137,7 +137,7 @@ exports.createSplitterConnection = async (req, res) => {
       data: splitterConnection,
     });
   } else if (parentType === 'splitter') {
-    // ! create splitter connection from local fiber
+    // ! create splitter connection from  another splitter
     const splitter = await splitterConnectionModel.findById(parent);
     if (!splitter) {
       return res.json({
@@ -173,6 +173,8 @@ exports.createSplitterConnection = async (req, res) => {
       connectionType: 'splitter',
       child: splitterConnection._id,
     });
+
+    splitter.splitterUsed += 1;
 
     await splitter.save();
     await reseller.save();
