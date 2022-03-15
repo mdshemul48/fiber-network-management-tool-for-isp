@@ -23,6 +23,7 @@ const {
 
 const {
   createSplitterConnection,
+  createSplitterValidation,
 } = require('../controllers/connectionControllers/splitterController.js');
 
 const { getAllConnection } = require('../controllers/getAllConnection.js');
@@ -54,6 +55,10 @@ router.post(
   createLocalFiberConnection
 );
 
-router.post('/create-splitter-connection', createSplitterConnection);
+router.post(
+  '/create-splitter-connection',
+  createSplitterValidation,
+  createSplitterConnection
+);
 
 module.exports = router;
