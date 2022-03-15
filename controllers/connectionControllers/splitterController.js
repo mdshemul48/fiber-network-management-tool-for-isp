@@ -1,6 +1,25 @@
+const { body, validationResult } = require('express-validator');
 const resellerConnectionModel = require('../../model/resellerConnectionModel.js');
 const splitterConnectionModel = require('../../model/splitterConnectionModel.js');
 const localFiberConnectionModel = require('../../model/localFiberConnectionModel.js');
+
+exports.createSplitterValidation = [
+  body('name').not().isEmpty().withMessage('Name is required'),
+  body('parentType').not().isEmpty().withMessage('Parent type is required'),
+  body('parent').not().isEmpty().withMessage('Parent type is required'),
+  body('coordinates')
+    .not()
+    .isEmpty()
+    .withMessage('Coordinates are required')
+    .isArray()
+    .withMessage('Coordinates must be an array'),
+  body('splitterLimit')
+    .not()
+    .isEmpty()
+    .withMessage('Splitter limit is required')
+    .isNumeric()
+    .withMessage('Splitter limit must be a number'),
+];
 
 exports.createSplitterConnection = async (req, res) => {
   try {
