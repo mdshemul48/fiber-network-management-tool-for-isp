@@ -73,7 +73,7 @@ const localFiberConnectionSchema = new Schema(
         connectionType: {
           type: String,
           required: true,
-          enum: ['localFiber', 'splitter'],
+          enum: ['splitter'],
         },
         child: {
           type: ObjectId,

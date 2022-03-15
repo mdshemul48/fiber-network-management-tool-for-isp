@@ -94,7 +94,11 @@ document
   .getElementById('addLocalSplitterSubmission')
   .addEventListener('submit', (event) => {
     event.preventDefault();
-    addLocalSplitter(selectedPolyline, editablePolyline.getAllThePath());
+    addLocalSplitter(
+      selectedPolyline,
+      selectedPolylineType,
+      editablePolyline.getAllThePath()
+    );
   });
 
 document

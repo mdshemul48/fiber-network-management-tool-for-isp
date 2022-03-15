@@ -152,26 +152,26 @@
       }
     },
     "7ddce9d1-5869-4b43-8b36-be5590c854c2": {
-      "currentNodeKey": "7ddce9d1-5869-4b43-8b36-be5590c854c2",
-      "parentNodeKey": "ea078984-2b09-41cf-ae57-9c3454a62527",
-      "connectionName": "first Splitter",
-      "connectionType": "localSplitter",
-      "coordinates": [
-        { "lat": 23.91934645203553, "lng": 90.25822527257128 },
-        { "lat": 23.919441119397362, "lng": 90.25812809551209 }
-      ],
-      "localSplitterType": "1/4",
-      "connectedWith": "olt",
-      "childrenConnection": {
-        "blue": "2c538b8c-2565-4da9-9159-f4f815bd85a5",
-        "orange": "3e256145-901f-485a-a7c9-23fcf7ad966e",
-        "green": "22ed1aa0-bcf9-4db4-baf9-160a2cbe7b5f",
-        "brown": null
+      // "currentNodeKey": "7ddce9d1-5869-4b43-8b36-be5590c854c2",
+      // "parentNodeKey": "ea078984-2b09-41cf-ae57-9c3454a62527",
+      // "connectionName": "first Splitter",
+      // "connectionType": "localSplitter",
+      // "coordinates": [
+        // { "lat": 23.91934645203553, "lng": 90.25822527257128 },
+        // { "lat": 23.919441119397362, "lng": 90.25812809551209 }
+      // ],
+      // "localSplitterType": "1/4",
+      // "connectedWith": "olt",
+      // "childrenConnection": {
+        // "blue": "2c538b8c-2565-4da9-9159-f4f815bd85a5",
+        // "orange": "3e256145-901f-485a-a7c9-23fcf7ad966e",
+        // "green": "22ed1aa0-bcf9-4db4-baf9-160a2cbe7b5f",
+        // "brown": null
       },
-      "totalConnection": 4,
-      "totalCoreUsed": 3,
-      "portNo": 5,
-      "CoreColor": "blue"
+      // "totalConnection": 4,
+      // "totalCoreUsed": 3,
+      // "portNo": 5,
+      // "CoreColor": "blue"
     },
     "2c538b8c-2565-4da9-9159-f4f815bd85a5": {
       "currentNodeKey": "2c538b8c-2565-4da9-9159-f4f815bd85a5",
