@@ -156,6 +156,17 @@ exports.createSplitterConnection = async (req, res) => {
       });
     }
 
+    const alreadyExistSplitter = splitter.childrens.find((item) => {
+      return item.color === color;
+    });
+
+    if (alreadyExistSplitter) {
+      return res.status(400).json({
+        status: 'error',
+        message: 'splitter already has a splitter with the same color',
+      });
+    }
+
     const splitterConnection = await splitterConnectionModel.create({
       parentType: 'splitter',
       parent: splitter._id,
