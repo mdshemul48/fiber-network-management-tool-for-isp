@@ -136,5 +136,55 @@ exports.createSplitterConnection = async (req, res) => {
       status: 'success',
       data: splitterConnection,
     });
+  } else if (parentType === 'splitter') {
+    // ! create splitter connection from local fiber
+    const splitter = await splitterConnectionModel.findById(parent);
+    if (!splitter) {
+      return res.json({
+        status: 'error',
+        message: 'Invalid splitter id',
+      });
+    }
+
+    const reseller = await resellerConnectionModel.findById(
+      splitter.reseller.toString()
+    );
+    if (!reseller) {
+      return res.json({
+        status: 'error',
+        message: 'Invalid reseller id',
+      });
+    }
+
+    const splitterConnection = await splitterConnectionModel.create({
+      parentType: 'splitter',
+      parent: splitter._id,
+      reseller: reseller._id,
+      name,
+      splitterLimit,
+      portNo: splitter.portNo,
+      location: {
+        coordinates: coordinatesLatLngArr,
+      },
+    });
+
+    splitter.childrens.push({
+      color,
+      connectionType: 'splitter',
+      child: splitterConnection._id,
+    });
+
+    await splitter.save();
+    await reseller.save();
+
+    return res.status(200).json({
+      status: 'success',
+      data: splitterConnection,
+    });
+  } else {
+    return res.status(400).json({
+      status: 'error',
+      message: 'Invalid parentType',
+    });
   }
 };
