@@ -7,7 +7,7 @@ const {
 const homeConnectionSchema = Schema({
   parentType: {
     type: String,
-    enum: ['home'],
+    enum: ['splitter'],
     required: true,
   },
 
@@ -36,18 +36,16 @@ const homeConnectionSchema = Schema({
     required: true,
   },
 
-  locations: [
-    {
-      type: {
-        type: String,
-        default: 'LineString',
-      },
-      coordinates: {
-        type: [[Number]],
-        required: true,
-      },
+  locations: {
+    type: {
+      type: String,
+      default: 'LineString',
     },
-  ],
+    coordinates: {
+      type: [[Number]],
+      required: true,
+    },
+  },
 });
 
 module.exports = model('home', homeConnectionSchema);

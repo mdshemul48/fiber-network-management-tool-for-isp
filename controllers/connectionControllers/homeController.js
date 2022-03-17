@@ -3,7 +3,6 @@ const splitterConnectionModel = require('../../model/splitterConnectionModel.js'
 
 exports.createHomeConnection = async (req, res) => {
   const { parent, name, coordinates, onuNo, color } = req.body;
-
   const coordinatesLatLngArr = coordinates.map((item) => {
     return [item.lat, item.lng];
   });
@@ -34,7 +33,7 @@ exports.createHomeConnection = async (req, res) => {
     name,
     onuNo,
     color,
-    location: {
+    locations: {
       coordinates: coordinatesLatLngArr,
     },
   });
