@@ -5,19 +5,19 @@ export default async (polylineKey, coordinates) => {
   const connectionName = document.getElementById(
     'addLocalHomeConnectionName'
   ).value;
-  const OnuNo = document.getElementById('addLocalHomeConnectionOnuNo').value;
+  const onuNo = document.getElementById('addLocalHomeConnectionOnuNo').value;
   const coreOption = document.getElementById(
     'addLocalHomeConnectionOptions'
   ).value;
 
   const newLocalConnection = {
-    connectionName,
-    connectionType: 'localHome',
+    parent: polylineKey,
+    name: connectionName,
     coordinates,
-    OnuNo,
-    CoreColor: coreOption,
+    onuNo,
+    color: coreOption,
   };
-  const response = await fetch('/api/addNewLocalConnection', {
+  const response = await fetch('/api/create-home-connection', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
