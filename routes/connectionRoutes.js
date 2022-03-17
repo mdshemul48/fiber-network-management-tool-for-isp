@@ -26,6 +26,10 @@ const {
   createSplitterValidation,
 } = require('../controllers/connectionControllers/splitterController.js');
 
+const {
+  createHomeConnection,
+} = require('../controllers/connectionControllers/homeController.js');
+
 const { getAllConnection } = require('../controllers/getAllConnection.js');
 
 router.get('/getAllConnection', getAllConnection);
@@ -60,5 +64,7 @@ router.post(
   createSplitterValidation,
   createSplitterConnection
 );
+
+router.post('/create-home-connection', createHomeConnection);
 
 module.exports = router;
