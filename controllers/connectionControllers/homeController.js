@@ -1,4 +1,5 @@
-const splitterConnectionModel = require('../../model/homeConnectionModel.js');
+const homeConnectionModel = require('../../model/homeConnectionModel.js');
+const splitterConnectionModel = require('../../model/splitterConnectionModel.js');
 
 exports.createHomeConnection = async (req, res) => {
   const { parent, name, coordinates, onuNo, color } = req.body;
@@ -27,7 +28,7 @@ exports.createHomeConnection = async (req, res) => {
     });
   }
 
-  const newHomeConnection = await splitterConnectionModel.create({
+  const newHomeConnection = await homeConnectionModel.create({
     parentType: 'splitter',
     parent: splitter._id,
     name,
@@ -44,5 +45,10 @@ exports.createHomeConnection = async (req, res) => {
     color,
   });
 
-  res.send('hello world');
+  splitter.save();
+
+  return res.status(201).json({
+    status: 'success',
+    data: newHomeConnection,
+  });
 };
