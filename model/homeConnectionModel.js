@@ -20,6 +20,21 @@ const homeConnectionSchema = Schema({
     type: String,
     required: true,
   },
+
+  type: {
+    type: String,
+    default: 'home',
+  },
+
+  onuNo: {
+    type: String,
+    required: true,
+  },
+
+  color: {
+    type: String,
+    required: true,
+  },
 });
 
-const HomeConnection = model('HomeConnection', homeConnectionSchema);
+const HomeConnection = model('home', homeConnectionSchema);
