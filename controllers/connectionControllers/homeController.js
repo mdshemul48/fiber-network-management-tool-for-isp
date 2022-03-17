@@ -43,7 +43,7 @@ exports.createHomeConnection = async (req, res) => {
     child: newHomeConnection._id,
     color,
   });
-
+  splitterUsed++;
   splitter.save();
 
   return res.status(201).json({
