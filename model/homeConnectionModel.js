@@ -35,6 +35,19 @@ const homeConnectionSchema = Schema({
     type: String,
     required: true,
   },
+
+  locations: [
+    {
+      type: {
+        type: String,
+        default: 'LineString',
+      },
+      coordinates: {
+        type: [[Number]],
+        required: true,
+      },
+    },
+  ],
 });
 
-const HomeConnection = model('home', homeConnectionSchema);
+module.exports = model('home', homeConnectionSchema);
