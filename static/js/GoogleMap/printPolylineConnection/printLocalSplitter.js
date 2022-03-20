@@ -31,6 +31,13 @@ export default function (connection, map) {
     polyline.getPath()
   );
 
+  // splitter details
+  let splitterChildDetails = '';
+
+  childrens.forEach((item) => {
+    splitterChildDetails += `<p class="mb-1">${item.color}: ${item.connectionType} </p>`;
+  });
+
   const infoWindow = new google.maps.InfoWindow({
     content: `
       <p class="mb-1 fw-bold">${name}</p>
@@ -54,6 +61,7 @@ ${
       <p class="mb-1 fw-bold">Core Available: </p>
       <button class="badge mb-1 bg-danger border-0" onclick="deleteSplitterConnection('${_id}')">Delete</button>
       <hr class="my-1 w-50" />
+      ${splitterChildDetails}
       `,
   });
 
