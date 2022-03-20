@@ -1,7 +1,6 @@
 import allTheCoreColor from '../../utility/coreColor.js';
 
 export default function (connection, map) {
-  console.log(connection);
   const { name, color, onuNo, type, locations, _id } = connection;
 
   const coordinates = locations.coordinates.map((item) => {

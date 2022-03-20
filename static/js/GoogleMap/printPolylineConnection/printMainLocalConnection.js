@@ -28,6 +28,12 @@ export default function (connection, map) {
     strokeWeight: 4,
   });
 
+  let resellerChildDetail = '';
+  childrens.forEach((child) => {
+    if (child.connectionType === 'splitter') {
+      resellerChildDetail += `<p class="mb-1">Port: ${child.portNo}: ${child.connectionUsed}/${connectionLimit}</p>`;
+    }
+  });
   const infoWindow = new google.maps.InfoWindow({
     content: `<p class="mb-1 fw-bold">${name}</p>
     <hr class="my-1" />
@@ -42,7 +48,7 @@ export default function (connection, map) {
 
     <p class="mb-1 fw-bold">Port Used: </p>
     <hr class="my-1 w-50" />
-   
+    ${resellerChildDetail}
     `,
   });
 

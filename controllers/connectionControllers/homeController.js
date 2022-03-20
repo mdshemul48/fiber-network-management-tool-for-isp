@@ -7,12 +7,21 @@ exports.createHomeConnection = async (req, res) => {
     return [item.lat, item.lng];
   });
 
-  const splitter = await splitterConnectionModel.findById(parent);
+  const splitter = await splitterConnectionModel
+    .findById(parent)
+    .populate('reseller');
 
   if (!splitter) {
     return res.status(400).json({
       status: 'error',
       message: 'Invalid splitter id',
+    });
+  }
+
+  if (!splitter.reseller) {
+    return res.status(400).json({
+      status: 'error',
+      message: 'Invalid reseller id',
     });
   }
 
@@ -43,9 +52,17 @@ exports.createHomeConnection = async (req, res) => {
     child: newHomeConnection._id,
     color,
   });
-  splitter.splitterUsed++;
-  splitter.save();
 
+  const targetSplitterInReseller = splitter.reseller.childrens.find(
+    (item) => item.child.toString() === splitter._id.toString()
+  );
+
+  splitter.splitterUsed++;
+  splitter.reseller.connectionUsed++;
+  targetSplitterInReseller.connectionUsed++;
+
+  splitter.save();
+  splitter.reseller.save();
   return res.status(201).json({
     status: 'success',
     data: newHomeConnection,

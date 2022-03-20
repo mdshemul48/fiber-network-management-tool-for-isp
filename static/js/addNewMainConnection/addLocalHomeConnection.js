@@ -26,7 +26,5 @@ export default async (polylineKey, coordinates) => {
   });
 
   const text = await response.text();
-  console.log(text);
-
-  // location.reload();
+  location.reload();
 };
