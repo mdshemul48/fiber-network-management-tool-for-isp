@@ -1,5 +1,3 @@
-import Graph from '../../storage/Graph.js';
-
 export default function (connection, map) {
   const {
     _id,
@@ -32,7 +30,7 @@ export default function (connection, map) {
     let localFiberChildrens = '';
 
     childrens.forEach((item) => {
-      localFiberChildrens += `<p class="mb-1">${item.color}: ${item.connectionType} </p>`;
+      localFiberChildrens += `<p class="mb-1">${item.color}: used </p>`;
     });
 
     const infoWindow = new google.maps.InfoWindow({
