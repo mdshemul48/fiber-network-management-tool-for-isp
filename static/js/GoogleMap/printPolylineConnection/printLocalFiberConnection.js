@@ -1,8 +1,16 @@
 import Graph from '../../storage/Graph.js';
 
 export default function (connection, map) {
-  const { _id, name, locations, type, totalCore, totalConnected, markers } =
-    connection;
+  const {
+    _id,
+    name,
+    locations,
+    type,
+    totalCore,
+    totalConnected,
+    markers,
+    childrens,
+  } = connection;
 
   locations.forEach((location) => {
     const coordinates = location.coordinates.map((item) => {
@@ -21,6 +29,12 @@ export default function (connection, map) {
       polyline.getPath()
     );
 
+    let localFiberChildrens = '';
+
+    childrens.forEach((item) => {
+      localFiberChildrens += `<p class="mb-1">${item.color}: ${item.connectionType} </p>`;
+    });
+
     const infoWindow = new google.maps.InfoWindow({
       content: `
       <p class="mb-1 fw-bold">${name}</p>
@@ -35,6 +49,7 @@ export default function (connection, map) {
       }')">Delete</button>
         <p class="mb-1 fw-bold">Core Available: </p>
         <hr class="my-1 w-50" />
+        ${localFiberChildrens}
         `,
     });
 
