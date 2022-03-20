@@ -34,5 +34,5 @@ export default async (polylineKey, polylineType, coordinates) => {
     body: JSON.stringify(newSplitterConnection),
   });
   const data = await response.text();
-  console.log(data);
+  location.reload();
 };

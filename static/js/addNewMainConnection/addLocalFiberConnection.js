@@ -30,6 +30,5 @@ export default async (polylineKey, selectedPolylineType, coordinates) => {
     body: JSON.stringify(localFiberConnection),
   });
   const data = await response.json();
-  console.log(data);
-  // location.reload();
+  location.reload();
 };
