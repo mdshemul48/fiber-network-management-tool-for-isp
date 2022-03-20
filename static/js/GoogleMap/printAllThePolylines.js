@@ -20,8 +20,7 @@ const printAllThePolylines = async (map) => {
       printLocalFiberConnection(connection, map);
     else if (connection.type === 'splitter')
       printLocalSplitter(connection, map);
-    else if (connection.connectionType === 'localHome')
-      printHomeConnection(connection, map);
+    else if (connection.type === 'home') printHomeConnection(connection, map);
   });
 };
 

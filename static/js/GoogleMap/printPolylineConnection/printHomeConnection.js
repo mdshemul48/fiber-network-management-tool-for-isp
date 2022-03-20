@@ -1,18 +1,17 @@
 import allTheCoreColor from '../../utility/coreColor.js';
 
 export default function (connection, map) {
-  const {
-    currentNodeKey,
-    coordinates,
-    connectionName,
-    OnuNo,
-    CoreColor,
-    connectionType,
-  } = connection;
+  console.log(connection);
+  const { name, color, onuNo, type, locations, _id } = connection;
+
+  const coordinates = locations.coordinates.map((item) => {
+    return { lat: item[0], lng: item[1] };
+  });
+
   const polyline = new google.maps.Polyline({
     path: coordinates,
     geodesic: true,
-    strokeColor: allTheCoreColor.find((item) => item.colorName === CoreColor)
+    strokeColor: allTheCoreColor.find((item) => item.colorName === color)
       ?.colorCode,
     strokeOpacity: 1.0,
     strokeWeight: 3,
@@ -26,15 +25,15 @@ export default function (connection, map) {
 
   const infoWindow = new google.maps.InfoWindow({
     content: `
-        <p class="mb-1 fw-bold">${connectionName}</p>
+        <p class="mb-1 fw-bold">${name}</p>
         <hr class="my-1" />
-        <p class="mb-1"><span class="fw-bold">Onu No:</span> ${OnuNo}</p>
-        <p class="mb-1"><span class="fw-bold">connection Type:</span> ${connectionType}</p>
-        <p class="mb-1"><span class="fw-bold">Core Color:</span> ${CoreColor}</p>
+        <p class="mb-1"><span class="fw-bold">Onu No:</span> ${onuNo}</p>
+        <p class="mb-1"><span class="fw-bold">connection Type:</span> ${type}</p>
+        <p class="mb-1"><span class="fw-bold">Core Color:</span> ${color}</p>
         <p class="mb-1"><span class=" fw-bold">Distance:</span> ${Math.ceil(
           lengthInMeters
         )}m</p>
-        <button class="badge mb-1 bg-danger border-0" onclick="deleteHomeConnection('${currentNodeKey}')">Delete</button>
+        <button class="badge mb-1 bg-danger border-0" onclick="deleteHomeConnection('${_id}')">Delete</button>
         `,
   });
 
