@@ -153,7 +153,7 @@ exports.createSplitterConnection = async (req, res) => {
         connectionType: 'splitter',
         child: splitterConnection._id,
       });
-
+      localFiber.totalConnected++;
       await localFiber.save();
       await reseller.save();
 
