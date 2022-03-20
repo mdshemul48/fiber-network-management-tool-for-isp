@@ -48,15 +48,15 @@ window.initMap = function () {
 window.selectPolyline = (latLng, { _id, type }) => {
   if (!selectedPolyline) {
     Toastify({
-      text: 'A Cable Selected',
+      text: `You have selected ${type} connection!`,
       duration: 3000,
-      close: true,
+      // close: true,
       gravity: 'top',
-      position: 'right',
+      position: 'center',
       stopOnFocus: true,
       style: {
-        color: 'black',
-        background: 'white',
+        color: 'white',
+        background: 'black',
       },
       onClick: function () {}, // Callback after click
     }).showToast();
