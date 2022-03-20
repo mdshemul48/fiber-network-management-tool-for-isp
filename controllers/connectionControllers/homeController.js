@@ -1,6 +1,5 @@
 const homeConnectionModel = require('../../model/homeConnectionModel.js');
 const splitterConnectionModel = require('../../model/splitterConnectionModel.js');
-const resellerConnectionModel = require('../../model/resellerConnectionModel.js');
 
 exports.createHomeConnection = async (req, res) => {
   const { parent, name, coordinates, onuNo, color } = req.body;
@@ -53,14 +52,15 @@ exports.createHomeConnection = async (req, res) => {
     child: newHomeConnection._id,
     color,
   });
-  splitter.splitterUsed++;
 
-  splitter.reseller.connectionUsed++;
   const targetSplitterInReseller = splitter.reseller.childrens.find(
     (item) => item.child.toString() === splitter._id.toString()
   );
 
+  splitter.splitterUsed++;
+  splitter.reseller.connectionUsed++;
   targetSplitterInReseller.connectionUsed++;
+
   splitter.save();
   splitter.reseller.save();
   return res.status(201).json({
