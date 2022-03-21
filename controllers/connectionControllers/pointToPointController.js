@@ -59,7 +59,7 @@ exports.findNearestPointToPointConnection = async (req, res) => {
   const { coordinates } = req.query;
   const { lat, lng } = JSON.parse(coordinates);
 
-  const pointToPointConnection = await pointToPointConnectionModel.find({
+  const pointToPointConnection = await pointToPointConnectionModel.findOne({
     location: {
       $near: {
         $geometry: {
@@ -71,6 +71,15 @@ exports.findNearestPointToPointConnection = async (req, res) => {
     },
   });
 
-  console.log(pointToPointConnection);
-  res.send({ gg: 'gg' });
+  if (!pointToPointConnection) {
+    return res.status(404).json({
+      status: 'error',
+      message: 'No point to point connection found',
+    });
+  }
+
+  return res.status(200).json({
+    status: 'success',
+    data: pointToPointConnection,
+  });
 };
