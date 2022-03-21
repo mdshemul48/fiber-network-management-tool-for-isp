@@ -119,6 +119,31 @@ document
     );
   });
 
+// ! testing shortest route here
+document.getElementById('triggerButton').addEventListener('click', () => {
+  console.log('trigger button clicked');
+  const polylineCoordinates = editablePolyline.polyline.getPath();
+
+  const directionsService = new google.maps.DirectionsService();
+
+  const request = {
+    origin: polylineCoordinates.getAt(0),
+    destination: polylineCoordinates.getAt(1),
+    travelMode: 'DRIVING',
+  };
+  directionsService.route(request, function (result, status) {
+    if (status == 'OK') {
+      console.log(result);
+      var directionsRenderer = new google.maps.DirectionsRenderer();
+      directionsRenderer.setMap(window.targetMap);
+      directionsRenderer.setDirections(result);
+      editablePolyline.polyline.setMap(null);
+    }
+  });
+});
+
+// ! -----------------------------------
+
 // all the delete functions
 window.deleteHomeConnection = deleteHomeConnection;
 window.deleteSplitterConnection = deleteSplitterConnection;
