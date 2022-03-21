@@ -31,7 +31,8 @@ exports.createPointToPointConnection = async (req, res) => {
 
     const { name, totalCore, coordinates } = req.body;
     const coordinatesLatLngArr = coordinates.map((item) => {
-      return [item.lat, item.lng];
+      // return [item.lat, item.lng];
+      return [item.lng, item.lat];
     });
     const createdConnection = await pointToPointConnectionModel.create({
       name,
@@ -51,4 +52,34 @@ exports.createPointToPointConnection = async (req, res) => {
       message: err.message,
     });
   }
+};
+
+// find nearest point to point connection with coordinates
+exports.findNearestPointToPointConnection = async (req, res) => {
+  const { coordinates } = req.query;
+  const { lat, lng } = JSON.parse(coordinates);
+
+  const pointToPointConnection = await pointToPointConnectionModel.findOne({
+    location: {
+      $near: {
+        $geometry: {
+          type: 'Point',
+          coordinates: [lng, lat],
+        },
+        $maxDistance: 100000,
+      },
+    },
+  });
+
+  if (!pointToPointConnection) {
+    return res.status(404).json({
+      status: 'error',
+      message: 'No point to point connection found',
+    });
+  }
+
+  return res.status(200).json({
+    status: 'success',
+    data: pointToPointConnection,
+  });
 };

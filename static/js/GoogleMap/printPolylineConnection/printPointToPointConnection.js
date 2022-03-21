@@ -4,7 +4,9 @@ export default function (connection, map) {
   const { _id, name, location, type, portNo, color } = connection;
   const coordinates = location.coordinates.map((item) => {
     return { lat: item[0], lng: item[1] };
+    // return { lng: item[0], lat: item[1] };
   });
+  console.log(coordinates);
   const polyline = new google.maps.Polyline({
     path: coordinates,
     geodesic: true,

@@ -8,7 +8,6 @@ import printLocalFiberConnection from './printPolylineConnection/printLocalFiber
 const printAllThePolylines = async (map) => {
   const response = await fetch('/api/getAllConnection');
   const { data: allThePath } = await response.json();
-
   allThePath.forEach((connection) => {
     if (connection.type === 'pointToPoint')
       printMainConnection(connection, map);

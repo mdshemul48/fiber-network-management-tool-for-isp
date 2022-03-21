@@ -85,4 +85,6 @@ const pointToPointConnectionSchema = new Schema(
   { timestamps: true }
 );
 
+pointToPointConnectionSchema.index({ location: '2dsphere' });
+
 module.exports = model('pointToPoint', pointToPointConnectionSchema);
