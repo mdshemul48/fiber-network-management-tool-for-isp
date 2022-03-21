@@ -4,6 +4,7 @@ const router = require('express').Router();
 const {
   createPointToPointConnection,
   createPointToPointConnectionValidation,
+  findNearestPointToPointConnection,
 } = require('../controllers/connectionControllers/pointToPointController.js');
 
 const {
@@ -35,11 +36,13 @@ const { getAllConnection } = require('../controllers/getAllConnection.js');
 router.get('/getAllConnection', getAllConnection);
 
 // creating routes
-router.post(
-  '/create-ptp-connection',
-  createPointToPointConnectionValidation,
-  createPointToPointConnection
-);
+
+router
+  .route('/ptp-connection')
+
+  .get(findNearestPointToPointConnection)
+
+  .post(createPointToPointConnectionValidation, createPointToPointConnection);
 
 router.post(
   '/create-corporate-connection',

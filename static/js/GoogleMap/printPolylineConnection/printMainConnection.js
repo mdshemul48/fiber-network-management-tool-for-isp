@@ -13,7 +13,7 @@ export default function (connection, map) {
   } = connection;
   const polyline = new google.maps.Polyline({
     path: location.coordinates.map((item) => {
-      return { lat: item[0], lng: item[1] };
+      return { lng: item[0], lat: item[1] };
     }),
     geodesic: true,
     strokeColor: '#142F43',

@@ -24,7 +24,7 @@ export default async (coordinates) => {
     coordinates,
   };
 
-  const response = await fetch('/api/create-ptp-connection', {
+  const response = await fetch('/api/ptp-connection', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -32,5 +32,6 @@ export default async (coordinates) => {
     body: JSON.stringify(mainConnection),
   });
   const data = await response.json();
-  location.reload();
+  console.log(data);
+  // location.reload();
 };
