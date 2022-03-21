@@ -120,16 +120,91 @@ document
   });
 
 // ! testing shortest route here
+
+// get point on polyline
+const getPointOnPolyline = (coordinates, targetPoint) => {
+  const point = turf.point(targetPoint);
+  const line = turf.lineString(coordinates);
+  const snapped = turf.pointOnLine(line, point);
+
+  const pstnOnLine = {
+    lat: snapped.geometry.coordinates[1],
+    lng: snapped.geometry.coordinates[0],
+  };
+  return pstnOnLine;
+};
+
 document.getElementById('triggerButton').addEventListener('click', async () => {
-  console.log('trigger button clicked');
   const polylineCoordinates = editablePolyline.polyline.getPath();
   const { lat, lng } = polylineCoordinates.getAt(0);
   const latLng = { lat: lat(), lng: lng() };
   const response = await fetch(
     '/api/ptp-connection?coordinates=' + JSON.stringify(latLng)
   );
-  const data = await response.json();
-  console.log(data);
+  const { status, data } = await response.json();
+
+  if (status === 'success') {
+    const {
+      location: { coordinates },
+    } = data;
+
+    const pointOnLine = getPointOnPolyline(coordinates, [
+      latLng.lng,
+      latLng.lat,
+    ]);
+    new google.maps.Marker({
+      position: pointOnLine,
+      map,
+      title: 'Hello World!',
+    });
+
+    const directionsService = new google.maps.DirectionsService();
+
+    const request = {
+      origin: new google.maps.LatLng(pointOnLine.lat, pointOnLine.lng),
+      destination: polylineCoordinates.getAt(0),
+      travelMode: 'DRIVING',
+    };
+    directionsService.route(request, function (result, status) {
+      if (status == 'OK') {
+        var directionsRenderer = new google.maps.DirectionsRenderer();
+        directionsRenderer.setMap(window.targetMap);
+        directionsRenderer.setDirections(result);
+        editablePolyline.polyline.setMap(null);
+      }
+
+      const allSteps = result.routes[0].legs[0].steps;
+      let lowestDistance = +Infinity;
+      let lowestStep = null;
+      allSteps.forEach((step) => {
+        console.log(step.start_location);
+
+        const { lat, lng } = getPointOnPolyline(coordinates, [
+          step.start_location.lng(),
+          step.start_location.lat(),
+        ]);
+        const distance = turf.distance(
+          [lng, lat],
+          [step.start_location.lng(), step.start_location.lat()]
+        );
+
+        if (distance < lowestDistance) {
+          lowestDistance = distance;
+          lowestStep = { lat, lng };
+        }
+        new google.maps.Marker({
+          position: { lat, lng },
+          map,
+          title: `distance: ${distance}`,
+        });
+      });
+      new google.maps.Marker({
+        position: lowestStep,
+        map,
+        title: 'Hello World!',
+      });
+    });
+  }
 });
 
 // ! -----------------------------------
@@ -138,33 +213,3 @@ document.getElementById('triggerButton').addEventListener('click', async () => {
 window.deleteHomeConnection = deleteHomeConnection;
 window.deleteSplitterConnection = deleteSplitterConnection;
 window.deleteMainLocalConnection = deleteMainLocalConnection;
-
-// const savedData = JSON.parse(localStorage.getItem('siteData'));
-// const graph = new Graph(savedData);
-// console.log(
-//   graph
-//     .getVertexByKey('91224ad8-9194-46bf-8820-0b97f7e43e99')
-//     .coordinates.map((item) => [item.lng, item.lat])
-// );
-// var line = turf.lineString(
-//   graph
-//     .getVertexByKey('91224ad8-9194-46bf-8820-0b97f7e43e99')
-//     .coordinates.map((item) => [item.lng, item.lat])
-// );
-// console.log(editablePolyline.polyline.getPath().Ed[0].lat());
-// var pt = turf.point([
-//   editablePolyline.polyline.getPath().Ed[0].lng(),
-//   editablePolyline.polyline.getPath().Ed[0].lat(),
-// ]);
-// var snapped = turf.pointOnLine(line, pt);
-
-// var pstnOnLine = {
-//   lat: snapped.geometry.coordinates[1],
-//   lng: snapped.geometry.coordinates[0],
-// };
-// var distToLine = snapped.properties.dist;
-// new google.maps.Marker({
-//   position: pstnOnLine,
-//   map,
-//   title: 'Hello World!',
-// });
