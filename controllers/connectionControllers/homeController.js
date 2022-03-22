@@ -54,8 +54,15 @@ exports.createHomeConnection = async (req, res) => {
   });
 
   const targetSplitterInReseller = splitter.reseller.childrens.find(
-    (item) => item.child.toString() === splitter._id.toString()
+    (item) => item.portNo === splitter.portNo
   );
+
+  if (!targetSplitterInReseller) {
+    return res.status(400).json({
+      status: 'error',
+      message: 'Invalid splitter id',
+    });
+  }
 
   splitter.splitterUsed++;
   splitter.reseller.connectionUsed++;
