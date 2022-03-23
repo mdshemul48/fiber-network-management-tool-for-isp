@@ -152,57 +152,71 @@ document.getElementById('triggerButton').addEventListener('click', async () => {
       latLng.lng,
       latLng.lat,
     ]);
-    new google.maps.Marker({
-      position: pointOnLine,
-      map,
-      title: 'Hello World!',
-    });
 
     const directionsService = new google.maps.DirectionsService();
 
     const request = {
       origin: new google.maps.LatLng(pointOnLine.lat, pointOnLine.lng),
       destination: polylineCoordinates.getAt(0),
-      travelMode: 'DRIVING',
+      travelMode: 'WALKING',
     };
-    directionsService.route(request, function (result, status) {
-      if (status == 'OK') {
-        var directionsRenderer = new google.maps.DirectionsRenderer();
-        directionsRenderer.setMap(window.targetMap);
-        directionsRenderer.setDirections(result);
-        editablePolyline.polyline.setMap(null);
-      }
 
-      const allSteps = result.routes[0].legs[0].steps;
-      let lowestDistance = +Infinity;
-      let lowestStep = null;
-      allSteps.forEach((step) => {
-        console.log(step.start_location);
+    await directionsService.route(request, async function (result, status) {
+      if (status === 'OK') {
+        const allSteps = result.routes[0].legs[0].steps;
+
+        let shortestDistance = +Infinity;
+        let shortestPath = null;
+
+        for (let step of allSteps) {
+          const { lat, lng } = getPointOnPolyline(coordinates, [
+            step.start_location.lng(),
+            step.start_location.lat(),
+          ]);
+
+          const request = {
+            origin: new google.maps.LatLng(lat, lng),
+            destination: polylineCoordinates.getAt(0),
+            travelMode: 'WALKING',
+          };
+          await directionsService.route(request, async (result, status) => {
+            if (status === 'OK') {
+              const {
+                distance: { value },
+              } = result.routes[0].legs[0];
+
+              if (value < shortestDistance) {
+                shortestDistance = value;
+                shortestPath = result;
+              }
+            }
+          });
+        }
+
+        const {
+          routes: [{ overview_path: path }],
+        } = shortestPath;
 
         const { lat, lng } = getPointOnPolyline(coordinates, [
-          step.start_location.lng(),
-          step.start_location.lat(),
+          path[0].lng(),
+          path[0].lat(),
         ]);
-        const distance = turf.distance(
-          [lng, lat],
-          [step.start_location.lng(), step.start_location.lat()]
-        );
 
-        if (distance < lowestDistance) {
-          lowestDistance = distance;
-          lowestStep = { lat, lng };
-        }
-        new google.maps.Marker({
-          position: { lat, lng },
-          map,
-          title: `distance: ${distance}`,
+        const startPoint = new google.maps.LatLng(lat, lng);
+        const endPoint = polylineCoordinates.getAt(0);
+
+        const polylineEstimatedPath = [startPoint, ...path, endPoint];
+
+        const polyline = new google.maps.Polyline({
+          path: polylineEstimatedPath,
+          geodesic: true,
+          strokeColor: '#FF0000',
+          strokeOpacity: 1.0,
+          strokeWeight: 3,
         });
-      });
-      new google.maps.Marker({
-        position: lowestStep,
-        map,
-        title: 'Hello World!',
-      });
+
+        polyline.setMap(window.targetMap);
+      }
     });
   }
 });

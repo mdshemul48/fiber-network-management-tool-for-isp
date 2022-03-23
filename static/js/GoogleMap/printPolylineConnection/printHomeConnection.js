@@ -29,7 +29,7 @@ export default function (connection, map) {
         <p class="mb-1"><span class="fw-bold">Onu No:</span> ${onuNo}</p>
         <p class="mb-1"><span class="fw-bold">connection Type:</span> ${type}</p>
         <p class="mb-1"><span class="fw-bold">Core Color:</span> ${color}</p>
-        <p class="mb-1"><span class=" fw-bold">Distance:</span> ${Math.ceil(
+        <p class="mb-1"><span class="fw-bold">Distance:</span> ${Math.ceil(
           lengthInMeters
         )}m</p>
         <button class="badge mb-1 bg-danger border-0" onclick="deleteHomeConnection('${_id}')">Delete</button>
