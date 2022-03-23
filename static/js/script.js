@@ -207,15 +207,12 @@ document.getElementById('triggerButton').addEventListener('click', async () => {
 
         const polylineEstimatedPath = [startPoint, ...path, endPoint];
 
-        const polyline = new google.maps.Polyline({
-          path: polylineEstimatedPath,
-          geodesic: true,
-          strokeColor: '#FF0000',
-          strokeOpacity: 1.0,
-          strokeWeight: 3,
-        });
+        const gg = new EditablePolyline(polylineEstimatedPath);
+        gg.setMap(window.targetMap);
 
-        polyline.setMap(window.targetMap);
+        window.targetMap.addListener('click', (event) => {
+          editablePolyline.addVertex(event.latLng);
+        });
       }
     });
   }
