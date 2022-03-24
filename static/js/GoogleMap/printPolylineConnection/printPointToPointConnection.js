@@ -6,7 +6,6 @@ export default function (connection, map) {
     return { lat: item[0], lng: item[1] };
     // return { lng: item[0], lat: item[1] };
   });
-  console.log(coordinates);
   const polyline = new google.maps.Polyline({
     path: coordinates,
     geodesic: true,

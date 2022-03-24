@@ -167,7 +167,7 @@ document.getElementById('triggerButton').addEventListener('click', async () => {
     await directionsService.route(request, async function (result, status) {
       if (status === 'OK') {
         const allSteps = result.routes[0].legs[0].steps;
-
+        console.log(result, 'real result');
         let shortestDistance = +Infinity;
         let shortestPath = null;
 
@@ -195,6 +195,8 @@ document.getElementById('triggerButton').addEventListener('click', async () => {
             }
           });
         }
+
+        console.log(shortestPath, 'shortest result');
 
         const {
           routes: [{ overview_path: path }],
