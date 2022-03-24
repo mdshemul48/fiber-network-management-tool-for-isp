@@ -18,6 +18,7 @@ let map;
 let editablePolyline;
 let selectedPolyline = null;
 let selectedPolylineType = null;
+let clickEvent = null;
 
 const insertScript = () => {
   const script = document.createElement('script');
@@ -36,7 +37,7 @@ window.initMap = function () {
   window.targetMap = map;
   editablePolyline = new EditablePolyline();
 
-  map.addListener('click', (event) => {
+  clickEvent = map.addListener('click', (event) => {
     editablePolyline.addVertex(event.latLng);
   });
 
@@ -137,10 +138,12 @@ const getPointOnPolyline = (coordinates, targetPoint) => {
 document.getElementById('triggerButton').addEventListener('click', async () => {
   const polylineCoordinates = editablePolyline.polyline.getPath();
   const { lat, lng } = polylineCoordinates.getAt(0);
+
   const latLng = { lat: lat(), lng: lng() };
   const response = await fetch(
     '/api/ptp-connection?coordinates=' + JSON.stringify(latLng)
   );
+
   const { status, data } = await response.json();
 
   if (status === 'success') {
@@ -207,12 +210,23 @@ document.getElementById('triggerButton').addEventListener('click', async () => {
 
         const polylineEstimatedPath = [startPoint, ...path, endPoint];
 
-        const gg = new EditablePolyline(polylineEstimatedPath);
-        gg.setMap(window.targetMap);
+        // deleting prev polyline
+        google.maps.event.removeListener(clickEvent);
+        editablePolyline.setMap(null);
 
-        window.targetMap.addListener('click', (event) => {
+        // creating new polyline
+        editablePolyline = new EditablePolyline(polylineEstimatedPath);
+        editablePolyline.setMap(window.targetMap);
+
+        // adding new event listener
+        clickEvent = window.targetMap.addListener('click', (event) => {
           editablePolyline.addVertex(event.latLng);
         });
+
+        // setting parent data
+        const { _id, type } = data;
+        selectedPolyline = _id;
+        selectedPolylineType = type;
       }
     });
   }
