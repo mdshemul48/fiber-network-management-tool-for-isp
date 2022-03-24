@@ -215,13 +215,24 @@ document.getElementById('triggerButton').addEventListener('click', async () => {
         editablePolyline.setMap(null);
 
         // creating new polyline
-        editablePolyline = new EditablePolyline(polylineEstimatedPath);
+        editablePolyline = new EditablePolyline();
         editablePolyline.setMap(window.targetMap);
 
         // adding new event listener
         clickEvent = window.targetMap.addListener('click', (event) => {
           editablePolyline.addVertex(event.latLng);
         });
+
+        // this will animate polyline
+        for (let i = 0; i < polylineEstimatedPath.length; i++) {
+          setTimeout(
+            function (coords) {
+              editablePolyline.addVertex(coords);
+            },
+            200 * i,
+            polylineEstimatedPath[i]
+          );
+        }
 
         // setting parent data
         const { _id, type } = data;
