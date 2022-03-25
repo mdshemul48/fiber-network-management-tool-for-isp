@@ -1,3 +1,5 @@
+import getShortestPath from './utility/getShortestPath.js';
+
 import EditablePolyline from './GoogleMap/EditablePolyline.js';
 import printAllThePolylines from './GoogleMap/printAllThePolylines.js';
 
@@ -137,11 +139,11 @@ const getPointOnPolyline = (coordinates, targetPoint) => {
 
 document.getElementById('triggerButton').addEventListener('click', async () => {
   const polylineCoordinates = editablePolyline.polyline.getPath();
-  const { lat, lng } = polylineCoordinates.getAt(0);
+  const point = polylineCoordinates.getAt(0);
 
-  const latLng = { lat: lat(), lng: lng() };
   const response = await fetch(
-    '/api/ptp-connection?coordinates=' + JSON.stringify(latLng)
+    '/api/ptp-connection?coordinates=' +
+      JSON.stringify({ lat: point.lat(), lng: point.lng() })
   );
 
   const { status, data } = await response.json();
@@ -151,97 +153,32 @@ document.getElementById('triggerButton').addEventListener('click', async () => {
       location: { coordinates },
     } = data;
 
-    const pointOnLine = getPointOnPolyline(coordinates, [
-      latLng.lng,
-      latLng.lat,
-    ]);
-
-    const directionsService = new google.maps.DirectionsService();
-
-    const request = {
-      origin: new google.maps.LatLng(pointOnLine.lat, pointOnLine.lng),
-      destination: polylineCoordinates.getAt(0),
-      travelMode: 'WALKING',
-    };
-
-    await directionsService.route(request, async function (result, status) {
-      if (status === 'OK') {
-        const allSteps = result.routes[0].legs[0].steps;
-        let shortestDistance = +Infinity;
-        let shortestPath = null;
-
-        // let step of allSteps
-        for (let i = 0, j = 0; i < allSteps.length && j < 2; i++, j++) {
-          console.log(j);
-          const step = allSteps[i];
-
-          const { lat, lng } = getPointOnPolyline(coordinates, [
-            step.start_location.lng(),
-            step.start_location.lat(),
-          ]);
-
-          const request = {
-            origin: new google.maps.LatLng(lat, lng),
-            destination: polylineCoordinates.getAt(0),
-            travelMode: 'WALKING',
-          };
-          await directionsService.route(request, async (result, status) => {
-            if (status === 'OK') {
-              const {
-                distance: { value },
-              } = result.routes[0].legs[0];
-
-              if (value < shortestDistance) {
-                shortestDistance = value;
-                shortestPath = result;
-              }
-            }
-          });
-        }
-
-        const {
-          routes: [{ overview_path: path }],
-        } = shortestPath;
-
-        const { lat, lng } = getPointOnPolyline(coordinates, [
-          path[0].lng(),
-          path[0].lat(),
-        ]);
-
-        const startPoint = new google.maps.LatLng(lat, lng);
-        const endPoint = polylineCoordinates.getAt(0);
-
-        const polylineEstimatedPath = [startPoint, ...path, endPoint];
-
-        // deleting prev polyline
-        google.maps.event.removeListener(clickEvent);
-        editablePolyline.setMap(null);
-
-        // creating new polyline
-        editablePolyline = new EditablePolyline();
-        editablePolyline.setMap(window.targetMap);
-
-        // adding new event listener
-        clickEvent = window.targetMap.addListener('click', (event) => {
-          editablePolyline.addVertex(event.latLng);
-        });
-
-        // this will animate polyline
-        for (let i = 0; i < polylineEstimatedPath.length; i++) {
-          setTimeout(
-            function (coords) {
-              editablePolyline.addVertex(coords);
-            },
-            200 * i,
-            polylineEstimatedPath[i]
-          );
-        }
-
-        // setting parent data
-        const { _id, type } = data;
-        selectedPolyline = _id;
-        selectedPolylineType = type;
+    getShortestPath(coordinates, point, (result) => {
+      const polylineEstimatedPath = result;
+      // deleting prev polyline
+      google.maps.event.removeListener(clickEvent);
+      editablePolyline.setMap(null);
+      // creating new polyline
+      editablePolyline = new EditablePolyline();
+      editablePolyline.setMap(window.targetMap);
+      // adding new event listener
+      clickEvent = window.targetMap.addListener('click', (event) => {
+        editablePolyline.addVertex(event.latLng);
+      });
+      // this will animate polyline
+      for (let i = 0; i < polylineEstimatedPath.length; i++) {
+        setTimeout(
+          function (coords) {
+            editablePolyline.addVertex(coords);
+          },
+          200 * i,
+          polylineEstimatedPath[i]
+        );
       }
+      // setting parent data
+      const { _id, type } = data;
+      selectedPolyline = _id;
+      selectedPolylineType = type;
     });
   }
 });
