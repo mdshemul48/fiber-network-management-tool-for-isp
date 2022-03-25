@@ -6,7 +6,7 @@ class EditablePolyline {
       editable: true,
       strokeColor: '#313552',
       strokeOpacity: 1.0,
-      strokeWeight: 2,
+      strokeWeight: 3,
     });
 
     window.google.maps.event.addListener(

@@ -167,11 +167,14 @@ document.getElementById('triggerButton').addEventListener('click', async () => {
     await directionsService.route(request, async function (result, status) {
       if (status === 'OK') {
         const allSteps = result.routes[0].legs[0].steps;
-        console.log(result, 'real result');
         let shortestDistance = +Infinity;
         let shortestPath = null;
 
-        for (let step of allSteps) {
+        // let step of allSteps
+        for (let i = 0, j = 0; i < allSteps.length && j < 2; i++, j++) {
+          console.log(j);
+          const step = allSteps[i];
+
           const { lat, lng } = getPointOnPolyline(coordinates, [
             step.start_location.lng(),
             step.start_location.lat(),
@@ -195,8 +198,6 @@ document.getElementById('triggerButton').addEventListener('click', async () => {
             }
           });
         }
-
-        console.log(shortestPath, 'shortest result');
 
         const {
           routes: [{ overview_path: path }],
