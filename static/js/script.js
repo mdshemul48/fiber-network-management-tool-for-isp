@@ -4,9 +4,9 @@ import EditablePolyline from './GoogleMap/EditablePolyline.js';
 import printAllThePolylines from './GoogleMap/printAllThePolylines.js';
 
 // all the from submit functions
-import addNewMainConnection from './addNewMainConnection/addNewMainConnection.js';
-import addPointToPoint from './addNewMainConnection/AddPointToPoint.js';
-import addMainLocalConnection from './addNewMainConnection/addMainLocalConnection.js';
+import addReseller from './addNewMainConnection/addReseller.js';
+import AddCompany from './addNewMainConnection/AddCompany.js';
+import addPointToPoint from './addNewMainConnection/addPointToPoint.js';
 import addLocalSplitter from './addNewMainConnection/addLocalSplitter.js';
 import addLocalHomeConnection from './addNewMainConnection/addLocalHomeConnection.js';
 import addLocalFiberConnection from './addNewMainConnection/addLocalFiberConnection.js';
@@ -76,21 +76,21 @@ document
   .addEventListener('submit', (event) => {
     event.preventDefault();
     const polylineCoordinates = editablePolyline.getAllThePath();
-    addNewMainConnection(polylineCoordinates);
+    addReseller(polylineCoordinates);
   });
 
 document
   .getElementById('addPointToPoint')
   .addEventListener('submit', (event) => {
     event.preventDefault();
-    addPointToPoint(selectedPolyline, editablePolyline.getAllThePath());
+    AddCompany(selectedPolyline, editablePolyline.getAllThePath());
   });
 
 document
   .getElementById('addMainLocalSubmission')
   .addEventListener('submit', (event) => {
     event.preventDefault();
-    addMainLocalConnection(selectedPolyline, editablePolyline.getAllThePath());
+    addPointToPoint(selectedPolyline, editablePolyline.getAllThePath());
   });
 
 document

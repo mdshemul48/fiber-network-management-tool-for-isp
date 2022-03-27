@@ -1,24 +1,35 @@
 export default async (polylineKey, coordinates) => {
-  const companyName = document.getElementById(
-    'addPointToPointCompanyName'
+  const connectionName = document.getElementById(
+    'addLocalConnectionName'
   ).value;
-  const portNo = document.getElementById('addPointToPointPortNo').value;
-  const coreColor = document.getElementById('addPointToPointCoreOptions').value;
+  const oltSerialNumber = document.getElementById(
+    'addLocalConnectionOltSwitchNo'
+  ).value;
 
-  const pointToPointPolyline = {
+  const portNo = document.getElementById('addLocalConnectionPortNo').value;
+
+  const connectionType = document.querySelector(
+    'input[name="addLocalConnectionType"]:checked'
+  ).value;
+
+  const color = document.getElementById('addLocalConnectionCoreOption').value;
+
+  const newConnection = {
     parent: polylineKey,
-    name: companyName,
+    name: connectionName,
+    oltSerialNumber,
     portNo,
-    coreColor,
+    type: 'reseller',
+    oltType: connectionType,
     coordinates,
+    color,
   };
-
-  const response = await fetch('/api/corporate-connection', {
+  const response = await fetch('/api/reseller-connection', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(pointToPointPolyline),
+    body: JSON.stringify(newConnection),
   });
   const { status, data } = await response.json();
 
