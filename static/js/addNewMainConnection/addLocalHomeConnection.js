@@ -1,6 +1,3 @@
-import Graph from '../storage/Graph.js';
-import uuidv4 from '../utility/uuid.js';
-
 export default async (polylineKey, coordinates) => {
   const connectionName = document.getElementById(
     'addLocalHomeConnectionName'
@@ -17,7 +14,7 @@ export default async (polylineKey, coordinates) => {
     onuNo,
     color: coreOption,
   };
-  const response = await fetch('/api/create-home-connection', {
+  const response = await fetch('/api/home-connection', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -25,6 +22,11 @@ export default async (polylineKey, coordinates) => {
     body: JSON.stringify(newLocalConnection),
   });
 
-  const text = await response.text();
-  location.reload();
+  const { status, data } = await response.json();
+
+  if (status === 'success') {
+    location.reload();
+  } else {
+    console.log(status, data);
+  }
 };

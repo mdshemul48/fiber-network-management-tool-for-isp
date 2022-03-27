@@ -31,7 +31,12 @@ export default async (coordinates) => {
     },
     body: JSON.stringify(mainConnection),
   });
-  const data = await response.json();
-  console.log(data);
-  // location.reload();
+
+  const { status, data } = await response.json();
+
+  if (status === 'success') {
+    location.reload();
+  } else {
+    console.log(status, data);
+  }
 };

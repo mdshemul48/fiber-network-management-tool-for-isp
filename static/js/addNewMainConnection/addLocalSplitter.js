@@ -25,7 +25,7 @@ export default async (polylineKey, polylineType, coordinates) => {
     portNo: localSplitterPortNo,
   };
 
-  const response = await fetch('/api/create-splitter-connection', {
+  const response = await fetch('/api/splitter-connection', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -33,6 +33,11 @@ export default async (polylineKey, polylineType, coordinates) => {
 
     body: JSON.stringify(newSplitterConnection),
   });
-  const data = await response.text();
-  location.reload();
+  const { status, data } = await response.json();
+
+  if (status === 'success') {
+    location.reload();
+  } else {
+    console.log(status, data);
+  }
 };

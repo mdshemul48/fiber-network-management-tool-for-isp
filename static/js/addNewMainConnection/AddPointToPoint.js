@@ -13,14 +13,18 @@ export default async (polylineKey, coordinates) => {
     coordinates,
   };
 
-  const response = await fetch('/api/create-corporate-connection', {
+  const response = await fetch('/api/corporate-connection', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(pointToPointPolyline),
   });
-  const data = await response.json();
+  const { status, data } = await response.json();
 
-  location.reload();
+  if (status === 'success') {
+    location.reload();
+  } else {
+    console.log(status, data);
+  }
 };

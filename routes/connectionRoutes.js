@@ -45,29 +45,29 @@ router
   .post(createPointToPointConnectionValidation, createPointToPointConnection);
 
 router.post(
-  '/create-corporate-connection',
+  '/corporate-connection',
   createCorporateConnectionValidation,
   createCorporateConnection
 );
 
 router.post(
-  '/create-reseller-connection',
+  '/reseller-connection',
   createResellerConnectionValidation,
   createResellerConnection
 );
 
 router.post(
-  '/create-local-fiber-connection',
+  '/local-fiber-connection',
   createLocalFiberConnectionValidation,
   createLocalFiberConnection
 );
 
 router.post(
-  '/create-splitter-connection',
+  '/splitter-connection',
   createSplitterValidation,
   createSplitterConnection
 );
 
-router.post('/create-home-connection', createHomeConnection);
+router.post('/home-connection', createHomeConnection);
 
 module.exports = router;

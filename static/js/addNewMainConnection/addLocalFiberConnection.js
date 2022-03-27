@@ -22,13 +22,18 @@ export default async (polylineKey, selectedPolylineType, coordinates) => {
     coordinates,
   };
 
-  const response = await fetch('/api/create-local-fiber-connection', {
+  const response = await fetch('/api/local-fiber-connection', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(localFiberConnection),
   });
-  const data = await response.json();
-  location.reload();
+  const { status, data } = await response.json();
+
+  if (status === 'success') {
+    location.reload();
+  } else {
+    console.log(status, data);
+  }
 };
