@@ -5,6 +5,7 @@ const {
   createPointToPointConnection,
   createPointToPointConnectionValidation,
   findNearestPointToPointConnection,
+  deletePointToPointConnection,
 } = require('../controllers/connectionControllers/pointToPointController.js');
 
 const {
@@ -42,7 +43,9 @@ router
 
   .get(findNearestPointToPointConnection)
 
-  .post(createPointToPointConnectionValidation, createPointToPointConnection);
+  .post(createPointToPointConnectionValidation, createPointToPointConnection)
+
+  .delete(deletePointToPointConnection);
 
 router.post(
   '/corporate-connection',

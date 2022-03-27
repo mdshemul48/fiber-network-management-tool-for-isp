@@ -1,7 +1,7 @@
 const { body, validationResult } = require('express-validator');
 const pointToPointConnectionModel = require('../../model/pointToPointConnectionModel.js');
 
-// point to point connection validation array
+// ! -> point to point connection validation array
 exports.createPointToPointConnectionValidation = [
   body('name').notEmpty().withMessage('name is required'),
 
@@ -20,7 +20,7 @@ exports.createPointToPointConnectionValidation = [
     .withMessage('coordinates must be an array of at least 2 items'),
 ];
 
-// point to point connection controller functions
+// ! -> point to point connection controller functions
 exports.createPointToPointConnection = async (req, res) => {
   try {
     // validating the request body
@@ -54,7 +54,7 @@ exports.createPointToPointConnection = async (req, res) => {
   }
 };
 
-// find nearest point to point connection with coordinates
+// ! -> find nearest point to point connection with coordinates
 exports.findNearestPointToPointConnection = async (req, res) => {
   const { coordinates } = req.query;
   const { lat, lng } = JSON.parse(coordinates);
@@ -82,4 +82,38 @@ exports.findNearestPointToPointConnection = async (req, res) => {
     status: 'success',
     data: pointToPointConnection,
   });
+};
+
+// ! -> delete point to point connection
+exports.deletePointToPointConnection = async (req, res) => {
+  try {
+    const { id } = req.query;
+    console.log(id);
+    const targetPointToPoint = await pointToPointConnectionModel.findById(id);
+
+    if (!targetPointToPoint) {
+      return res.status(404).json({
+        status: 'error',
+        message: 'No point to point connection found',
+      });
+    }
+
+    if (targetPointToPoint.childrens.length > 0) {
+      return res.status(400).json({
+        status: 'error',
+        message: 'point to point connection has childrens',
+      });
+    }
+
+    await pointToPointConnectionModel.findByIdAndDelete(targetPointToPoint._id);
+
+    return res.status(200).json({
+      status: 'success',
+    });
+  } catch (err) {
+    return res.status(500).json({
+      status: 'error',
+      message: err.message,
+    });
+  }
 };
