@@ -126,13 +126,19 @@ exports.createResellerConnection = async (req, res) => {
 exports.deleteResellerConnection = async (req, res) => {
   try {
     const { id } = req.query;
-
     const resellerConnection = await resellerConnectionModel.findById(id);
 
     if (!resellerConnection) {
       return res.status(400).json({
         status: 'error',
         message: 'reseller connection does not exist',
+      });
+    }
+
+    if (resellerConnection.childrens.length > 0) {
+      return res.status(400).json({
+        status: 'error',
+        message: 'reseller connection has childrens',
       });
     }
 
@@ -148,7 +154,7 @@ exports.deleteResellerConnection = async (req, res) => {
     }
 
     const parentConnectionIndex = parentConnection.childrens.findIndex(
-      (item) => item.child === id
+      (item) => item.child.toString() === id
     );
 
     if (parentConnectionIndex === -1) {
@@ -164,7 +170,7 @@ exports.deleteResellerConnection = async (req, res) => {
     const markerPoint = parentConnection.markers.findIndex((item) => {
       return (
         item.location.coordinates[0] ===
-        corporateConnection.location.coordinates[0][0]
+        resellerConnection.location.coordinates[0][0]
       );
     });
 
