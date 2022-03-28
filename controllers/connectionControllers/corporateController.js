@@ -153,15 +153,17 @@ exports.deleteCorporateConnection = async (req, res) => {
       );
     });
 
-    if (markerPoint) {
-      if (markerPoint.totalConnected === 1) {
-        parentConnection.markers.splice(
-          parentConnection.markers.indexOf(markerPoint),
-          1
-        );
+    if (markerPoint !== -1) {
+      if (parentConnection.markers[markerPoint].totalConnected === 1) {
+        parentConnection.markers.splice(markerPoint, 1);
       } else {
-        markerPoint.totalConnected--;
+        parentConnection.markers[markerPoint].totalConnected--;
       }
+    } else {
+      return res.status(400).json({
+        status: 'error',
+        message: 'parent connection does not have this child',
+      });
     }
 
     await parentConnection.save();
