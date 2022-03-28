@@ -17,6 +17,7 @@ const {
 const {
   createResellerConnection,
   createResellerConnectionValidation,
+  deleteResellerConnection,
 } = require('../controllers/connectionControllers/resellerController.js');
 
 const {
@@ -55,11 +56,12 @@ router
 
   .delete(deleteCorporateConnection);
 
-router.post(
-  '/reseller-connection',
-  createResellerConnectionValidation,
-  createResellerConnection
-);
+router
+  .route('/reseller-connection')
+
+  .post(createResellerConnectionValidation, createResellerConnection)
+
+  .delete(deleteResellerConnection);
 
 router.post(
   '/local-fiber-connection',
