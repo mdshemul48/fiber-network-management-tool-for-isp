@@ -124,19 +124,6 @@ document
 
 // ! testing shortest route here
 
-// get point on polyline
-const getPointOnPolyline = (coordinates, targetPoint) => {
-  const point = turf.point(targetPoint);
-  const line = turf.lineString(coordinates);
-  const snapped = turf.pointOnLine(line, point);
-
-  const pstnOnLine = {
-    lat: snapped.geometry.coordinates[1],
-    lng: snapped.geometry.coordinates[0],
-  };
-  return pstnOnLine;
-};
-
 document.getElementById('triggerButton').addEventListener('click', async () => {
   const polylineCoordinates = editablePolyline.polyline.getPath();
   const point = polylineCoordinates.getAt(0);
@@ -189,3 +176,7 @@ document.getElementById('triggerButton').addEventListener('click', async () => {
 window.deleteHomeConnection = deleteHomeConnection;
 window.deleteSplitterConnection = deleteSplitterConnection;
 window.deleteMainLocalConnection = deleteMainLocalConnection;
+
+window.deleteConnection = (type, id) => {
+  console.log(type, id);
+};

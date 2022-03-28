@@ -44,7 +44,7 @@ export default function (connection, map) {
     <p class="mb-1"><span class="fw-bold"> total Connection Used:</span> ${connectionUsed}</p>
     
     <p class="mb-1"><span class="fw-bold"> oltSwitchNumber:</span> ${oltSerialNumber}</p>
-    <button class="badge mb-1 bg-danger border-0" onclick="deleteMainLocalConnection('${_id}')">Delete</button>
+    <button class="badge mb-1 bg-danger border-0" onclick="deleteConnection('${type}', '${_id}')">Delete</button>
 
     <p class="mb-1 fw-bold">Port Used: </p>
     <hr class="my-1 w-50" />
