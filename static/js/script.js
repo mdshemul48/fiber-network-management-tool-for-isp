@@ -172,11 +172,6 @@ document.getElementById('triggerButton').addEventListener('click', async () => {
 
 // ! -----------------------------------
 
-// all the delete functions
-window.deleteHomeConnection = deleteHomeConnection;
-window.deleteSplitterConnection = deleteSplitterConnection;
-window.deleteMainLocalConnection = deleteMainLocalConnection;
-
 window.deleteConnection = (type, id) => {
   console.log(type, id);
 };
