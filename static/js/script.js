@@ -11,10 +11,7 @@ import addLocalSplitter from './addNewMainConnection/addLocalSplitter.js';
 import addLocalHomeConnection from './addNewMainConnection/addLocalHomeConnection.js';
 import addLocalFiberConnection from './addNewMainConnection/addLocalFiberConnection.js';
 
-// all the delete functions
-import deleteHomeConnection from './deletePolyline/deleteHomeConnection.js';
-import deleteSplitterConnection from './deletePolyline/deleteSplitterConnection.js';
-import deleteMainLocalConnection from './deletePolyline/deleteMainLocalConnection.js';
+import deleteConnection from './deletePolyline/deleteConnection.js';
 
 let map;
 let editablePolyline;
@@ -172,6 +169,4 @@ document.getElementById('triggerButton').addEventListener('click', async () => {
 
 // ! -----------------------------------
 
-window.deleteConnection = (type, id) => {
-  console.log(type, id);
-};
+window.deleteConnection = deleteConnection;

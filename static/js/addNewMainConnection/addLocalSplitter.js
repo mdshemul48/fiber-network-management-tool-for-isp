@@ -1,7 +1,3 @@
-import Graph from '../storage/Graph.js';
-import coreColor from '../utility/coreColor.js';
-import uuidv4 from '../utility/uuid.js';
-
 export default async (polylineKey, polylineType, coordinates) => {
   const connectionName = document.getElementById('addLocalSplitterName').value;
   const localSplitterPortNo = Number(
