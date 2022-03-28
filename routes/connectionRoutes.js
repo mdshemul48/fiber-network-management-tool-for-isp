@@ -11,6 +11,7 @@ const {
 const {
   createCorporateConnection,
   createCorporateConnectionValidation,
+  deleteCorporateConnection,
 } = require('../controllers/connectionControllers/corporateController.js');
 
 const {
@@ -47,11 +48,12 @@ router
 
   .delete(deletePointToPointConnection);
 
-router.post(
-  '/corporate-connection',
-  createCorporateConnectionValidation,
-  createCorporateConnection
-);
+router
+  .route('/corporate-connection')
+
+  .post(createCorporateConnectionValidation, createCorporateConnection)
+
+  .delete(deleteCorporateConnection);
 
 router.post(
   '/reseller-connection',

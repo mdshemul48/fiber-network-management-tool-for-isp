@@ -107,3 +107,77 @@ exports.createCorporateConnection = async (req, res) => {
     });
   }
 };
+
+exports.deleteCorporateConnection = async (req, res) => {
+  try {
+    const { id } = req.query;
+
+    const corporateConnection = await corporateConnectionModel.findById(id);
+
+    if (!corporateConnection) {
+      return res.status(400).json({
+        status: 'error',
+        message: 'corporate connection does not exist',
+      });
+    }
+
+    const parentConnection = await pointToPointConnectionModel.findById(
+      corporateConnection.parent
+    );
+
+    if (!parentConnection) {
+      return res.status(400).json({
+        status: 'error',
+        message: 'parent connection does not exist',
+      });
+    }
+
+    const parentConnectionIndex = parentConnection.childrens.findIndex(
+      (item) => item.child.toString() === id
+    );
+
+    if (parentConnectionIndex === -1) {
+      return res.status(400).json({
+        status: 'error',
+        message: 'parent connection does not have this child',
+      });
+    }
+
+    parentConnection.childrens.splice(parentConnectionIndex, 1);
+    parentConnection.totalConnected--;
+
+    const markerPoint = parentConnection.markers.findIndex((item) => {
+      return (
+        item.location.coordinates[0] ===
+        corporateConnection.location.coordinates[0][0]
+      );
+    });
+
+    if (markerPoint) {
+      if (markerPoint.totalConnected === 1) {
+        parentConnection.markers.splice(
+          parentConnection.markers.indexOf(markerPoint),
+          1
+        );
+      } else {
+        markerPoint.totalConnected--;
+      }
+    }
+
+    await parentConnection.save();
+
+    await corporateConnection.remove();
+
+    return res.status(200).json({
+      status: 'success',
+      data: {
+        message: 'corporate connection deleted successfully',
+      },
+    });
+  } catch (err) {
+    return res.status(500).json({
+      status: 'error',
+      message: err.message,
+    });
+  }
+};
