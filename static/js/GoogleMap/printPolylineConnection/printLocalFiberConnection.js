@@ -42,9 +42,7 @@ export default function (connection, map) {
       <p class="mb-1"><span class=" fw-bold">Distance:</span> ${Math.ceil(
         lengthInMeters
       )}m</p>
-        <button class="badge mb-1 bg-danger border-0" onclick="deleteSplitterConnection('${_id}', '${
-        location._id
-      }')">Delete</button>
+      <button class="badge mb-1 bg-danger border-0" onclick="deleteConnection('${type}', '${_id}')">Delete</button>
         <p class="mb-1 fw-bold">Core Available: </p>
         <hr class="my-1 w-50" />
         ${localFiberChildrens}

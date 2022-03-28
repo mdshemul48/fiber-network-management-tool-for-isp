@@ -11,11 +11,13 @@ const {
 const {
   createCorporateConnection,
   createCorporateConnectionValidation,
+  deleteCorporateConnection,
 } = require('../controllers/connectionControllers/corporateController.js');
 
 const {
   createResellerConnection,
   createResellerConnectionValidation,
+  deleteResellerConnection,
 } = require('../controllers/connectionControllers/resellerController.js');
 
 const {
@@ -47,17 +49,19 @@ router
 
   .delete(deletePointToPointConnection);
 
-router.post(
-  '/corporate-connection',
-  createCorporateConnectionValidation,
-  createCorporateConnection
-);
+router
+  .route('/corporate-connection')
 
-router.post(
-  '/reseller-connection',
-  createResellerConnectionValidation,
-  createResellerConnection
-);
+  .post(createCorporateConnectionValidation, createCorporateConnection)
+
+  .delete(deleteCorporateConnection);
+
+router
+  .route('/reseller-connection')
+
+  .post(createResellerConnectionValidation, createResellerConnection)
+
+  .delete(deleteResellerConnection);
 
 router.post(
   '/local-fiber-connection',

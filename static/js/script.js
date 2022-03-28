@@ -11,10 +11,7 @@ import addLocalSplitter from './addNewMainConnection/addLocalSplitter.js';
 import addLocalHomeConnection from './addNewMainConnection/addLocalHomeConnection.js';
 import addLocalFiberConnection from './addNewMainConnection/addLocalFiberConnection.js';
 
-// all the delete functions
-import deleteHomeConnection from './deletePolyline/deleteHomeConnection.js';
-import deleteSplitterConnection from './deletePolyline/deleteSplitterConnection.js';
-import deleteMainLocalConnection from './deletePolyline/deleteMainLocalConnection.js';
+import deleteConnection from './deletePolyline/deleteConnection.js';
 
 let map;
 let editablePolyline;
@@ -124,19 +121,6 @@ document
 
 // ! testing shortest route here
 
-// get point on polyline
-const getPointOnPolyline = (coordinates, targetPoint) => {
-  const point = turf.point(targetPoint);
-  const line = turf.lineString(coordinates);
-  const snapped = turf.pointOnLine(line, point);
-
-  const pstnOnLine = {
-    lat: snapped.geometry.coordinates[1],
-    lng: snapped.geometry.coordinates[0],
-  };
-  return pstnOnLine;
-};
-
 document.getElementById('triggerButton').addEventListener('click', async () => {
   const polylineCoordinates = editablePolyline.polyline.getPath();
   const point = polylineCoordinates.getAt(0);
@@ -185,7 +169,4 @@ document.getElementById('triggerButton').addEventListener('click', async () => {
 
 // ! -----------------------------------
 
-// all the delete functions
-window.deleteHomeConnection = deleteHomeConnection;
-window.deleteSplitterConnection = deleteSplitterConnection;
-window.deleteMainLocalConnection = deleteMainLocalConnection;
+window.deleteConnection = deleteConnection;

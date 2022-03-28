@@ -59,7 +59,7 @@ ${
         lengthInMeters
       )}m</p>
       <p class="mb-1 fw-bold">Core Available: </p>
-      <button class="badge mb-1 bg-danger border-0" onclick="deleteSplitterConnection('${_id}')">Delete</button>
+      <button class="badge mb-1 bg-danger border-0" onclick="deleteConnection('${type}', '${_id}')">Delete</button>
       <hr class="my-1 w-50" />
       ${splitterChildDetails}
       `,

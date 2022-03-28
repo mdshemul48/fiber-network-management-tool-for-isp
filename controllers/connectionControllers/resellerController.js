@@ -122,3 +122,83 @@ exports.createResellerConnection = async (req, res) => {
     });
   }
 };
+
+exports.deleteResellerConnection = async (req, res) => {
+  try {
+    const { id } = req.query;
+    const resellerConnection = await resellerConnectionModel.findById(id);
+
+    if (!resellerConnection) {
+      return res.status(400).json({
+        status: 'error',
+        message: 'reseller connection does not exist',
+      });
+    }
+
+    if (resellerConnection.childrens.length > 0) {
+      return res.status(400).json({
+        status: 'error',
+        message: 'reseller connection has childrens',
+      });
+    }
+
+    const parentConnection = await pointToPointConnectionModel.findById(
+      resellerConnection.parent
+    );
+
+    if (!parentConnection) {
+      return res.status(400).json({
+        status: 'error',
+        message: 'parent connection does not exist',
+      });
+    }
+
+    const parentConnectionIndex = parentConnection.childrens.findIndex(
+      (item) => item.child.toString() === id
+    );
+
+    if (parentConnectionIndex === -1) {
+      return res.status(400).json({
+        status: 'error',
+        message: 'parent connection does not have this child',
+      });
+    }
+
+    parentConnection.childrens.splice(parentConnectionIndex, 1);
+    parentConnection.totalConnected--;
+
+    const markerPoint = parentConnection.markers.findIndex((item) => {
+      return (
+        item.location.coordinates[0] ===
+        resellerConnection.location.coordinates[0][0]
+      );
+    });
+
+    if (markerPoint !== -1) {
+      if (parentConnection.markers[markerPoint].totalConnected === 1) {
+        parentConnection.markers.splice(markerPoint, 1);
+      } else {
+        parentConnection.markers[markerPoint].totalConnected--;
+      }
+    } else {
+      return res.status(400).json({
+        status: 'error',
+        message: 'parent connection does not have this child',
+      });
+    }
+
+    parentConnection.save();
+
+    await resellerConnection.remove();
+
+    return res.status(200).json({
+      status: 'success',
+      data: resellerConnection,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      status: 'error',
+      message: error.message,
+    });
+  }
+};
