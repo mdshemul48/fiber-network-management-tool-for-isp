@@ -57,7 +57,7 @@ const localFiberConnectionSchema = new Schema(
 
     mainConnection: {
       type: ObjectId,
-      required: true,
+      required: false,
     },
 
     locations: [

@@ -56,6 +56,11 @@ exports.createLocalFiberConnection = async (req, res) => {
         }
       );
 
+      createLocalFiberConnection.mainConnection =
+        createLocalFiberConnection.locations[0]._id;
+
+      await createLocalFiberConnection.save();
+
       selectedParent.childrens.push({
         child: createLocalFiberConnection._id,
         connectionType: 'localFiber',
@@ -92,7 +97,7 @@ exports.createLocalFiberConnection = async (req, res) => {
   } catch (error) {
     return res.status(500).json({
       status: 'error',
-      message: 'internal server error',
+      message: error.message,
     });
   }
 };
