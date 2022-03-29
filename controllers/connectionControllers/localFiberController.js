@@ -1,4 +1,4 @@
-const { body, validationResult } = require('express-validator');
+const { body, query, validationResult } = require('express-validator');
 
 const localFiberConnectionModel = require('../../model/localFiberConnectionModel.js');
 const resellerConnectionModel = require('../../model/resellerConnectionModel.js');
@@ -103,8 +103,8 @@ exports.createLocalFiberConnection = async (req, res) => {
 };
 
 exports.deleteLocalFiberConnectionValidation = [
-  body('id').notEmpty().withMessage('id is required'),
-  body('subId').notEmpty().withMessage('subId is required'),
+  query('id').notEmpty().withMessage('id is required'),
+  query('subId').notEmpty().withMessage('subId is required'),
 ];
 
 exports.deleteLocalFiberConnection = async (req, res) => {
@@ -127,7 +127,7 @@ exports.deleteLocalFiberConnection = async (req, res) => {
       });
     }
 
-    if (selectedLocalFiberConnection.mainConnection === subId) {
+    if (selectedLocalFiberConnection.mainConnection.toString() === subId) {
       if (
         selectedLocalFiberConnection.childrens > 0 ||
         selectedLocalFiberConnection.locations.length > 1
@@ -138,11 +138,36 @@ exports.deleteLocalFiberConnection = async (req, res) => {
         });
       }
 
-      selectedLocalFiberConnection.remove();
+      const selectedParent = await resellerConnectionModel.findById(
+        selectedLocalFiberConnection.parent
+      );
+
+      if (!selectedParent) {
+        return res.status(400).json({
+          status: 'error',
+          message: 'parent connection does not exist',
+        });
+      }
+
+      const selectedParentIndex = selectedParent.childrens.findIndex(
+        (item) => item.child.toString() === id
+      );
+
+      if (selectedParentIndex === -1) {
+        return res.status(400).json({
+          status: 'error',
+          message: 'parent connection does not exist',
+        });
+      }
+
+      selectedParent.childrens.splice(selectedParentIndex, 1);
+
+      await selectedParent.save();
+      await selectedLocalFiberConnection.remove();
     } else {
       const selectedLocalFiberConnectionSubIndex =
         selectedLocalFiberConnection.locations.findIndex((item) => {
-          return item._id === subId;
+          return item._id.toString() === subId;
         });
 
       if (selectedLocalFiberConnectionSubIndex === -1) {
