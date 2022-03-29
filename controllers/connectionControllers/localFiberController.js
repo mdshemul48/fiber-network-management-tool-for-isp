@@ -119,6 +119,7 @@ exports.deleteLocalFiberConnection = async (req, res) => {
 
     const selectedLocalFiberConnection =
       await localFiberConnectionModel.findById(id);
+
     if (!selectedLocalFiberConnection) {
       return res.status(400).json({
         status: 'error',
@@ -126,24 +127,38 @@ exports.deleteLocalFiberConnection = async (req, res) => {
       });
     }
 
-    const selectedLocalFiberConnectionSubIndex =
-      selectedLocalFiberConnection.locations.findIndex((item) => {
-        return item._id === subId;
-      });
+    if (selectedLocalFiberConnection.mainConnection === subId) {
+      if (
+        selectedLocalFiberConnection.childrens > 0 ||
+        selectedLocalFiberConnection.locations.length > 1
+      ) {
+        return res.status(400).json({
+          status: 'error',
+          message: 'cannot delete main connection',
+        });
+      }
 
-    if (selectedLocalFiberConnectionSubIndex === -1) {
-      return res.status(400).json({
-        status: 'error',
-        message: 'subId does not exist',
-      });
+      selectedLocalFiberConnection.remove();
+    } else {
+      const selectedLocalFiberConnectionSubIndex =
+        selectedLocalFiberConnection.locations.findIndex((item) => {
+          return item._id === subId;
+        });
+
+      if (selectedLocalFiberConnectionSubIndex === -1) {
+        return res.status(400).json({
+          status: 'error',
+          message: 'location does not exist',
+        });
+      }
+
+      selectedLocalFiberConnection.locations.splice(
+        selectedLocalFiberConnectionSubIndex,
+        1
+      );
+
+      await selectedLocalFiberConnection.save();
     }
-
-    selectedLocalFiberConnection.locations.splice(
-      selectedLocalFiberConnectionSubIndex,
-      1
-    );
-
-    await selectedLocalFiberConnection.save();
 
     return res.status(200).json({
       status: 'success',
