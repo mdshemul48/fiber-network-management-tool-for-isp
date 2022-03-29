@@ -101,3 +101,62 @@ exports.createLocalFiberConnection = async (req, res) => {
     });
   }
 };
+
+exports.deleteLocalFiberConnectionValidation = [
+  body('id').notEmpty().withMessage('id is required'),
+  body('subId').notEmpty().withMessage('subId is required'),
+];
+
+exports.deleteLocalFiberConnection = async (req, res) => {
+  try {
+    // validating the request body
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    const { id, subId } = req.query;
+
+    const selectedLocalFiberConnection =
+      await localFiberConnectionModel.findOne({ _id: id });
+    if (!selectedLocalFiberConnection) {
+      return res.status(400).json({
+        status: 'error',
+        message: 'localFiberConnection does not exist',
+      });
+    }
+
+    const selectedLocalFiberConnectionSub =
+      selectedLocalFiberConnection.locations.find((item) => {
+        return item._id === subId;
+      });
+
+    if (!selectedLocalFiberConnectionSub) {
+      return res.status(400).json({
+        status: 'error',
+        message: 'subId does not exist',
+      });
+    }
+
+    const selectedLocalFiberConnectionSubIndex =
+      selectedLocalFiberConnection.locations.findIndex((item) => {
+        return item._id === subId;
+      });
+
+    selectedLocalFiberConnection.locations.splice(
+      selectedLocalFiberConnectionSubIndex,
+      1
+    );
+
+    await selectedLocalFiberConnection.save();
+
+    return res.status(200).json({
+      status: 'success',
+    });
+  } catch (error) {
+    return res.status(500).json({
+      status: 'error',
+      message: error.message,
+    });
+  }
+};

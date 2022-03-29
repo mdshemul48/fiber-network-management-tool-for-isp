@@ -23,6 +23,8 @@ const {
 const {
   createLocalFiberConnection,
   createLocalFiberConnectionValidation,
+  deleteLocalFiberConnection,
+  deleteLocalFiberConnectionValidation,
 } = require('../controllers/connectionControllers/localFiberController.js');
 
 const {
@@ -63,11 +65,12 @@ router
 
   .delete(deleteResellerConnection);
 
-router.post(
-  '/local-fiber-connection',
-  createLocalFiberConnectionValidation,
-  createLocalFiberConnection
-);
+router
+  .route('/local-fiber-connection')
+
+  .post(createLocalFiberConnectionValidation, createLocalFiberConnection)
+
+  .delete(deleteLocalFiberConnectionValidation, deleteLocalFiberConnection);
 
 router.post(
   '/splitter-connection',
