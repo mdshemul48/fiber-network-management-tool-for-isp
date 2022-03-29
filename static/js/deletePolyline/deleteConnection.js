@@ -1,4 +1,4 @@
-export default async (type, id) => {
+export default async (type, id, subId) => {
   let url;
   if (type === 'pointToPoint') {
     url = `/api/ptp-connection?id=${id}`;
@@ -6,6 +6,8 @@ export default async (type, id) => {
     url = `/api/corporate-connection?id=${id}`;
   } else if (type === 'reseller') {
     url = `/api/reseller-connection?id=${id}`;
+  } else if (type === 'localFiber') {
+    url = `/api/local-fiber-connection?id=${id}&subId=${subId}`;
   } else {
     alert('error');
     return;
