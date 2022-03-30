@@ -300,7 +300,6 @@ exports.deleteSplitterConnection = async (req, res) => {
         });
       }
       localFiber.childrens.splice(index, 1);
-
       localFiber.totalConnected--;
 
       // ! deleting from olt
@@ -327,7 +326,40 @@ exports.deleteSplitterConnection = async (req, res) => {
       await reseller.save();
       await localFiber.save();
       await splitterConnection.remove();
+    } else if (splitterConnection.parentType === 'splitter') {
+      const parentSplitter = await splitterConnectionModel.findById(
+        splitterConnection.parent.toString()
+      );
+
+      if (!parentSplitter) {
+        return res.status(400).json({
+          status: 'error',
+          message: 'Invalid splitter id',
+        });
+      }
+
+      const index = parentSplitter.childrens.findIndex((item) => {
+        return item.child.toString() === splitterConnection._id.toString();
+      });
+
+      if (index === -1) {
+        return res.status(400).json({
+          status: 'error',
+          message: 'Invalid splitter connection id',
+        });
+      }
+
+      parentSplitter.childrens.splice(index, 1);
+      parentSplitter.splitterUsed--;
+
+      await parentSplitter.save();
+      await splitterConnection.remove();
     }
+
+    return res.status(200).json({
+      status: 'success',
+      message: 'splitter connection deleted successfully',
+    });
   } catch (error) {
     console.log(error);
     return res.status(500).json({

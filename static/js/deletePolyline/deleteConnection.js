@@ -10,6 +10,8 @@ export default async (type, id, subId) => {
     url = `/api/local-fiber-connection?id=${id}&subId=${subId}`;
   } else if (type === 'splitter') {
     url = `/api/splitter-connection?id=${id}`;
+  } else if (type === 'home') {
+    url = `/api/home-connection?id=${id}`;
   } else {
     alert('error');
     return;
