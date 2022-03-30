@@ -5,12 +5,7 @@ const splitterConnectionModel = require('../../model/splitterConnectionModel.js'
 exports.createHomeConnectionValidation = [
   body('parent').notEmpty().withMessage('parent is required'),
   body('name').notEmpty().withMessage('name is required'),
-  body('portNo')
-    .notEmpty()
-    .withMessage('portNo is required')
-    .isInt({ min: 1 })
-    .withMessage('portNo must be an integer or greater than 0'),
-  body('coreColor').notEmpty().withMessage('coreColor is required'),
+  body('color').notEmpty().withMessage('color is required'),
   body('coordinates')
     .notEmpty()
     .withMessage('coordinates is required')
@@ -148,7 +143,6 @@ exports.deleteHomeConnection = async (req, res) => {
 
     splitter.save();
     splitter.reseller.save();
-
     homeConnection.remove();
     return res.status(200).json({
       status: 'success',
