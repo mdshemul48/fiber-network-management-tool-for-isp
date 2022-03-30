@@ -277,6 +277,52 @@ exports.deleteSplitterConnection = async (req, res) => {
       reseller.childrens.splice(index, 1);
       await reseller.save();
       splitterConnection.remove();
+    } else if (splitterConnection.parentType === 'localFiber') {
+      const localFiber = await localFiberConnectionModel.findById(
+        splitterConnection.parent.toString()
+      );
+
+      if (!localFiber) {
+        return res.status(400).json({
+          status: 'error',
+          message: 'Invalid localFiber id',
+        });
+      }
+
+      const index = localFiber.childrens.findIndex((item) => {
+        return item.child.toString() === splitterConnection._id.toString();
+      });
+
+      if (index === -1) {
+        return res.status(400).json({
+          status: 'error',
+          message: 'Invalid splitter connection id',
+        });
+      }
+
+      const reseller = await resellerConnectionModel.findById(
+        splitter.reseller.toString()
+      );
+
+      if (!reseller) {
+        return res.status(400).json({
+          status: 'error',
+          message: 'Invalid reseller id',
+        });
+      }
+
+      const resellerChildIndex = reseller.childrens.findIndex((item) => {
+        return item.child.toString() === splitterConnection._id.toString();
+      });
+
+      reseller.childrens.splice(resellerChildIndex, 1);
+
+      localFiber.childrens.splice(index, 1);
+
+      localFiber.totalConnected--;
+      await reseller.save();
+      await localFiber.save();
+      await splitterConnection.remove();
     }
   } catch (error) {
     return res.status(500).json({
