@@ -235,12 +235,14 @@ exports.createSplitterConnection = async (req, res) => {
 
 exports.deleteSplitterConnection = async (req, res) => {
   try {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(422).json({ errors: errors.array() });
-    }
-
     const { id } = req.query;
+
+    if (!id) {
+      return res.status(400).json({
+        status: 'error',
+        message: 'Invalid splitter id',
+      });
+    }
 
     const splitterConnection = await splitterConnectionModel.findById(id);
 
@@ -318,8 +320,6 @@ exports.deleteSplitterConnection = async (req, res) => {
       const resellerChildIndex = reseller.childrens.findIndex((item) => {
         return item.child.toString() === splitterConnection._id.toString();
       });
-
-      console.log(resellerChildIndex, 'gggg');
 
       reseller.childrens.splice(resellerChildIndex, 1);
 
