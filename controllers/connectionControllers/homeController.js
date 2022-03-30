@@ -1,77 +1,157 @@
+const { body, validationResult } = require('express-validator');
 const homeConnectionModel = require('../../model/homeConnectionModel.js');
 const splitterConnectionModel = require('../../model/splitterConnectionModel.js');
 
+exports.createHomeConnectionValidation = [
+  body('parent').notEmpty().withMessage('parent is required'),
+  body('name').notEmpty().withMessage('name is required'),
+  body('color').notEmpty().withMessage('color is required'),
+  body('coordinates')
+    .notEmpty()
+    .withMessage('coordinates is required')
+    .isArray()
+    .withMessage('coordinates must be an array')
+    .isLength({ min: 2 })
+    .withMessage('coordinates must be an array of at least 2 items'),
+];
+
 exports.createHomeConnection = async (req, res) => {
-  const { parent, name, coordinates, onuNo, color } = req.body;
-  const coordinatesLatLngArr = coordinates.map((item) => {
-    return [item.lat, item.lng];
-  });
+  try {
+    // validating the request body
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
 
-  const splitter = await splitterConnectionModel
-    .findById(parent)
-    .populate('reseller');
+    const { parent, name, coordinates, onuNo, color } = req.body;
+    const coordinatesLatLngArr = coordinates.map((item) => {
+      return [item.lat, item.lng];
+    });
 
-  if (!splitter) {
-    return res.status(400).json({
+    const splitter = await splitterConnectionModel
+      .findById(parent)
+      .populate('reseller');
+
+    if (!splitter) {
+      return res.status(400).json({
+        status: 'error',
+        message: 'Invalid splitter id',
+      });
+    }
+
+    if (!splitter.reseller) {
+      return res.status(400).json({
+        status: 'error',
+        message: 'Invalid reseller id',
+      });
+    }
+
+    const alreadyExistColoredConnection = splitter.childrens.find(
+      (item) => item.color === color
+    );
+
+    if (alreadyExistColoredConnection) {
+      return res.status(400).json({
+        status: 'error',
+        message: 'splitter already has a colored connection',
+      });
+    }
+
+    const newHomeConnection = await homeConnectionModel.create({
+      parentType: 'splitter',
+      parent: splitter._id,
+      name,
+      onuNo,
+      color,
+      locations: {
+        coordinates: coordinatesLatLngArr,
+      },
+    });
+
+    splitter.childrens.push({
+      connectionType: 'home',
+      child: newHomeConnection._id,
+      color,
+    });
+
+    const targetSplitterInReseller = splitter.reseller.childrens.find(
+      (item) => item.portNo === splitter.portNo
+    );
+
+    if (!targetSplitterInReseller) {
+      return res.status(400).json({
+        status: 'error',
+        message: 'Invalid splitter id',
+      });
+    }
+
+    splitter.splitterUsed++;
+    splitter.reseller.connectionUsed++;
+    targetSplitterInReseller.connectionUsed++;
+
+    splitter.save();
+    splitter.reseller.save();
+    return res.status(201).json({
+      status: 'success',
+      data: newHomeConnection,
+    });
+  } catch (error) {
+    return res.status(500).json({
       status: 'error',
-      message: 'Invalid splitter id',
+      message: error.message,
     });
   }
+};
 
-  if (!splitter.reseller) {
-    return res.status(400).json({
+exports.deleteHomeConnection = async (req, res) => {
+  try {
+    const { id } = req.query;
+    const homeConnection = await homeConnectionModel.findById(id);
+
+    if (!homeConnection) {
+      return res.status(400).json({
+        status: 'error',
+        message: 'Invalid home connection id',
+      });
+    }
+
+    const splitter = await splitterConnectionModel
+      .findById(homeConnection.parent)
+      .populate('reseller');
+
+    if (!splitter) {
+      return res.status(400).json({
+        status: 'error',
+        message: 'Invalid splitter id',
+      });
+    }
+
+    const targetSplitterInReseller = splitter.reseller.childrens.find(
+      (item) => item.portNo === splitter.portNo
+    );
+
+    if (!targetSplitterInReseller) {
+      return res.status(400).json({
+        status: 'error',
+        message: 'Invalid splitter id',
+      });
+    }
+
+    splitter.splitterUsed--;
+    splitter.reseller.connectionUsed--;
+    targetSplitterInReseller.connectionUsed--;
+
+    splitter.save();
+    splitter.reseller.save();
+    homeConnection.remove();
+    return res.status(200).json({
+      status: 'success',
+      message: 'home connection deleted',
+    });
+  } catch (error) {
+    return res.status(500).json({
       status: 'error',
-      message: 'Invalid reseller id',
+      message: error.message,
     });
   }
-
-  const alreadyExistColoredConnection = splitter.childrens.find(
-    (item) => item.color === color
-  );
-
-  if (alreadyExistColoredConnection) {
-    return res.status(400).json({
-      status: 'error',
-      message: 'splitter already has a colored connection',
-    });
-  }
-
-  const newHomeConnection = await homeConnectionModel.create({
-    parentType: 'splitter',
-    parent: splitter._id,
-    name,
-    onuNo,
-    color,
-    locations: {
-      coordinates: coordinatesLatLngArr,
-    },
-  });
-
-  splitter.childrens.push({
-    connectionType: 'home',
-    child: newHomeConnection._id,
-    color,
-  });
-
-  const targetSplitterInReseller = splitter.reseller.childrens.find(
-    (item) => item.portNo === splitter.portNo
-  );
-
-  if (!targetSplitterInReseller) {
-    return res.status(400).json({
-      status: 'error',
-      message: 'Invalid splitter id',
-    });
-  }
-
-  splitter.splitterUsed++;
-  splitter.reseller.connectionUsed++;
-  targetSplitterInReseller.connectionUsed++;
-
-  splitter.save();
-  splitter.reseller.save();
-  return res.status(201).json({
-    status: 'success',
-    data: newHomeConnection,
-  });
 };

@@ -232,3 +232,146 @@ exports.createSplitterConnection = async (req, res) => {
     });
   }
 };
+
+exports.deleteSplitterConnection = async (req, res) => {
+  try {
+    const { id } = req.query;
+
+    if (!id) {
+      return res.status(400).json({
+        status: 'error',
+        message: 'Invalid splitter id',
+      });
+    }
+
+    const splitterConnection = await splitterConnectionModel.findById(id);
+
+    if (!splitterConnection) {
+      return res.status(400).json({
+        status: 'error',
+        message: 'Invalid splitter connection id',
+      });
+    }
+
+    if (splitterConnection.splitterUsed > 0) {
+      return res.status(400).json({
+        status: 'error',
+        message: 'splitter connection is used',
+      });
+    }
+
+    if (splitterConnection.parentType === 'reseller') {
+      const reseller = await resellerConnectionModel.findById(
+        splitterConnection.parent.toString()
+      );
+
+      if (!reseller) {
+        return res.status(400).json({
+          status: 'error',
+          message: 'Invalid reseller id',
+        });
+      }
+
+      const index = reseller.childrens.findIndex((item) => {
+        return item.child.toString() === splitterConnection._id.toString();
+      });
+
+      if (index === -1) {
+        return res.status(400).json({
+          status: 'error',
+          message: 'Invalid splitter connection id',
+        });
+      }
+
+      await reseller.childrens.splice(index, 1);
+      await reseller.save();
+      await splitterConnection.remove();
+    } else if (splitterConnection.parentType === 'localFiber') {
+      const localFiber = await localFiberConnectionModel.findById(
+        splitterConnection.parent.toString()
+      );
+
+      if (!localFiber) {
+        return res.status(400).json({
+          status: 'error',
+          message: 'Invalid localFiber id',
+        });
+      }
+
+      const index = localFiber.childrens.findIndex((item) => {
+        return item.child.toString() === splitterConnection._id.toString();
+      });
+
+      if (index === -1) {
+        return res.status(400).json({
+          status: 'error',
+          message: 'Invalid splitter connection id',
+        });
+      }
+      localFiber.childrens.splice(index, 1);
+      localFiber.totalConnected--;
+
+      // ! deleting from olt
+
+      const reseller = await resellerConnectionModel.findById(
+        splitterConnection.reseller.toString()
+      );
+
+      if (!reseller) {
+        return res.status(400).json({
+          status: 'error',
+          message: 'Invalid reseller id',
+        });
+      }
+
+      const resellerChildIndex = reseller.childrens.findIndex((item) => {
+        return item.child.toString() === splitterConnection._id.toString();
+      });
+
+      reseller.childrens.splice(resellerChildIndex, 1);
+
+      await reseller.save();
+      await localFiber.save();
+      await splitterConnection.remove();
+    } else if (splitterConnection.parentType === 'splitter') {
+      const parentSplitter = await splitterConnectionModel.findById(
+        splitterConnection.parent.toString()
+      );
+
+      if (!parentSplitter) {
+        return res.status(400).json({
+          status: 'error',
+          message: 'Invalid splitter id',
+        });
+      }
+
+      const index = parentSplitter.childrens.findIndex((item) => {
+        return item.child.toString() === splitterConnection._id.toString();
+      });
+
+      if (index === -1) {
+        return res.status(400).json({
+          status: 'error',
+          message: 'Invalid splitter connection id',
+        });
+      }
+
+      parentSplitter.childrens.splice(index, 1);
+      parentSplitter.splitterUsed--;
+
+      await parentSplitter.save();
+      await splitterConnection.remove();
+    }
+
+    return res.status(200).json({
+      status: 'success',
+      message: 'splitter connection deleted successfully',
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      status: 'error',
+      message: 'Internal server error',
+    });
+  }
+};
