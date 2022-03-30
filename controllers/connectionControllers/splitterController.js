@@ -253,6 +253,13 @@ exports.deleteSplitterConnection = async (req, res) => {
       });
     }
 
+    if (splitterConnection.splitterUsed > 0) {
+      return res.status(400).json({
+        status: 'error',
+        message: 'splitter connection is used',
+      });
+    }
+
     if (splitterConnection.parentType === 'reseller') {
       const reseller = await resellerConnectionModel.findById(
         splitterConnection.parent.toString()
