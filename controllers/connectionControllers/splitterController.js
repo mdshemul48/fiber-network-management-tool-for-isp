@@ -274,9 +274,9 @@ exports.deleteSplitterConnection = async (req, res) => {
         });
       }
 
-      reseller.childrens.splice(index, 1);
+      await reseller.childrens.splice(index, 1);
       await reseller.save();
-      splitterConnection.remove();
+      await splitterConnection.remove();
     } else if (splitterConnection.parentType === 'localFiber') {
       const localFiber = await localFiberConnectionModel.findById(
         splitterConnection.parent.toString()
@@ -299,9 +299,14 @@ exports.deleteSplitterConnection = async (req, res) => {
           message: 'Invalid splitter connection id',
         });
       }
+      localFiber.childrens.splice(index, 1);
+
+      localFiber.totalConnected--;
+
+      // ! deleting from olt
 
       const reseller = await resellerConnectionModel.findById(
-        splitter.reseller.toString()
+        splitterConnection.reseller.toString()
       );
 
       if (!reseller) {
@@ -315,16 +320,16 @@ exports.deleteSplitterConnection = async (req, res) => {
         return item.child.toString() === splitterConnection._id.toString();
       });
 
+      console.log(resellerChildIndex, 'gggg');
+
       reseller.childrens.splice(resellerChildIndex, 1);
 
-      localFiber.childrens.splice(index, 1);
-
-      localFiber.totalConnected--;
       await reseller.save();
       await localFiber.save();
       await splitterConnection.remove();
     }
   } catch (error) {
+    console.log(error);
     return res.status(500).json({
       status: 'error',
       message: 'Internal server error',

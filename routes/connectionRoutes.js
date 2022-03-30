@@ -30,6 +30,7 @@ const {
 const {
   createSplitterConnection,
   createSplitterValidation,
+  deleteSplitterConnection,
 } = require('../controllers/connectionControllers/splitterController.js');
 
 const {
@@ -72,11 +73,12 @@ router
 
   .delete(deleteLocalFiberConnectionValidation, deleteLocalFiberConnection);
 
-router.post(
-  '/splitter-connection',
-  createSplitterValidation,
-  createSplitterConnection
-);
+router
+  .route('/splitter-connection')
+
+  .post(createSplitterValidation, createSplitterConnection)
+
+  .delete(deleteSplitterConnection);
 
 router.post('/home-connection', createHomeConnection);
 
