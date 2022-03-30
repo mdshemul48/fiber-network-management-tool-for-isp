@@ -36,6 +36,7 @@ const {
 const {
   createHomeConnection,
   createHomeConnectionValidation,
+  deleteHomeConnection,
 } = require('../controllers/connectionControllers/homeController.js');
 
 const { getAllConnection } = require('../controllers/getAllConnection.js');
@@ -84,6 +85,8 @@ router
 router
   .route('/home-connection')
 
-  .post(createHomeConnectionValidation, createHomeConnection);
+  .post(createHomeConnectionValidation, createHomeConnection)
+
+  .delete(deleteHomeConnection);
 
 module.exports = router;
