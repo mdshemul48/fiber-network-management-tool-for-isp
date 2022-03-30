@@ -232,3 +232,56 @@ exports.createSplitterConnection = async (req, res) => {
     });
   }
 };
+
+exports.deleteSplitterConnection = async (req, res) => {
+  try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(422).json({ errors: errors.array() });
+    }
+
+    const { id } = req.query;
+
+    const splitterConnection = await splitterConnectionModel.findById(id);
+
+    if (!splitterConnection) {
+      return res.status(400).json({
+        status: 'error',
+        message: 'Invalid splitter connection id',
+      });
+    }
+
+    if (splitterConnection.parentType === 'reseller') {
+      const reseller = await resellerConnectionModel.findById(
+        splitterConnection.parent.toString()
+      );
+
+      if (!reseller) {
+        return res.status(400).json({
+          status: 'error',
+          message: 'Invalid reseller id',
+        });
+      }
+
+      const index = reseller.childrens.findIndex((item) => {
+        return item.child.toString() === splitterConnection._id.toString();
+      });
+
+      if (index === -1) {
+        return res.status(400).json({
+          status: 'error',
+          message: 'Invalid splitter connection id',
+        });
+      }
+
+      reseller.childrens.splice(index, 1);
+      await reseller.save();
+      splitterConnection.remove();
+    }
+  } catch (error) {
+    return res.status(500).json({
+      status: 'error',
+      message: 'Internal server error',
+    });
+  }
+};
