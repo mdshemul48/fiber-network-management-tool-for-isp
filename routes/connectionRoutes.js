@@ -35,6 +35,7 @@ const {
 
 const {
   createHomeConnection,
+  createHomeConnectionValidation,
 } = require('../controllers/connectionControllers/homeController.js');
 
 const { getAllConnection } = require('../controllers/getAllConnection.js');
@@ -80,6 +81,9 @@ router
 
   .delete(deleteSplitterConnection);
 
-router.post('/home-connection', createHomeConnection);
+router
+  .route('/home-connection')
+
+  .post(createHomeConnectionValidation, createHomeConnection);
 
 module.exports = router;
