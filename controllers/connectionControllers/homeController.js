@@ -75,3 +75,57 @@ exports.createHomeConnection = async (req, res) => {
     data: newHomeConnection,
   });
 };
+
+exports.deleteHomeConnection = async (req, res) => {
+  try {
+    const { id } = req.query;
+    const homeConnection = await homeConnectionModel.findById(id);
+
+    if (!homeConnection) {
+      return res.status(400).json({
+        status: 'error',
+        message: 'Invalid home connection id',
+      });
+    }
+
+    const splitter = await splitterConnectionModel
+      .findById(homeConnection.parent)
+      .populate('reseller');
+
+    if (!splitter) {
+      return res.status(400).json({
+        status: 'error',
+        message: 'Invalid splitter id',
+      });
+    }
+
+    const targetSplitterInReseller = splitter.reseller.childrens.find(
+      (item) => item.portNo === splitter.portNo
+    );
+
+    if (!targetSplitterInReseller) {
+      return res.status(400).json({
+        status: 'error',
+        message: 'Invalid splitter id',
+      });
+    }
+
+    splitter.splitterUsed--;
+    splitter.reseller.connectionUsed--;
+    targetSplitterInReseller.connectionUsed--;
+
+    splitter.save();
+    splitter.reseller.save();
+
+    homeConnection.remove();
+    return res.status(200).json({
+      status: 'success',
+      message: 'home connection deleted',
+    });
+  } catch (error) {
+    return res.status(500).json({
+      status: 'error',
+      message: error.message,
+    });
+  }
+};
