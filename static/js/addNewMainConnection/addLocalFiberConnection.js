@@ -1,3 +1,4 @@
+import { showError } from '../utility/showMessageAndError.js';
 import coreColor from '../utility/coreColor.js';
 
 export default async (polylineKey, selectedPolylineType, coordinates) => {

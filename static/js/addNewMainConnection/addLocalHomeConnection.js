@@ -1,3 +1,4 @@
+import { showError } from '../utility/showMessageAndError.js';
 export default async (polylineKey, coordinates) => {
   const connectionName = document.getElementById(
     'addLocalHomeConnectionName'

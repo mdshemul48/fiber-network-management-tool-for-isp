@@ -1,3 +1,5 @@
+import { showError } from '../utility/showMessageAndError.js';
+
 export default async (polylineKey, polylineType, coordinates) => {
   const connectionName = document.getElementById('addLocalSplitterName').value;
   const localSplitterPortNo = Number(
