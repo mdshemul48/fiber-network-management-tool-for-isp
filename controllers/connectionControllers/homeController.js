@@ -39,6 +39,13 @@ exports.createHomeConnection = async (req, res) => {
       });
     }
 
+    if (!(splitter.splitterUsed < splitter.splitterLimit)) {
+      return res.json({
+        status: 'error',
+        message: 'Splitter fiber is full',
+      });
+    }
+
     if (!splitter.reseller) {
       return res.status(400).json({
         status: 'error',
@@ -125,6 +132,21 @@ exports.deleteHomeConnection = async (req, res) => {
         message: 'Invalid splitter id',
       });
     }
+
+    console.log(splitter);
+
+    const homeConnectionIndex = splitter.childrens.findIndex(
+      (item) => item.child.toString() === homeConnection._id.toString()
+    );
+
+    if (homeConnectionIndex === -1) {
+      return res.status(400).json({
+        status: 'error',
+        message: 'Invalid home connection id',
+      });
+    }
+
+    splitter.childrens.splice(homeConnectionIndex, 1);
 
     const targetSplitterInReseller = splitter.reseller.childrens.find(
       (item) => item.portNo === splitter.portNo

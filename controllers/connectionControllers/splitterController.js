@@ -104,6 +104,13 @@ exports.createSplitterConnection = async (req, res) => {
         });
       }
 
+      if (!(localFiber.totalConnected < localFiber.totalCore)) {
+        return res.json({
+          status: 'error',
+          message: 'Local fiber is full',
+        });
+      }
+
       const reseller = await resellerConnectionModel.findById(
         localFiber.parent.toString()
       );
@@ -171,6 +178,13 @@ exports.createSplitterConnection = async (req, res) => {
         });
       }
 
+      if (!(splitter.splitterUsed < splitter.splitterLimit)) {
+        return res.json({
+          status: 'error',
+          message: 'Splitter fiber is full',
+        });
+      }
+
       const reseller = await resellerConnectionModel.findById(
         splitter.reseller.toString()
       );
@@ -228,7 +242,7 @@ exports.createSplitterConnection = async (req, res) => {
   } catch (err) {
     return res.status(500).json({
       status: 'error',
-      message: 'Internal server error',
+      message: err.message,
     });
   }
 };
