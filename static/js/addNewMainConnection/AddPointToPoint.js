@@ -31,11 +31,21 @@ export default async (polylineKey, coordinates) => {
     },
     body: JSON.stringify(newConnection),
   });
-  const { status, data } = await response.json();
-
+  const responseJson = await response.json();
+  const { status } = responseJson;
   if (status === 'success') {
     location.reload();
   } else {
-    console.log(status, data);
+    const { errors, message } = responseJson;
+    console.log(message);
+    if (errors) {
+      errors.forEach((item) => {
+        showError(item.msg);
+      });
+    }
+
+    if (message) {
+      showError(message);
+    }
   }
 };

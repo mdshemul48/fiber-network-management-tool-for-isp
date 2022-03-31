@@ -8,7 +8,7 @@ const showMessage = (message) => {
     stopOnFocus: true,
     style: {
       color: 'white',
-      'font-weight': '500',
+      'font-weight': '400',
       background: 'black',
     },
     onClick: function () {}, // Callback after click
@@ -25,7 +25,7 @@ const showError = (errorMessage) => {
     stopOnFocus: true,
     style: {
       color: 'red',
-      'font-weight': '500',
+      'font-weight': '400',
       background: 'white',
     },
     onClick: function () {}, // Callback after click

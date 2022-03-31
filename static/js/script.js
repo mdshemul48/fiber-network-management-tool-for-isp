@@ -12,7 +12,7 @@ import addLocalHomeConnection from './addNewMainConnection/addLocalHomeConnectio
 import addLocalFiberConnection from './addNewMainConnection/addLocalFiberConnection.js';
 
 import deleteConnection from './deletePolyline/deleteConnection.js';
-import showMessage from './utility/showError.js';
+import showMessage from './utility/showMessageAndError.js';
 
 let map;
 let editablePolyline;

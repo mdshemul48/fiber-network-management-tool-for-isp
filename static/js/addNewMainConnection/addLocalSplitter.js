@@ -29,11 +29,21 @@ export default async (polylineKey, polylineType, coordinates) => {
 
     body: JSON.stringify(newSplitterConnection),
   });
-  const { status, data } = await response.json();
-
+  const responseJson = await response.json();
+  const { status } = responseJson;
   if (status === 'success') {
     location.reload();
   } else {
-    console.log(status, data);
+    const { errors, message } = responseJson;
+    console.log(message);
+    if (errors) {
+      errors.forEach((item) => {
+        showError(item.msg);
+      });
+    }
+
+    if (message) {
+      showError(message);
+    }
   }
 };

@@ -29,11 +29,21 @@ export default async (polylineKey, selectedPolylineType, coordinates) => {
     },
     body: JSON.stringify(localFiberConnection),
   });
-  const { status, data, message } = await response.json();
-
+  const responseJson = await response.json();
+  const { status } = responseJson;
   if (status === 'success') {
     location.reload();
   } else {
-    console.log(status, message);
+    const { errors, message } = responseJson;
+    console.log(message);
+    if (errors) {
+      errors.forEach((item) => {
+        showError(item.msg);
+      });
+    }
+
+    if (message) {
+      showError(message);
+    }
   }
 };
