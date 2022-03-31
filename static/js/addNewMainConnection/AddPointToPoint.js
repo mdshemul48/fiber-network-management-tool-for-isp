@@ -12,7 +12,7 @@ export default async (polylineKey, coordinates) => {
 
   const connectionType = document.querySelector(
     'input[name="addLocalConnectionType"]:checked'
-  ).value;
+  )?.value;
 
   const color = document.getElementById('addLocalConnectionCoreOption').value;
 
