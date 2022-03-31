@@ -12,6 +12,7 @@ import addLocalHomeConnection from './addNewMainConnection/addLocalHomeConnectio
 import addLocalFiberConnection from './addNewMainConnection/addLocalFiberConnection.js';
 
 import deleteConnection from './deletePolyline/deleteConnection.js';
+import showMessage from './utility/showError.js';
 
 let map;
 let editablePolyline;
@@ -47,20 +48,7 @@ window.initMap = function () {
 // this will called when the user will click on new polyline
 window.selectPolyline = (latLng, { _id, type }) => {
   if (!selectedPolyline) {
-    Toastify({
-      text: `You have selected ${type} connection!`,
-      duration: 3000,
-      // close: true,
-      gravity: 'top',
-      position: 'center',
-      stopOnFocus: true,
-      style: {
-        color: 'white',
-        background: 'black',
-      },
-      onClick: function () {}, // Callback after click
-    }).showToast();
-
+    showMessage(`You have selected ${type} connection!`);
     editablePolyline.addVertex(latLng);
     selectedPolyline = _id;
     selectedPolylineType = type;
