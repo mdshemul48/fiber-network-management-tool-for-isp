@@ -4,9 +4,11 @@ import EditablePolyline from './GoogleMap/EditablePolyline.js';
 import printAllThePolylines from './GoogleMap/printAllThePolylines.js';
 
 // all the from submit functions
-import addReseller from './addNewMainConnection/addReseller.js';
-import AddCompany from './addNewMainConnection/AddCompany.js';
+import customForm from './addNewMainConnection/customForm.js';
+
 import addPointToPoint from './addNewMainConnection/addPointToPoint.js';
+import AddCompany from './addNewMainConnection/AddCompany.js';
+import addReseller from './addNewMainConnection/addReseller.js';
 import addLocalSplitter from './addNewMainConnection/addLocalSplitter.js';
 import addLocalHomeConnection from './addNewMainConnection/addLocalHomeConnection.js';
 import addLocalFiberConnection from './addNewMainConnection/addLocalFiberConnection.js';
@@ -55,32 +57,34 @@ window.selectPolyline = (latLng, { _id, type }) => {
   }
 };
 
+document.getElementById('addNewConnection').addEventListener('click', () => {
+  customForm(selectedPolyline, selectedPolylineType);
+});
+
 // all the connections form
-document
-  .getElementById('newMainConnectionForm')
-  .addEventListener('submit', (event) => {
-    event.preventDefault();
-    const polylineCoordinates = editablePolyline.getAllThePath();
-    addReseller(polylineCoordinates);
-  });
+
+window.addResellerForm = () => {
+  const polylineCoordinates = editablePolyline.getAllThePath();
+  addReseller(selectedPolyline, polylineCoordinates);
+};
 
 document
   .getElementById('addPointToPoint')
-  .addEventListener('submit', (event) => {
+  ?.addEventListener('submit', (event) => {
     event.preventDefault();
     AddCompany(selectedPolyline, editablePolyline.getAllThePath());
   });
 
 document
   .getElementById('addMainLocalSubmission')
-  .addEventListener('submit', (event) => {
+  ?.addEventListener('submit', (event) => {
     event.preventDefault();
     addPointToPoint(selectedPolyline, editablePolyline.getAllThePath());
   });
 
 document
   .getElementById('addLocalSplitterSubmission')
-  .addEventListener('submit', (event) => {
+  ?.addEventListener('submit', (event) => {
     event.preventDefault();
     addLocalSplitter(
       selectedPolyline,
@@ -91,14 +95,14 @@ document
 
 document
   .getElementById('addLocalHomeConnectionSubmit')
-  .addEventListener('submit', (event) => {
+  ?.addEventListener('submit', (event) => {
     event.preventDefault();
     addLocalHomeConnection(selectedPolyline, editablePolyline.getAllThePath());
   });
 
 document
   .getElementById('addLocalFiberConnection')
-  .addEventListener('submit', (event) => {
+  ?.addEventListener('submit', (event) => {
     event.preventDefault();
     addLocalFiberConnection(
       selectedPolyline,

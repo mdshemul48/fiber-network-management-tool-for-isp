@@ -8,6 +8,9 @@ import printLocalSplitter from './printPolylineConnection/printLocalSplitter.js'
 const printAllThePolylines = async (map) => {
   const response = await fetch('/api/getAllConnection');
   const { data: allThePath } = await response.json();
+
+  window.allTheConnection = allThePath;
+
   allThePath.forEach((connection) => {
     if (connection.type === 'pointToPoint')
       printPointToPointConnection(connection, map);

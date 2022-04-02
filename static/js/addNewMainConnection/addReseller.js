@@ -1,39 +1,31 @@
 import { showError } from '../utility/showMessageAndError.js';
 
-import coreColor from '../utility/coreColor.js';
-// this will get only the form data
-const formData = () => {
-  const connectionName = document.getElementById('mainConnectionName').value;
-  const connectionTotalCore = Number(
-    document.getElementById('mainConnectionCoreOptions').value
-  );
-  return { connectionName, connectionTotalCore };
-};
+export default async (polylineKey, coordinates) => {
+  const connectionName = $('#addLocalConnectionName').val();
+  const oltSerialNumber = $('#addLocalConnectionOltSwitchNo').val();
+  const portNo = $('#addLocalConnectionPortNo').val();
+  const connectionType = $("input[name='addLocalConnectionType']")?.val();
+  const color = $('#addLocalConnectionCoreOption').val();
 
-// this wil do all the process of adding the new main connection
-export default async (coordinates) => {
-  const { connectionName, connectionTotalCore } = formData();
-  const selectedCoreColor = coreColor.slice(0, connectionTotalCore);
+  console.log(coordinates);
 
-  const connectionCoreColor = {};
-  selectedCoreColor.forEach((item) => {
-    connectionCoreColor[item.colorName] = null;
-  });
-
-  const mainConnection = {
+  const newConnection = {
+    parent: polylineKey,
     name: connectionName,
-    totalCore: connectionTotalCore,
+    oltSerialNumber,
+    portNo,
+    type: 'reseller',
+    oltType: connectionType,
     coordinates,
+    color,
   };
-
-  const response = await fetch('/api/ptp-connection', {
+  const response = await fetch('/api/reseller-connection', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(mainConnection),
+    body: JSON.stringify(newConnection),
   });
-
   const responseJson = await response.json();
   const { status } = responseJson;
   if (status === 'success') {
