@@ -90,7 +90,7 @@ export default (parentId, type) => {
                   <div class="modal-header">
                       <h5 class="modal-title" id="exampleModalLabel">Add Company</h5>
                   </div>
-                  <form id="addPointToPoint">
+                  <form onsubmit="event.preventDefault(); addCompanyForm();">
                       <div class="modal-body">
                           <div class="mb-3">
                               <input type="text" class="form-control" id="addPointToPointCompanyName"

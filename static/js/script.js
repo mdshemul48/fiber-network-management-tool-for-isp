@@ -68,12 +68,9 @@ window.addResellerForm = () => {
   addReseller(selectedPolyline, polylineCoordinates);
 };
 
-document
-  .getElementById('addPointToPoint')
-  ?.addEventListener('submit', (event) => {
-    event.preventDefault();
-    AddCompany(selectedPolyline, editablePolyline.getAllThePath());
-  });
+window.addCompanyForm = () => {
+  AddCompany(selectedPolyline, editablePolyline.getAllThePath());
+};
 
 document
   .getElementById('addMainLocalSubmission')
