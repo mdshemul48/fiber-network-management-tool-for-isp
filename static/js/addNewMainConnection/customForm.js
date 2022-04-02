@@ -1,10 +1,23 @@
+import coreColor from '../utility/coreColor.js';
+
 export default (parentId, type) => {
   const parentPolyline = window.allTheConnection.find((item) => {
     return item._id === parentId && item.type === type;
   });
+  console.log(parentPolyline);
   let formContent;
   if (type === 'pointToPoint') {
-    console.log(parentPolyline);
+    const coreColors = coreColor.slice(0, parentPolyline.totalCore);
+
+    const colors = coreColors.map((item) => {
+      const foundedColor = parentPolyline.childrens.find((child) => {
+        return child.color === item.colorName;
+      });
+      return foundedColor
+        ? ''
+        : `<option value="${item.colorName}">${item.colorName}</option>`;
+    });
+
     formContent = ` <div class="modal-dialog">
       <div class="modal-content p-2">
           <ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -59,19 +72,8 @@ export default (parentId, type) => {
                               <div class=" mt-2">
                                   <select class="form-select" aria-label="Default select example"
                                       id="addLocalConnectionCoreOption">
-                                      <option selected>Select Core Color</option>
-                                      <option value="blue">blue</option>
-                                      <option value="orange">orange</option>
-                                      <option value="green">green</option>
-                                      <option value="brown">brown</option>
-                                      <option value="slate">slate</option>
-                                      <option value="white">white</option>
-                                      <option value="red">red</option>
-                                      <option value="black">black</option>
-                                      <option value="yellow">yellow</option>
-                                      <option value="violet">violet</option>
-                                      <option value="rose">rose</option>
-                                      <option value="aqua">aqua</option>
+                                      <option selected value="">Select Core Color</option>
+                                        ${colors.join('')}
                                   </select>
                               </div>
 
@@ -81,8 +83,6 @@ export default (parentId, type) => {
                           <button type="submit" class="btn btn-primary">Submit</button>
                           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                       </div>
-
-
                   </form>
               </div>
               <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
@@ -105,18 +105,7 @@ export default (parentId, type) => {
                           <select class="form-select" aria-label="Default select example"
                               id="addPointToPointCoreOptions">
                               <option selected value="">Select Core Color</option>
-                              <option value="blue">blue</option>
-                              <option value="orange">orange</option>
-                              <option value="green">green</option>
-                              <option value="brown">brown</option>
-                              <option value="slate">slate</option>
-                              <option value="white">white</option>
-                              <option value="red">red</option>
-                              <option value="black">black</option>
-                              <option value="yellow">yellow</option>
-                              <option value="violet">violet</option>
-                              <option value="rose">rose</option>
-                              <option value="aqua">aqua</option>
+                             ${colors.join('')}
                           </select>
                       </div>
 
@@ -129,10 +118,24 @@ export default (parentId, type) => {
           </div>
       </div>
   </div>`;
+  } else {
+    formContent = `
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>Please Select any connection first</p>
+      </div>
+      <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+</div>`;
   }
-  //   console.log($(formContent).insertAfter('#form-area'));
-  $('#form-area').append($(formContent));
-  //   document.getElementById('form-area').innerHTML = formContent;
 
+  document.getElementById('form-area').innerHTML = '';
+  $('#form-area').append($(formContent));
   $('#form-area').modal('show');
 };

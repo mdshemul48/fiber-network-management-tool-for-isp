@@ -7,8 +7,6 @@ export default async (polylineKey, coordinates) => {
   const connectionType = $("input[name='addLocalConnectionType']")?.val();
   const color = $('#addLocalConnectionCoreOption').val();
 
-  console.log(coordinates);
-
   const newConnection = {
     parent: polylineKey,
     name: connectionName,
