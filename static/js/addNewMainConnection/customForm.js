@@ -6,7 +6,39 @@ export default (parentId, type) => {
   });
   console.log(parentPolyline);
   let formContent;
-  if (type === 'pointToPoint') {
+  if (type === 'newPointToPoint' && parentId === null) {
+    formContent = `<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Add pointToPoint Connection</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form id="newMainConnectionForm">
+            <div class="modal-body">
+                <div class="mb-3">
+                    <input type="text" class="form-control" id="mainConnectionName" placeholder="Enter Name:">
+                </div>
+                <div class="input-group mb-3">
+                    <label class="input-group-text" for="inputGroupSelect01">Cable Core:</label>
+                    <select class="form-select" id="mainConnectionCoreOptions">
+                        <option selected>Choose...</option>
+                        <option value="2">2</option>
+                        <option value="4">4</option>
+                        <option value="8">8</option>
+                        <option value="12">12</option>
+                        <option value="16">16</option>
+                        <option value="24">24</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </form>
+    </div>
+</div>`;
+  } else if (type === 'pointToPoint') {
     const coreColors = coreColor.slice(0, parentPolyline.totalCore);
 
     const colors = coreColors.map((item) => {

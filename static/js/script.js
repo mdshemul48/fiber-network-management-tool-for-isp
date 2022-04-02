@@ -58,7 +58,11 @@ window.selectPolyline = (latLng, { _id, type }) => {
 };
 
 document.getElementById('addNewConnection').addEventListener('click', () => {
-  customForm(selectedPolyline, selectedPolylineType);
+  if (!selectedPolyline && editablePolyline.getAllThePath()?.length > 1) {
+    customForm(null, 'newPointToPoint');
+  } else {
+    customForm(selectedPolyline, selectedPolylineType);
+  }
 });
 
 // all the connections form
