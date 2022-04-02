@@ -127,6 +127,13 @@ exports.deleteLocalFiberConnection = async (req, res) => {
       });
     }
 
+    if (selectedLocalFiberConnection.childrens.length > 0) {
+      return res.status(400).json({
+        status: 'error',
+        message: 'localFiberConnection has childrens',
+      });
+    }
+
     if (selectedLocalFiberConnection.mainConnection.toString() === subId) {
       if (
         selectedLocalFiberConnection.childrens > 0 ||

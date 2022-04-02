@@ -57,12 +57,12 @@ export default function (connection, map) {
     infoWindow.close();
   });
 
-  marker.addListener('mouseover', (event) => {
-    infoWindow.setPosition(event.latLng);
-    infoWindow.open(map);
-  });
+  // marker.addListener('mouseover', (event) => {
+  //   infoWindow.setPosition(event.latLng);
+  //   infoWindow.open(map);
+  // });
 
-  marker.addListener('mouseout', () => {
-    infoWindow.close();
-  });
+  // marker.addListener('mouseout', () => {
+  //   infoWindow.close();
+  // });
 }
