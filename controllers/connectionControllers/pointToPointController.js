@@ -88,7 +88,6 @@ exports.findNearestPointToPointConnection = async (req, res) => {
 exports.deletePointToPointConnection = async (req, res) => {
   try {
     const { id } = req.query;
-    console.log(id);
     const targetPointToPoint = await pointToPointConnectionModel.findById(id);
 
     if (!targetPointToPoint) {

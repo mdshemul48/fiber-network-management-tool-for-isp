@@ -397,8 +397,6 @@ export default (parentId, type) => {
 </div>`;
   }
 
-  console.log($(formContent));
-
   document.getElementById('form-area').innerHTML = '';
   $('#form-area').append($(formContent));
   $('#form-area').modal('show');

@@ -32,9 +32,7 @@ export default async (coordinates, point, callback) => {
       const allSteps = result.routes[0].legs[0].steps;
       let shortestDistance = +Infinity;
       let shortestPath = null;
-      console.log('gg');
       for (let i = 0, j = 0; i < allSteps.length && j < 2; i++, j++) {
-        console.log(j);
         const step = allSteps[i];
 
         const { lat, lng } = getPointOnPolyline(coordinates, [

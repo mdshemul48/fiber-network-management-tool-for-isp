@@ -34,6 +34,7 @@ export default async (coordinates) => {
 
   const responseJson = await response.json();
   const { status } = responseJson;
+  console.log(status);
   if (status === 'success') {
     location.reload();
   } else {

@@ -133,7 +133,6 @@ exports.deleteHomeConnection = async (req, res) => {
       });
     }
 
-    console.log(splitter);
 
     const homeConnectionIndex = splitter.childrens.findIndex(
       (item) => item.child.toString() === homeConnection._id.toString()

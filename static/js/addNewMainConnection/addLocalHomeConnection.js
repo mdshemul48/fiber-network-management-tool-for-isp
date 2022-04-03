@@ -29,7 +29,6 @@ export default async (polylineKey, coordinates) => {
     location.reload();
   } else {
     const { errors, message } = responseJson;
-    console.log(message);
     if (errors) {
       errors.forEach((item) => {
         showError(item.msg);
