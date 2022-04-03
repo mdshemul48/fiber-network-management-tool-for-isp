@@ -168,7 +168,7 @@ export default (parentId, type) => {
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Add Local Splitter</h5>
                 </div>
-                <form id="addLocalSplitterSubmission">
+                <form onsubmit="event.preventDefault(); addSplitterConnection();">
                     <div class="modal-body">
                         <div class="mb-2">
                             <input type="text" class="form-control" id="addLocalSplitterName" placeholder="Name">
@@ -205,7 +205,7 @@ export default (parentId, type) => {
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Add LocalFiber</h5>
                 </div>
-                <form id="addLocalFiberConnection">
+                <form onsubmit="event.preventDefault(); addLocalFiberConnection();">
                     <div class="modal-body">
                         <div class="mb-3">
                             <input type="text" class="form-control" id="addLocalFiberConnectionName"

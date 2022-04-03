@@ -88,22 +88,19 @@ window.addSplitterConnection = () => {
   );
 };
 
+window.addLocalFiberConnection = () => {
+  addLocalFiberConnection(
+    selectedPolyline,
+    selectedPolylineType,
+    editablePolyline.getAllThePath()
+  );
+};
+
 document
   .getElementById('addLocalHomeConnectionSubmit')
   ?.addEventListener('submit', (event) => {
     event.preventDefault();
     addLocalHomeConnection(selectedPolyline, editablePolyline.getAllThePath());
-  });
-
-document
-  .getElementById('addLocalFiberConnection')
-  ?.addEventListener('submit', (event) => {
-    event.preventDefault();
-    addLocalFiberConnection(
-      selectedPolyline,
-      selectedPolylineType,
-      editablePolyline.getAllThePath()
-    );
   });
 
 // ! testing shortest route here

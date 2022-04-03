@@ -1,17 +1,10 @@
 import { showError } from '../utility/showMessageAndError.js';
 
 export default async (polylineKey, polylineType, coordinates) => {
-  const connectionName = document.getElementById('addLocalSplitterName').value;
-  const localSplitterPortNo = Number(
-    document.getElementById('addLocalSplitterPortNo').value
-  );
-  const localSplitterType = Number(
-    document.getElementById('addLocalSplitterType').value
-  );
-
-  const connectedCoreColor = document.getElementById(
-    'addLocalSplitterConnection'
-  ).value;
+  const connectionName = $('#addLocalSplitterName').val();
+  const localSplitterPortNo = Number($('#addLocalSplitterPortNo').val());
+  const localSplitterType = Number($('#addLocalSplitterType').val());
+  const connectedCoreColor = $('#addLocalSplitterConnection').val();
 
   const newSplitterConnection = {
     parentType: polylineType,

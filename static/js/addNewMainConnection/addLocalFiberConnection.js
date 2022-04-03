@@ -2,10 +2,10 @@ import { showError } from '../utility/showMessageAndError.js';
 import coreColor from '../utility/coreColor.js';
 
 export default async (polylineKey, selectedPolylineType, coordinates) => {
-  const name = document.getElementById('addLocalFiberConnectionName').value;
+  const name = $('#addLocalFiberConnectionName').val();
 
   const connectionTotalCore = Number(
-    document.getElementById('addLocalFiberConnectionCoreOptions').value
+    $('#addLocalFiberConnectionCoreOptions').val()
   );
 
   const selectedCoreColor = coreColor.slice(0, connectionTotalCore);
@@ -36,7 +36,6 @@ export default async (polylineKey, selectedPolylineType, coordinates) => {
     location.reload();
   } else {
     const { errors, message } = responseJson;
-    console.log(message);
     if (errors) {
       errors.forEach((item) => {
         showError(item.msg);
