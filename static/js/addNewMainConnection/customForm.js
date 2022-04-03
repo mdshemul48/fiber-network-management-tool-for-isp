@@ -281,7 +281,7 @@ export default (parentId, type) => {
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Add Home Connection</h5>
                 </div>
-                <form id="addLocalHomeConnectionSubmit">
+                <form onsubmit="event.preventDefault(); addHomeConnection();">
                     <div class="modal-body">
                         <div class="mb-3">
                             <input type="text" class="form-control" id="addLocalHomeConnectionName" placeholder="Name">
@@ -330,11 +330,6 @@ export default (parentId, type) => {
                     <div class="modal-body">
                         <div class="mb-2">
                             <input type="text" class="form-control" id="addLocalSplitterName" placeholder="Name">
-                        </div>
-
-                        <div class="mb-2 mt-1">
-                            <input type="text" class="form-control" id="addLocalSplitterPortNo"
-                                placeholder="Olt Port No">
                         </div>
 
                         <div class=" mt-2">

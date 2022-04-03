@@ -96,12 +96,9 @@ window.addLocalFiberConnection = () => {
   );
 };
 
-document
-  .getElementById('addLocalHomeConnectionSubmit')
-  ?.addEventListener('submit', (event) => {
-    event.preventDefault();
-    addLocalHomeConnection(selectedPolyline, editablePolyline.getAllThePath());
-  });
+window.addHomeConnection = () => {
+  addLocalHomeConnection(selectedPolyline, editablePolyline.getAllThePath());
+};
 
 // ! testing shortest route here
 

@@ -21,12 +21,5 @@ body {
   z-index: 90000;
   position: absolute;
   top: 10px;
-  right: 250px;
-}
-
-.new-add-button {
-  z-index: 90000;
-  position: absolute;
-  top: 10px;
-  right: 400px;
+  right: 240px;
 }
