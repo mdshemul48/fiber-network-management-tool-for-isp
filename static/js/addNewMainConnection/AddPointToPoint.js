@@ -3,7 +3,7 @@ import { showError } from '../utility/showMessageAndError.js';
 import coreColor from '../utility/coreColor.js';
 // this will get only the form data
 const formData = () => {
-  const connectionName = $('#addLocalConnectionName').val();
+  const connectionName = $('#mainConnectionName').val();
   const connectionTotalCore = Number($('#mainConnectionCoreOptions').val());
   return { connectionName, connectionTotalCore };
 };
@@ -38,7 +38,6 @@ export default async (coordinates) => {
     location.reload();
   } else {
     const { errors, message } = responseJson;
-    console.log(message);
     if (errors) {
       errors.forEach((item) => {
         showError(item.msg);

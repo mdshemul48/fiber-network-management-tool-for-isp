@@ -67,6 +67,10 @@ document.getElementById('addNewConnection').addEventListener('click', () => {
 
 // all the connections form
 
+window.addPointToPointForm = () => {
+  addPointToPoint(editablePolyline.getAllThePath());
+};
+
 window.addResellerForm = () => {
   const polylineCoordinates = editablePolyline.getAllThePath();
   addReseller(selectedPolyline, polylineCoordinates);
@@ -76,23 +80,13 @@ window.addCompanyForm = () => {
   AddCompany(selectedPolyline, editablePolyline.getAllThePath());
 };
 
-document
-  .getElementById('addMainLocalSubmission')
-  ?.addEventListener('submit', (event) => {
-    event.preventDefault();
-    addPointToPoint(selectedPolyline, editablePolyline.getAllThePath());
-  });
-
-document
-  .getElementById('addLocalSplitterSubmission')
-  ?.addEventListener('submit', (event) => {
-    event.preventDefault();
-    addLocalSplitter(
-      selectedPolyline,
-      selectedPolylineType,
-      editablePolyline.getAllThePath()
-    );
-  });
+window.addSplitterConnection = () => {
+  addLocalSplitter(
+    selectedPolyline,
+    selectedPolylineType,
+    editablePolyline.getAllThePath()
+  );
+};
 
 document
   .getElementById('addLocalHomeConnectionSubmit')
