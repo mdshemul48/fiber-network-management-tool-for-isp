@@ -160,6 +160,18 @@ exports.createSplitterConnection = async (req, res) => {
         connectionType: 'splitter',
         child: splitterConnection._id,
       });
+
+      const markerPoint = localFiber.markers.find((item) => {
+        return item.coordinates[0] === coordinatesLatLngArr[0][0];
+      });
+      if (!markerPoint) {
+        localFiber.markers.push({
+          coordinates: coordinatesLatLngArr[0],
+        });
+      } else {
+        markerPoint.totalConnected++;
+      }
+
       localFiber.totalConnected++;
       await localFiber.save();
       await reseller.save();
@@ -343,6 +355,25 @@ exports.deleteSplitterConnection = async (req, res) => {
       });
 
       reseller.childrens.splice(resellerChildIndex, 1);
+
+      const markerPoint = localFiber.markers.findIndex((item) => {
+        return (
+          item.coordinates[0] === splitterConnection.location.coordinates[0][0]
+        );
+      });
+
+      if (markerPoint !== -1) {
+        if (localFiber.markers[markerPoint].totalConnected === 1) {
+          localFiber.markers.splice(markerPoint, 1);
+        } else {
+          localFiber.markers[markerPoint].totalConnected--;
+        }
+      } else {
+        return res.status(400).json({
+          status: 'error',
+          message: 'parent connection does not have this child',
+        });
+      }
 
       await reseller.save();
       await localFiber.save();
