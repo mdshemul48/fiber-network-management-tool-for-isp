@@ -11,18 +11,19 @@ const printAllThePolylines = async (map) => {
 
   window.allTheConnection = allThePath;
 
-  allThePath.forEach((connection) => {
+  window.allTheConnection.forEach((connection, index) => {
     if (connection.type === 'pointToPoint')
-      printPointToPointConnection(connection, map);
+      printPointToPointConnection(connection, map, index);
     else if (connection.type === 'corporate')
-      printCorporateConnection(connection, map);
+      printCorporateConnection(connection, map, index);
     else if (connection.type === 'reseller')
-      printResellerConnection(connection, map);
+      printResellerConnection(connection, map, index);
     else if (connection.type === 'localFiber')
-      printLocalFiberConnection(connection, map);
+      printLocalFiberConnection(connection, map, index);
     else if (connection.type === 'splitter')
-      printLocalSplitter(connection, map);
-    else if (connection.type === 'home') printHomeConnection(connection, map);
+      printLocalSplitter(connection, map, index);
+    else if (connection.type === 'home')
+      printHomeConnection(connection, map, index);
   });
 };
 

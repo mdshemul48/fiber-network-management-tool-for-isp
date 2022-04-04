@@ -1,6 +1,6 @@
 import allTheCoreColor from '../../utility/coreColor.js';
 
-export default function (connection, map) {
+export default function (connection, map, index) {
   const {
     _id,
     name,
@@ -26,6 +26,10 @@ export default function (connection, map) {
     strokeOpacity: 1.0,
     strokeWeight: 4,
   });
+
+  window.allTheConnection[index].polyline = polyline;
+
+  connection.obj = polyline;
 
   const lengthInMeters = google.maps.geometry.spherical.computeLength(
     polyline.getPath()
@@ -77,15 +81,6 @@ ${
     map,
     icon: icon,
   });
-
-  // marker.addListener('mouseover', (event) => {
-  //   infoWindow.setPosition(event.latLng);
-  //   infoWindow.open(map);
-  // });
-
-  // marker.addListener('mouseout', () => {
-  //   infoWindow.close();
-  // });
 
   polyline.addListener('mouseover', (event) => {
     infoWindow.setPosition(event.latLng);

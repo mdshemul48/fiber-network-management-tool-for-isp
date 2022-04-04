@@ -1,4 +1,4 @@
-export default function (connection, map) {
+export default function (connection, map, index) {
   const {
     _id,
     name,
@@ -22,6 +22,8 @@ export default function (connection, map) {
       strokeOpacity: 1.0,
       strokeWeight: 4,
     });
+
+    window.allTheConnection[index].polyline = polyline;
 
     const lengthInMeters = google.maps.geometry.spherical.computeLength(
       polyline.getPath()

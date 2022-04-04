@@ -1,6 +1,6 @@
 import coreColor from '../../utility/coreColor.js';
 
-export default function (connection, map) {
+export default function (connection, map, index) {
   const {
     name,
     location,
@@ -22,6 +22,8 @@ export default function (connection, map) {
   });
 
   polyline.setMap(map);
+
+  window.allTheConnection[index].polyline = polyline;
 
   const colorCores = coreColor.slice(0, totalCore);
 

@@ -49,6 +49,7 @@ window.initMap = function () {
 };
 // this will called when the user will click on new polyline
 window.selectPolyline = (latLng, { _id, type }) => {
+  console.log(window.allTheConnection);
   if (!selectedPolyline) {
     showMessage(`You have selected ${type} connection!`);
     editablePolyline.addVertex(latLng);

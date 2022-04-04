@@ -1,6 +1,6 @@
 import allTheCoreColor from '../../utility/coreColor.js';
 
-export default function (connection, map) {
+export default function (connection, map, index) {
   const { name, color, onuNo, type, locations, _id } = connection;
 
   const coordinates = locations.coordinates.map((item) => {
@@ -15,6 +15,8 @@ export default function (connection, map) {
     strokeOpacity: 1.0,
     strokeWeight: 3,
   });
+
+  window.allTheConnection[index].polyline = polyline;
 
   polyline.setMap(map);
 

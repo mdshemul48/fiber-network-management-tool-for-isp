@@ -1,6 +1,6 @@
 import allTheCoreColor from '../../utility/coreColor.js';
 
-export default function (connection, map) {
+export default function (connection, map, index) {
   const {
     _id,
     parent,
@@ -27,6 +27,8 @@ export default function (connection, map) {
     strokeOpacity: 1.0,
     strokeWeight: 4,
   });
+
+  window.allTheConnection[index].polyline = polyline;
 
   let resellerChildDetail = '';
   childrens.forEach((child) => {
@@ -70,15 +72,6 @@ export default function (connection, map) {
     map,
     icon: icon,
   });
-
-  // marker.addListener('mouseover', (event) => {
-  //   infoWindow.setPosition(event.latLng);
-  //   infoWindow.open(map);
-  // });
-
-  // marker.addListener('mouseout', () => {
-  //   infoWindow.close();
-  // });
 
   polyline.addListener('mouseover', (event) => {
     infoWindow.setPosition(event.latLng);
