@@ -37,27 +37,6 @@ export default async (coordinates) => {
   const { status, data } = responseJson;
 
   if (status === 'success') {
-    window.allTheConnection.push(data);
-
-    // pushing to parent childrens data
-    const findIndex = window.allTheConnection.findIndex(
-      (item) => item._id === data.parent
-    );
-
-    if (findIndex !== -1) {
-      window.allTheConnection[findIndex].childrens.push({
-        color: data.color,
-        connectionType: data.type,
-        portNo,
-        child: data._id,
-      });
-    }
-
-    printPointToPoint(
-      data,
-      window.targetMap,
-      window.allTheConnection.length - 1
-    );
   } else {
     const { errors, message } = responseJson;
     if (errors) {

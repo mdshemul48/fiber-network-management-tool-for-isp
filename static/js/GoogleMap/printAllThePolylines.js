@@ -5,7 +5,9 @@ import printLocalFiberConnection from './printPolylineConnection/printLocalFiber
 import printHomeConnection from './printPolylineConnection/printHome.js';
 import printLocalSplitter from './printPolylineConnection/printLocalSplitter.js';
 
-const printAllThePolylines = async (map) => {
+const printAllThePolylines = async () => {
+  const map = window.targetMap;
+
   const response = await fetch('/api/getAllConnection');
   const { data: allThePath } = await response.json();
 

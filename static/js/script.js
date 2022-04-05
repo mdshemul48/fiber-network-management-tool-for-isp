@@ -86,10 +86,20 @@ document.getElementById('addNewConnection').addEventListener('click', () => {
 // all the connections form
 
 const createNewPolyline = () => {
+  printAllThePolylines();
   editablePolyline = new EditablePolyline();
   editablePolyline.setMap(window.targetMap);
   selectedPolyline = null;
   selectedPolylineType = null;
+
+  const allConnections = [...window.allTheConnection];
+  for (let connection of allConnections) {
+    connection.polyline.setMap(null);
+    connection.markersPoint.forEach((marker) => {
+      marker.setMap(null);
+    });
+  }
+
   $('#form-area').modal('hide');
 };
 

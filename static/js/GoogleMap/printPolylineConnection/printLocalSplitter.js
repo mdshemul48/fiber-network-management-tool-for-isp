@@ -81,6 +81,7 @@ ${
     map,
     icon: icon,
   });
+  window.allTheConnection[index].markersPoint = [marker];
 
   polyline.addListener('mouseover', (event) => {
     infoWindow.setPosition(event.latLng);

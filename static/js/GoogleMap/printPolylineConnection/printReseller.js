@@ -78,6 +78,8 @@ export default function (connection, map, index) {
     infoWindow.open(map);
   });
 
+  window.allTheConnection[index].markersPoint = [marker];
+
   polyline.addListener('mouseout', () => {
     infoWindow.close();
   });

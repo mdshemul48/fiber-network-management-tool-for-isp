@@ -84,6 +84,7 @@ export default function (connection, map, index) {
     origin: new google.maps.Point(0, 0),
     anchor: new google.maps.Point(15, 15),
   };
+  window.allTheConnection[index].markersPoint = [];
   markers.forEach((item) => {
     const [lat, lng] = item.location.coordinates;
     const marker = new google.maps.Marker({
@@ -94,5 +95,6 @@ export default function (connection, map, index) {
     google.maps.event.addListener(marker, 'click', function (event) {
       window.selectPolyline(event.latLng, { _id, type });
     });
+    window.allTheConnection[index].markersPoint.push(marker);
   });
 }

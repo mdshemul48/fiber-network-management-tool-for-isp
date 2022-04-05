@@ -50,6 +50,8 @@ export default function (connection, map, index) {
     icon: icon,
   });
 
+  window.allTheConnection[index].markersPoint = [marker];
+
   polyline.addListener('mouseover', (event) => {
     infoWindow.setPosition(event.latLng);
     infoWindow.open(map);
@@ -59,12 +61,4 @@ export default function (connection, map, index) {
     infoWindow.close();
   });
 
-  // marker.addListener('mouseover', (event) => {
-  //   infoWindow.setPosition(event.latLng);
-  //   infoWindow.open(map);
-  // });
-
-  // marker.addListener('mouseout', () => {
-  //   infoWindow.close();
-  // });
 }
