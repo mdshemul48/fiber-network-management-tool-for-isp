@@ -1,6 +1,7 @@
 import { showError } from '../utility/showMessageAndError.js';
-
 import coreColor from '../utility/coreColor.js';
+import printPointToPoint from '../GoogleMap/printPolylineConnection/printPointToPoint.js';
+
 // this will get only the form data
 const formData = () => {
   const connectionName = $('#mainConnectionName').val();
@@ -33,10 +34,15 @@ export default async (coordinates) => {
   });
 
   const responseJson = await response.json();
-  const { status } = responseJson;
-  console.log(status);
+  const { status, data } = responseJson;
+
   if (status === 'success') {
-    location.reload();
+    window.allTheConnection.push(data);
+    printPointToPoint(
+      data,
+      window.targetMap,
+      window.allTheConnection.length - 1
+    );
   } else {
     const { errors, message } = responseJson;
     if (errors) {
@@ -49,4 +55,6 @@ export default async (coordinates) => {
       showError(message);
     }
   }
+
+  return { status };
 };

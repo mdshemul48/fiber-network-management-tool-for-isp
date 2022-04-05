@@ -1,4 +1,5 @@
 import { showError } from '../utility/showMessageAndError.js';
+import printLocalSplitter from '../GoogleMap/printPolylineConnection/printLocalSplitter.js';
 
 export default async (polylineKey, polylineType, coordinates) => {
   const connectionName = $('#addLocalSplitterName').val();
@@ -25,9 +26,14 @@ export default async (polylineKey, polylineType, coordinates) => {
     body: JSON.stringify(newSplitterConnection),
   });
   const responseJson = await response.json();
-  const { status } = responseJson;
+  const { status, data } = responseJson;
   if (status === 'success') {
-    location.reload();
+    window.allTheConnection.push(data);
+    printLocalSplitter(
+      data,
+      window.targetMap,
+      window.allTheConnection.length - 1
+    );
   } else {
     const { errors, message } = responseJson;
     if (errors) {
@@ -40,4 +46,6 @@ export default async (polylineKey, polylineType, coordinates) => {
       showError(message);
     }
   }
+
+  return { status };
 };

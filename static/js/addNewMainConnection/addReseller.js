@@ -1,4 +1,5 @@
 import { showError } from '../utility/showMessageAndError.js';
+import printReseller from '../GoogleMap/printPolylineConnection/printReseller.js';
 
 export default async (polylineKey, coordinates) => {
   const connectionName = $('#addLocalConnectionName').val();
@@ -25,9 +26,10 @@ export default async (polylineKey, coordinates) => {
     body: JSON.stringify(newConnection),
   });
   const responseJson = await response.json();
-  const { status } = responseJson;
+  const { status, data } = responseJson;
   if (status === 'success') {
-    location.reload();
+    window.allTheConnection.push(data);
+    printReseller(data, window.targetMap, window.allTheConnection.length - 1);
   } else {
     const { errors, message } = responseJson;
     if (errors) {
@@ -40,4 +42,6 @@ export default async (polylineKey, coordinates) => {
       showError(message);
     }
   }
+
+  return { status };
 };

@@ -1,5 +1,5 @@
 import { showError } from '../utility/showMessageAndError.js';
-
+import printCorporateConnection from '../GoogleMap/printPolylineConnection/printCorporateConnection.js';
 export default async (polylineKey, coordinates) => {
   const companyName = document.getElementById(
     'addPointToPointCompanyName'
@@ -23,9 +23,14 @@ export default async (polylineKey, coordinates) => {
     body: JSON.stringify(pointToPointPolyline),
   });
   const responseJson = await response.json();
-  const { status } = responseJson;
+  const { status, data } = responseJson;
   if (status === 'success') {
-    location.reload();
+    window.allTheConnection.push(data);
+    printCorporateConnection(
+      data,
+      window.targetMap,
+      window.allTheConnection.length - 1
+    );
   } else {
     const { errors, message } = responseJson;
     if (errors) {
@@ -38,4 +43,6 @@ export default async (polylineKey, coordinates) => {
       showError(message);
     }
   }
+
+  return { status };
 };

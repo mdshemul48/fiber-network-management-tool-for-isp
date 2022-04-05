@@ -67,28 +67,55 @@ document.getElementById('addNewConnection').addEventListener('click', () => {
 
 // all the connections form
 
-window.addPointToPointForm = () => {
-  addPointToPoint(editablePolyline.getAllThePath());
+const createNewPolyline = () => {
+  editablePolyline = new EditablePolyline();
+  editablePolyline.setMap(window.targetMap);
+  selectedPolyline = null;
+  selectedPolylineType = null;
+  $('#form-area').modal('hide');
 };
 
-window.addResellerForm = () => {
+window.addPointToPointForm = async () => {
+  const { status } = await addPointToPoint(editablePolyline.getAllThePath());
+  if (status === 'success') {
+    editablePolyline.setMap(null);
+    createNewPolyline();
+  }
+};
+
+window.addResellerForm = async () => {
   const polylineCoordinates = editablePolyline.getAllThePath();
-  addReseller(selectedPolyline, polylineCoordinates);
+  const { status } = await addReseller(selectedPolyline, polylineCoordinates);
+  if (status === 'success') {
+    editablePolyline.setMap(null);
+    createNewPolyline();
+  }
 };
 
-window.addCompanyForm = () => {
-  AddCompany(selectedPolyline, editablePolyline.getAllThePath());
+window.addCompanyForm = async () => {
+  const { status } = await AddCompany(
+    selectedPolyline,
+    editablePolyline.getAllThePath()
+  );
+  if (status === 'success') {
+    editablePolyline.setMap(null);
+    createNewPolyline();
+  }
 };
 
-window.addSplitterConnection = () => {
-  addLocalSplitter(
+window.addSplitterConnection = async () => {
+  const { status } = await addLocalSplitter(
     selectedPolyline,
     selectedPolylineType,
     editablePolyline.getAllThePath()
   );
+  if (status === 'success') {
+    editablePolyline.setMap(null);
+    createNewPolyline();
+  }
 };
 
-window.addLocalFiberConnection = () => {
+window.addLocalFiberConnection = async () => {
   addLocalFiberConnection(
     selectedPolyline,
     selectedPolylineType,
@@ -96,8 +123,15 @@ window.addLocalFiberConnection = () => {
   );
 };
 
-window.addHomeConnection = () => {
-  addLocalHomeConnection(selectedPolyline, editablePolyline.getAllThePath());
+window.addHomeConnection = async () => {
+  const { status } = await addLocalHomeConnection(
+    selectedPolyline,
+    editablePolyline.getAllThePath()
+  );
+  if (status === 'success') {
+    editablePolyline.setMap(null);
+    createNewPolyline();
+  }
 };
 
 // ! testing shortest route here
