@@ -33,15 +33,15 @@ insertScript();
 
 window.initMap = function () {
   const center = JSON.parse(localStorage.getItem('center')) || {
-    lat: 23.919524586722066,
-    lng: 90.25663246242456,
+    lat: 23.824374476895283,
+    lng: 90.27119894947462,
   };
-  const zoom = parseInt(localStorage.getItem('zoom')) || 6;
+  const zoom = parseInt(localStorage.getItem('zoom')) || 12;
   map = new google.maps.Map(document.getElementById('map'), {
     center,
     zoom,
   });
-
+  console.log(center, zoom);
   map.addListener('center_changed', () => {
     const { lat: latC, lng: lngC } = map.getCenter();
     const lat = latC();
