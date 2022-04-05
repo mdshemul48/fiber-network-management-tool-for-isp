@@ -112,7 +112,9 @@ exports.deleteCorporateConnection = async (req, res) => {
   try {
     const { id } = req.query;
 
-    const corporateConnection = await corporateConnectionModel.findById(id);
+    const corporateConnection = await corporateConnectionModel
+      .findById(id)
+      .populate('parent');
 
     if (!corporateConnection) {
       return res.status(400).json({
@@ -121,9 +123,7 @@ exports.deleteCorporateConnection = async (req, res) => {
       });
     }
 
-    const parentConnection = await pointToPointConnectionModel.findById(
-      corporateConnection.parent
-    );
+    const parentConnection = corporateConnection.parent;
 
     if (!parentConnection) {
       return res.status(400).json({
