@@ -32,10 +32,28 @@ const insertScript = () => {
 insertScript();
 
 window.initMap = function () {
+  const center = JSON.parse(localStorage.getItem('center')) || {
+    lat: 23.919524586722066,
+    lng: 90.25663246242456,
+  };
+  const zoom = parseInt(localStorage.getItem('zoom')) || 6;
   map = new google.maps.Map(document.getElementById('map'), {
-    center: { lat: 23.919524586722066, lng: 90.25663246242456 },
-    zoom: 15,
+    center,
+    zoom,
   });
+
+  map.addListener('center_changed', () => {
+    const { lat: latC, lng: lngC } = map.getCenter();
+    const lat = latC();
+    const lng = lngC();
+    localStorage.setItem('center', JSON.stringify({ lat: lat, lng: lng }));
+  });
+
+  map.addListener('zoom_changed', () => {
+    const zoom = map.getZoom();
+    localStorage.setItem('zoom', zoom);
+  });
+
   window.targetMap = map;
   editablePolyline = new EditablePolyline();
 

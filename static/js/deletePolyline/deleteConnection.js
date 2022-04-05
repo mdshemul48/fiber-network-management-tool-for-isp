@@ -1,4 +1,11 @@
 export default async (type, id, subId) => {
+  const confirmBar = confirm(
+    'Are you sure you want to delete this connection?'
+  );
+  if (!confirmBar) {
+    return;
+  }
+
   let url;
   if (type === 'pointToPoint') {
     url = `/api/ptp-connection?id=${id}`;
