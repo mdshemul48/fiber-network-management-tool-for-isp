@@ -53,6 +53,29 @@ exports.createHomeConnection = async (req, res) => {
       });
     }
 
+    const targetSplitterInReseller = splitter.reseller.childrens.find(
+      (item) => item.portNo === splitter.portNo
+    );
+
+    if (!targetSplitterInReseller) {
+      return res.status(400).json({
+        status: 'error',
+        message: 'Invalid splitter id',
+      });
+    }
+
+    if (
+      !(
+        targetSplitterInReseller.connectionUsed <
+        splitter.reseller.connectionLimit
+      )
+    ) {
+      return res.json({
+        status: 'error',
+        message: 'port is full',
+      });
+    }
+
     const alreadyExistColoredConnection = splitter.childrens.find(
       (item) => item.color === color
     );
@@ -80,10 +103,6 @@ exports.createHomeConnection = async (req, res) => {
       child: newHomeConnection._id,
       color,
     });
-
-    const targetSplitterInReseller = splitter.reseller.childrens.find(
-      (item) => item.portNo === splitter.portNo
-    );
 
     if (!targetSplitterInReseller) {
       return res.status(400).json({
@@ -132,7 +151,6 @@ exports.deleteHomeConnection = async (req, res) => {
         message: 'Invalid splitter id',
       });
     }
-
 
     const homeConnectionIndex = splitter.childrens.findIndex(
       (item) => item.child.toString() === homeConnection._id.toString()

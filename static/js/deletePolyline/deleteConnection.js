@@ -20,7 +20,7 @@ export default async (type, id, subId) => {
   } else if (type === 'home') {
     url = `/api/home-connection?id=${id}`;
   } else {
-    alert('error');
+    alert('error from Mars');
     return;
   }
 
@@ -30,7 +30,7 @@ export default async (type, id, subId) => {
 
   const { status, message } = await response.json();
   if (status === 'success') {
-    location.reload();
+    return { status };
   } else {
     alert(message);
   }

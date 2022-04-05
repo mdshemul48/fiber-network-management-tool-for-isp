@@ -22,7 +22,7 @@ let selectedPolyline = null;
 let selectedPolylineType = null;
 let clickEvent = null;
 
-const insertScript = () => {
+const insertScript = async () => {
   const script = document.createElement('script');
   script.src =
     'https://maps.googleapis.com/maps/api/js?key=AIzaSyDL9422bxk3GtU5z54qo2Sg-JrrSn5RGcE&libraries=geometry&callback=initMap';
@@ -63,7 +63,7 @@ window.initMap = function () {
 
   editablePolyline.setMap(map);
 
-  printAllThePolylines(map);
+  printAllThePolylines();
 };
 // this will called when the user will click on new polyline
 window.selectPolyline = (latLng, { _id, type }) => {
@@ -85,14 +85,14 @@ document.getElementById('addNewConnection').addEventListener('click', () => {
 
 // all the connections form
 
-const createNewPolyline = () => {
-  printAllThePolylines();
+const createNewPolyline = async () => {
+  const allConnections = [...window.allTheConnection];
+  await printAllThePolylines();
   editablePolyline = new EditablePolyline();
   editablePolyline.setMap(window.targetMap);
   selectedPolyline = null;
   selectedPolylineType = null;
 
-  const allConnections = [...window.allTheConnection];
   for (let connection of allConnections) {
     connection.polyline.setMap(null);
     connection.markersPoint.forEach((marker) => {
@@ -212,4 +212,18 @@ document.getElementById('triggerButton').addEventListener('click', async () => {
 
 // ! -----------------------------------
 
-window.deleteConnection = deleteConnection;
+window.deleteConnection = async (...params) => {
+  const { status } = await deleteConnection(...params);
+  console.log(status);
+  if (status === 'success') {
+    const allConnections = [...window.allTheConnection];
+    await printAllThePolylines();
+
+    for (let connection of allConnections) {
+      connection.polyline.setMap(null);
+      connection.markersPoint.forEach((marker) => {
+        marker.setMap(null);
+      });
+    }
+  }
+};
