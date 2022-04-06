@@ -1,4 +1,4 @@
-import getShortestPath from './utility/getShortestPath.js';
+import getShortestPath from './shortestPath/getShortestPath.js';
 
 import EditablePolyline from './GoogleMap/EditablePolyline.js';
 import printAllThePolylines from './GoogleMap/printAllThePolylines.js';
@@ -46,7 +46,13 @@ window.initMap = function () {
     const { lat: latC, lng: lngC } = map.getCenter();
     const lat = latC();
     const lng = lngC();
-    localStorage.setItem('center', JSON.stringify({ lat: lat, lng: lng }));
+    localStorage.setItem(
+      'center',
+      JSON.stringify({
+        lat: lat,
+        lng: lng,
+      })
+    );
   });
 
   map.addListener('zoom_changed', () => {
@@ -170,7 +176,10 @@ document.getElementById('triggerButton').addEventListener('click', async () => {
 
   const response = await fetch(
     '/api/ptp-connection?coordinates=' +
-      JSON.stringify({ lat: point.lat(), lng: point.lng() })
+      JSON.stringify({
+        lat: point.lat(),
+        lng: point.lng(),
+      })
   );
 
   const { status, data } = await response.json();
@@ -209,6 +218,72 @@ document.getElementById('triggerButton').addEventListener('click', async () => {
     });
   }
 });
+
+document
+  .getElementById('nearbySplitter')
+  .addEventListener('click', async () => {
+    const polylineCoordinates = editablePolyline.polyline.getPath();
+    const point = polylineCoordinates.getAt(0);
+
+    const response = await fetch(
+      '/api/splitter-connection?coordinates=' +
+        JSON.stringify({
+          lat: point.lat(),
+          lng: point.lng(),
+        })
+    );
+
+    const { status, data } = await response.json();
+
+    if (status === 'success') {
+      const {
+        lastPoint: { coordinates },
+      } = data;
+
+      const request = {
+        origin: new google.maps.LatLng(coordinates[1], coordinates[0]),
+        destination: point,
+        travelMode: 'WALKING',
+      };
+
+      const directionsService = new google.maps.DirectionsService();
+
+      await directionsService.route(request, (result, status) => {
+        if (status === 'OK') {
+          const path = result.routes[0].overview_path;
+          const polylineEstimatedPath = [
+            new google.maps.LatLng(coordinates[1], coordinates[0]),
+            ...path,
+            point,
+          ];
+
+          google.maps.event.removeListener(clickEvent);
+          editablePolyline.setMap(null);
+          // creating new polyline
+          editablePolyline = new EditablePolyline();
+          editablePolyline.setMap(window.targetMap);
+          // adding new event listener
+          clickEvent = window.targetMap.addListener('click', (event) => {
+            editablePolyline.addVertex(event.latLng);
+          });
+          // this will animate polyline
+          for (let i = 0; i < polylineEstimatedPath.length; i++) {
+            setTimeout(
+              function (coords) {
+                editablePolyline.addVertex(coords);
+              },
+              200 * i,
+              polylineEstimatedPath[i]
+            );
+          }
+          // setting parent data
+          const { _id, type } = data;
+          selectedPolyline = _id;
+          selectedPolylineType = type;
+        }
+      });
+    }
+  });
 
 // ! -----------------------------------
 
