@@ -64,6 +64,17 @@ const splitterConnectionModel = new Schema(
       },
     },
 
+    point: {
+      type: {
+        type: String,
+        default: 'Point',
+      },
+      coordinates: {
+        type: [Number],
+        required: true,
+      },
+    },
+
     childrens: [
       {
         color: {

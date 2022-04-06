@@ -79,6 +79,9 @@ exports.createSplitterConnection = async (req, res) => {
         location: {
           coordinates: coordinatesLatLngArr,
         },
+        point: {
+          coordinates: coordinatesLatLngArr[coordinatesLatLngArr.length - 1],
+        },
       });
 
       reseller.childrens.push({
@@ -145,6 +148,9 @@ exports.createSplitterConnection = async (req, res) => {
         portNo,
         location: {
           coordinates: coordinatesLatLngArr,
+        },
+        point: {
+          coordinates: coordinatesLatLngArr[coordinatesLatLngArr.length - 1],
         },
       });
 
@@ -227,6 +233,9 @@ exports.createSplitterConnection = async (req, res) => {
         portNo: splitter.portNo,
         location: {
           coordinates: coordinatesLatLngArr,
+        },
+        point: {
+          coordinates: coordinatesLatLngArr[coordinatesLatLngArr.length - 1],
         },
       });
 

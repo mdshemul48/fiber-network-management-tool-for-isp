@@ -58,13 +58,4 @@ export default function (connection, map, index) {
   polyline.addListener('mouseout', () => {
     infoWindow.close();
   });
-
-  // marker.addListener('mouseover', (event) => {
-  //   infoWindow.setPosition(event.latLng);
-  //   infoWindow.open(map);
-  // });
-
-  // marker.addListener('mouseout', () => {
-  //   infoWindow.close();
-  // });
 }
