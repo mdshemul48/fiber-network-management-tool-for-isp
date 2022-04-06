@@ -41,7 +41,6 @@ window.initMap = function () {
     center,
     zoom,
   });
-  console.log(center, zoom);
   map.addListener('center_changed', () => {
     const { lat: latC, lng: lngC } = map.getCenter();
     const lat = latC();
@@ -289,7 +288,6 @@ document
 
 window.deleteConnection = async (...params) => {
   const { status } = await deleteConnection(...params);
-  console.log(status);
   if (status === 'success') {
     const allConnections = [...window.allTheConnection];
     await printAllThePolylines();

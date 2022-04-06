@@ -55,7 +55,6 @@ exports.createSplitterConnection = async (req, res) => {
       }
 
       const alreadyExistSplitter = reseller.childrens.find((item) => {
-        console.log(item.color === color);
         return (
           item.connectionType === 'splitter' &&
           ((item.color !== undefined && item.color === color) ||
@@ -63,7 +62,6 @@ exports.createSplitterConnection = async (req, res) => {
         );
       });
 
-      console.log(alreadyExistSplitter);
 
       if (alreadyExistSplitter) {
         return res.status(400).json({
