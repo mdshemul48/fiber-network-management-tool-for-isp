@@ -60,6 +60,8 @@ export default function (connection, map, index) {
   //   infoWindow.close();
   // });
 
+  window.allTheConnection[index].markersPoint = [marker];
+
   polyline.addListener('mouseover', (event) => {
     infoWindow.setPosition(event.latLng);
     infoWindow.open(map);

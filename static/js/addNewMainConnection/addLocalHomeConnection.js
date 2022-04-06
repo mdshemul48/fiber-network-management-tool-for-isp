@@ -1,4 +1,5 @@
 import { showError } from '../utility/showMessageAndError.js';
+import printHome from '../GoogleMap/printPolylineConnection/printHome.js';
 export default async (polylineKey, coordinates) => {
   const connectionName = document.getElementById(
     'addLocalHomeConnectionName'
@@ -24,9 +25,9 @@ export default async (polylineKey, coordinates) => {
   });
 
   const responseJson = await response.json();
-  const { status } = responseJson;
+  const { status, data } = responseJson;
   if (status === 'success') {
-    location.reload();
+    
   } else {
     const { errors, message } = responseJson;
     if (errors) {
@@ -39,4 +40,5 @@ export default async (polylineKey, coordinates) => {
       showError(message);
     }
   }
+  return { status };
 };
