@@ -31,6 +31,7 @@ const {
   createSplitterConnection,
   createSplitterValidation,
   deleteSplitterConnection,
+  findNearestSplitterConnection,
 } = require('../controllers/connectionControllers/splitterController.js');
 
 const {
@@ -77,6 +78,8 @@ router
 
 router
   .route('/splitter-connection')
+
+  .get(findNearestSplitterConnection)
 
   .post(createSplitterValidation, createSplitterConnection)
 

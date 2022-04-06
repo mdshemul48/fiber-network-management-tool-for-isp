@@ -40,7 +40,7 @@ exports.createSplitterConnection = async (req, res) => {
 
     // creating the connection
     const coordinatesLatLngArr = coordinates.map((item) => {
-      return [item.lat, item.lng];
+      return [item.lng, item.lat];
     });
 
     let reseller;
@@ -55,11 +55,15 @@ exports.createSplitterConnection = async (req, res) => {
       }
 
       const alreadyExistSplitter = reseller.childrens.find((item) => {
+        console.log(item.color === color);
         return (
           item.connectionType === 'splitter' &&
-          (item.color === color || item.portNo === parseInt(portNo))
+          ((item.color !== undefined && item.color === color) ||
+            item.portNo === parseInt(portNo))
         );
       });
+
+      console.log(alreadyExistSplitter);
 
       if (alreadyExistSplitter) {
         return res.status(400).json({
@@ -79,7 +83,7 @@ exports.createSplitterConnection = async (req, res) => {
         location: {
           coordinates: coordinatesLatLngArr,
         },
-        point: {
+        lastPoint: {
           coordinates: coordinatesLatLngArr[coordinatesLatLngArr.length - 1],
         },
       });
@@ -127,7 +131,8 @@ exports.createSplitterConnection = async (req, res) => {
       const alreadyExistSplitter = reseller.childrens.find((item) => {
         return (
           item.connectionType === 'splitter' &&
-          (item.color === color || item.portNo === parseInt(portNo))
+          ((item.color !== undefined && item.color === color) ||
+            item.portNo === parseInt(portNo))
         );
       });
 
@@ -149,7 +154,7 @@ exports.createSplitterConnection = async (req, res) => {
         location: {
           coordinates: coordinatesLatLngArr,
         },
-        point: {
+        lastPoint: {
           coordinates: coordinatesLatLngArr[coordinatesLatLngArr.length - 1],
         },
       });
@@ -234,7 +239,7 @@ exports.createSplitterConnection = async (req, res) => {
         location: {
           coordinates: coordinatesLatLngArr,
         },
-        point: {
+        lastPoint: {
           coordinates: coordinatesLatLngArr[coordinatesLatLngArr.length - 1],
         },
       });
@@ -260,6 +265,50 @@ exports.createSplitterConnection = async (req, res) => {
         message: 'Invalid parentType',
       });
     }
+  } catch (err) {
+    return res.status(500).json({
+      status: 'error',
+      message: err.message,
+    });
+  }
+};
+
+exports.findNearestSplitterConnection = async (req, res) => {
+  try {
+    const { coordinates } = req.query;
+
+    if (!coordinates) {
+      return res.status(400).json({
+        status: 'error',
+        message: 'Invalid coordinates',
+      });
+    }
+
+    const { lat, lng } = JSON.parse(coordinates);
+
+    const splitterConnection = await splitterConnectionModel.findOne({
+      lastPoint: {
+        $near: {
+          $geometry: {
+            type: 'Point',
+            coordinates: [lng, lat],
+          },
+          $maxDistance: 100000,
+        },
+      },
+    });
+
+    if (!splitterConnection) {
+      return res.status(400).json({
+        status: 'error',
+        message: 'No splitter connection found',
+      });
+    }
+
+    return res.status(200).json({
+      status: 'success',
+      data: splitterConnection,
+    });
   } catch (err) {
     return res.status(500).json({
       status: 'error',

@@ -64,7 +64,7 @@ const splitterConnectionModel = new Schema(
       },
     },
 
-    point: {
+    lastPoint: {
       type: {
         type: String,
         default: 'Point',
@@ -99,4 +99,5 @@ const splitterConnectionModel = new Schema(
   }
 );
 
+splitterConnectionModel.index({ lastPoint: '2dsphere' });
 module.exports = model('Splitter', splitterConnectionModel);

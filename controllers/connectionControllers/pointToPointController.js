@@ -31,7 +31,6 @@ exports.createPointToPointConnection = async (req, res) => {
 
     const { name, totalCore, coordinates } = req.body;
     const coordinatesLatLngArr = coordinates.map((item) => {
-      // return [item.lat, item.lng];
       return [item.lng, item.lat];
     });
     const createdConnection = await pointToPointConnectionModel.create({

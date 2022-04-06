@@ -15,7 +15,7 @@ export default function (connection, map, index) {
   } = connection;
 
   const coordinates = location.coordinates.map((item) => {
-    return { lat: item[0], lng: item[1] };
+    return { lng: item[0], lat: item[1] };
   });
   const polyline = new google.maps.Polyline({
     path: coordinates,
