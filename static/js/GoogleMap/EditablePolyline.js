@@ -27,8 +27,8 @@ class EditablePolyline {
   }
   getAllThePath() {
     const path = this.polyline.getPath();
-    const allCoordinatesFunctions = path.Ed || path.Fd;
-    if (allCoordinatesFunctions.length >= 2) {
+    const allCoordinatesFunctions = path.getArray();
+    if (allCoordinatesFunctions?.length >= 2) {
       const allCoordinates = allCoordinatesFunctions.map(({ lat, lng }) => ({
         lat: lat(),
         lng: lng(),
