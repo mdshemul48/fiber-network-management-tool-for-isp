@@ -28,7 +28,10 @@ export default function (connection, map, index) {
   let localFiberChildrens = '';
 
   childrens.forEach((item) => {
-    localFiberChildrens += `<p class="mb-1">${item.color}: used </p>`;
+    localFiberChildrens +=
+      item.connectionType === 'splitter'
+        ? `<p class="mb-1">${item.color}: used </p>`
+        : '';
   });
 
   const infoWindow = new google.maps.InfoWindow({

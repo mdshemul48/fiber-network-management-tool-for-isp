@@ -25,7 +25,9 @@ exports.createLocalFiberConnection = async (req, res) => {
     if (parentType === 'reseller') {
       selectedParent = await resellerConnectionModel.findOne({ _id: parent });
     } else if (parentType === 'localFiber') {
-      selectedParent = await localFiberConnectionModel.findOne({ _id: parent });
+      selectedParent = await localFiberConnectionModel
+        .findOne({ _id: parent })
+        .populate('parent');
     }
 
     if (!selectedParent) {
@@ -68,25 +70,52 @@ exports.createLocalFiberConnection = async (req, res) => {
         data: createLocalFiberConnection,
       });
     } else if (selectedParent.type === 'localFiber') {
-      const markerPoint = selectedParent.markers.find((item) => {
-        return item.coordinates[0] === coordinatesLatLngArr[0][0];
-      });
-      if (!markerPoint) {
-        selectedParent.markers.push({
-          coordinates: coordinatesLatLngArr[0],
+      let createLocalFiberConnection = null;
+
+      if (selectedParent.mainLocalFiber) {
+        createLocalFiberConnection = await localFiberConnectionModel.create({
+          name,
+          parent: selectedParent._id,
+          parentType: 'localFiber',
+          totalCore,
+          type: 'localFiber',
+          mainLocalFiber: selectedParent.mainLocalFiber,
+          totalCore,
+          locations: {
+            coordinates: coordinatesLatLngArr,
+          },
+        });
+      } else if (selectedParent.parent.type === 'reseller') {
+        createLocalFiberConnection = await localFiberConnectionModel.create({
+          name,
+          parent: selectedParent._id,
+          parentType: 'localFiber',
+          totalCore,
+          type: 'localFiber',
+          mainLocalFiber: selectedParent._id,
+          totalCore,
+          locations: {
+            coordinates: coordinatesLatLngArr,
+          },
         });
       } else {
-        markerPoint.totalConnected++;
+        return res.status(400).json({
+          status: 'error',
+          message: 'parent connection does not exist',
+        });
       }
-      selectedParent.locations.push({
-        coordinates: coordinatesLatLngArr,
+      await createLocalFiberConnection.save();
+
+      selectedParent.childrens.push({
+        child: createLocalFiberConnection._id,
+        connectionType: 'localFiber',
       });
 
       await selectedParent.save();
 
       return res.status(201).json({
         status: 'success',
-        data: selectedParent,
+        data: createLocalFiberConnection,
       });
     }
   } catch (error) {
