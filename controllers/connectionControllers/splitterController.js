@@ -62,7 +62,6 @@ exports.createSplitterConnection = async (req, res) => {
         );
       });
 
-
       if (alreadyExistSplitter) {
         return res.status(400).json({
           status: 'error',

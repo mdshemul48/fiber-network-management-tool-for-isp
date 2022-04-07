@@ -47,6 +47,7 @@ exports.createLocalFiberConnection = async (req, res) => {
           name,
           parent: selectedParent._id,
           parentType: 'reseller',
+          reseller: selectedParent._id,
           totalCore,
           type: 'localFiber',
           totalCore,
@@ -76,6 +77,7 @@ exports.createLocalFiberConnection = async (req, res) => {
         createLocalFiberConnection = await localFiberConnectionModel.create({
           name,
           parent: selectedParent._id,
+          reseller: selectedParent.reseller,
           parentType: 'localFiber',
           totalCore,
           type: 'localFiber',
@@ -89,6 +91,7 @@ exports.createLocalFiberConnection = async (req, res) => {
         createLocalFiberConnection = await localFiberConnectionModel.create({
           name,
           parent: selectedParent._id,
+          reseller: selectedParent.reseller,
           parentType: 'localFiber',
           totalCore,
           type: 'localFiber',

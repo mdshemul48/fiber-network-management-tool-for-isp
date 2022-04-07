@@ -14,6 +14,11 @@ const localFiberConnectionSchema = new Schema(
 
     parent: { type: ObjectId, refPath: 'parentType' },
 
+    reseller: {
+      type: ObjectId,
+      ref: 'reseller',
+    },
+    
     name: {
       type: String,
       required: true,
