@@ -173,13 +173,14 @@ exports.createSplitterConnection = async (req, res) => {
           });
         }
 
-        const alreadyExistParentSplitter = localFiber.childrens.find((item) => {
-          return (
-            item.connectionType === 'splitter' &&
-            item.color !== undefined &&
-            item.color === color
-          );
-        });
+        const alreadyExistParentSplitter =
+          localFiber.mainLocalFiber.childrens.find((item) => {
+            return (
+              item.connectionType === 'splitter' &&
+              item.color !== undefined &&
+              item.color === color
+            );
+          });
 
         if (alreadyExistParentSplitter) {
           return res.status(400).json({

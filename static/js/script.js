@@ -100,7 +100,7 @@ const createNewPolyline = async () => {
 
   for (let connection of allConnections) {
     connection.polyline.setMap(null);
-    connection.markersPoint.forEach((marker) => {
+    connection?.markersPoint?.forEach((marker) => {
       marker.setMap(null);
     });
   }

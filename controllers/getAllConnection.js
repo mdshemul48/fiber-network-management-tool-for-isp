@@ -10,7 +10,7 @@ exports.getAllConnection = async (req, res) => {
   const resellerData = await resellerConnectionModel.find();
   const localFiberData = await createLocalFiberModel
     .find()
-    .populate('mainLocalFiber');
+    .populate('mainLocalFiber', 'totalConnected totalCore childrens');
   const splitterData = await splitterConnectionModel.find();
   const homeData = await homeConnectionModel.find();
 

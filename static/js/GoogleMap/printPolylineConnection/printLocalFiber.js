@@ -1,4 +1,5 @@
 export default function (connection, map, index) {
+  console.log(connection);
   const {
     _id,
     name,
@@ -8,6 +9,7 @@ export default function (connection, map, index) {
     totalConnected,
     markers,
     childrens,
+    mainLocalFiber,
   } = connection;
 
   const coordinates = locations.coordinates.map((item) => {
@@ -27,7 +29,7 @@ export default function (connection, map, index) {
   );
   let localFiberChildrens = '';
 
-  childrens.forEach((item) => {
+  (mainLocalFiber?.childrens || childrens).forEach((item) => {
     localFiberChildrens +=
       item.connectionType === 'splitter'
         ? `<p class="mb-1">${item.color}: used </p>`
@@ -39,7 +41,9 @@ export default function (connection, map, index) {
     <p class="mb-1 fw-bold">${name}</p>
     <hr class="my-1" />
     <p class="mb-1"><span class="fw-bold">Connection Type:</span> ${type}</p>
-    <p class="mb-1"><span class=" fw-bold">total Used Core:</span> ${totalConnected}/${totalCore}</p>
+    <p class="mb-1"><span class=" fw-bold">total Used Core:</span> ${
+      mainLocalFiber?.totalConnected || totalConnected
+    }/${mainLocalFiber?.totalCore || totalCore}</p>
     <p class="mb-1"><span class=" fw-bold">Distance:</span> ${Math.ceil(
       lengthInMeters
     )}m</p>
