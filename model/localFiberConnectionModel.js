@@ -60,25 +60,23 @@ const localFiberConnectionSchema = new Schema(
       required: false,
     },
 
-    locations: [
-      {
-        type: {
-          type: String,
-          default: 'LineString',
-        },
-        coordinates: {
-          type: [[Number]],
-          required: true,
-        },
+    locations: {
+      type: {
+        type: String,
+        default: 'LineString',
       },
-    ],
+      coordinates: {
+        type: [[Number]],
+        required: true,
+      },
+    },
 
     childrens: [
       {
         connectionType: {
           type: String,
           required: true,
-          enum: ['splitter'],
+          enum: ['splitter', 'localFiber'],
         },
         child: {
           type: ObjectId,
@@ -87,7 +85,7 @@ const localFiberConnectionSchema = new Schema(
         },
         color: {
           type: String || Number,
-          required: true,
+          required: false,
         },
       },
     ],

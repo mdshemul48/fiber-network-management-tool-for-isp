@@ -48,16 +48,11 @@ exports.createLocalFiberConnection = async (req, res) => {
           totalCore,
           type: 'localFiber',
           totalCore,
-          locations: [
-            {
-              coordinates: coordinatesLatLngArr,
-            },
-          ],
+          locations: {
+            coordinates: coordinatesLatLngArr,
+          },
         }
       );
-
-      createLocalFiberConnection.mainConnection =
-        createLocalFiberConnection.locations[0]._id;
 
       await createLocalFiberConnection.save();
 
@@ -95,6 +90,7 @@ exports.createLocalFiberConnection = async (req, res) => {
       });
     }
   } catch (error) {
+    console.log(error);
     return res.status(500).json({
       status: 'error',
       message: error.message,
