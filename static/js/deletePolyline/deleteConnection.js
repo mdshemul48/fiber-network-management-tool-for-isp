@@ -1,3 +1,5 @@
+import { showError } from '../utility/showMessageAndError.js';
+
 export default async (type, id) => {
   const confirmBar = confirm(
     'Are you sure you want to delete this connection?'
@@ -29,9 +31,8 @@ export default async (type, id) => {
   });
 
   const { status, message } = await response.json();
-  if (status === 'success') {
-    return { status };
-  } else {
-    alert(message);
+  if (status !== 'success') {
+    showError(message);
   }
+  return { status };
 };

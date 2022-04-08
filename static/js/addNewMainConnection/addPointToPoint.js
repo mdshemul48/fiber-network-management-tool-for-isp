@@ -1,4 +1,4 @@
-import { showError } from '../utility/showMessageAndError.js';
+import showMessage, { showError } from '../utility/showMessageAndError.js';
 import coreColor from '../utility/coreColor.js';
 
 // this will get only the form data
@@ -36,6 +36,7 @@ export default async (coordinates) => {
   const { status, data } = responseJson;
 
   if (status === 'success') {
+    showMessage('Successfully added new main connection');
   } else {
     const { errors, message } = responseJson;
     if (errors) {

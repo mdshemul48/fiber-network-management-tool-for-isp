@@ -1,4 +1,4 @@
-import { showError } from '../utility/showMessageAndError.js';
+import showMessage, { showError } from '../utility/showMessageAndError.js';
 
 export default async (polylineKey, polylineType, coordinates) => {
   const connectionName = $('#addLocalSplitterName').val();
@@ -27,7 +27,7 @@ export default async (polylineKey, polylineType, coordinates) => {
   const responseJson = await response.json();
   const { status, data } = responseJson;
   if (status === 'success') {
-    
+    showMessage('New splitter connection added successfully');
   } else {
     const { errors, message } = responseJson;
     if (errors) {

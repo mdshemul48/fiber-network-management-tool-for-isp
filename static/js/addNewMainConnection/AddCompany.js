@@ -1,4 +1,4 @@
-import { showError } from '../utility/showMessageAndError.js';
+import showMessage, { showError } from '../utility/showMessageAndError.js';
 
 export default async (polylineKey, coordinates) => {
   const companyName = document.getElementById(
@@ -25,6 +25,7 @@ export default async (polylineKey, coordinates) => {
   const responseJson = await response.json();
   const { status, data } = responseJson;
   if (status === 'success') {
+    showMessage('New point to point connection added successfully');
   } else {
     const { errors, message } = responseJson;
     if (errors) {

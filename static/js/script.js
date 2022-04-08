@@ -149,11 +149,15 @@ window.addSplitterConnection = async () => {
 };
 
 window.addLocalFiberConnection = async () => {
-  addLocalFiberConnection(
+  const { status } = await addLocalFiberConnection(
     selectedPolyline,
     selectedPolylineType,
     editablePolyline.getAllThePath()
   );
+  if (status === 'success') {
+    editablePolyline.setMap(null);
+    createNewPolyline();
+  }
 };
 
 window.addHomeConnection = async () => {

@@ -1,4 +1,4 @@
-import { showError } from '../utility/showMessageAndError.js';
+import showMessage, { showError } from '../utility/showMessageAndError.js';
 
 export default async (polylineKey, coordinates) => {
   const connectionName = document.getElementById(
@@ -27,7 +27,7 @@ export default async (polylineKey, coordinates) => {
   const responseJson = await response.json();
   const { status, data } = responseJson;
   if (status === 'success') {
-    
+    showMessage('New home connection added successfully');
   } else {
     const { errors, message } = responseJson;
     if (errors) {

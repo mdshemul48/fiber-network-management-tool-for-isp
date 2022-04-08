@@ -33,7 +33,6 @@ export default async (polylineKey, selectedPolylineType, coordinates) => {
   const responseJson = await response.json();
   const { status } = responseJson;
   if (status === 'success') {
-    location.reload();
   } else {
     const { errors, message } = responseJson;
     if (errors) {
@@ -46,4 +45,5 @@ export default async (polylineKey, selectedPolylineType, coordinates) => {
       showError(message);
     }
   }
+  return { status };
 };
