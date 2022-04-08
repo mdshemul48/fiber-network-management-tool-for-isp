@@ -1,4 +1,4 @@
-export default async (type, id, subId) => {
+export default async (type, id) => {
   const confirmBar = confirm(
     'Are you sure you want to delete this connection?'
   );
@@ -14,7 +14,7 @@ export default async (type, id, subId) => {
   } else if (type === 'reseller') {
     url = `/api/reseller-connection?id=${id}`;
   } else if (type === 'localFiber') {
-    url = `/api/local-fiber-connection?id=${id}&subId=${subId}`;
+    url = `/api/local-fiber-connection?id=${id}`;
   } else if (type === 'splitter') {
     url = `/api/splitter-connection?id=${id}`;
   } else if (type === 'home') {

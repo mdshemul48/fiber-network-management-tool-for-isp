@@ -132,7 +132,6 @@ exports.createLocalFiberConnection = async (req, res) => {
 
 exports.deleteLocalFiberConnectionValidation = [
   query('id').notEmpty().withMessage('id is required'),
-  query('subId').notEmpty().withMessage('subId is required'),
 ];
 
 exports.deleteLocalFiberConnection = async (req, res) => {
@@ -143,82 +142,33 @@ exports.deleteLocalFiberConnection = async (req, res) => {
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { id, subId } = req.query;
+    const { id } = req.query;
 
-    const selectedLocalFiberConnection =
-      await localFiberConnectionModel.findById(id);
+    const selectedLocalFiberConnection = await localFiberConnectionModel
+      .findById(id)
+      .populate('parent');
 
     if (!selectedLocalFiberConnection) {
       return res.status(400).json({
         status: 'error',
-        message: 'localFiberConnection does not exist',
+        message: 'connection does not exist',
       });
     }
 
     if (selectedLocalFiberConnection.childrens.length > 0) {
       return res.status(400).json({
         status: 'error',
-        message: 'localFiberConnection has childrens',
+        message: 'connection has childrens',
       });
     }
 
-    if (selectedLocalFiberConnection.mainConnection.toString() === subId) {
-      if (
-        selectedLocalFiberConnection.childrens > 0 ||
-        selectedLocalFiberConnection.locations.length > 1
-      ) {
-        return res.status(400).json({
-          status: 'error',
-          message: 'cannot delete main connection',
-        });
-      }
+    selectedLocalFiberConnection.parent.childrens =
+      selectedLocalFiberConnection.parent.childrens.filter((item) => {
+        return item.child.toString() !== selectedLocalFiberConnection._id;
+      });
 
-      const selectedParent = await resellerConnectionModel.findById(
-        selectedLocalFiberConnection.parent
-      );
-
-      if (!selectedParent) {
-        return res.status(400).json({
-          status: 'error',
-          message: 'parent connection does not exist',
-        });
-      }
-
-      const selectedParentIndex = selectedParent.childrens.findIndex(
-        (item) => item.child.toString() === id
-      );
-
-      if (selectedParentIndex === -1) {
-        return res.status(400).json({
-          status: 'error',
-          message: 'parent connection does not exist',
-        });
-      }
-
-      selectedParent.childrens.splice(selectedParentIndex, 1);
-
-      await selectedParent.save();
-      await selectedLocalFiberConnection.remove();
-    } else {
-      const selectedLocalFiberConnectionSubIndex =
-        selectedLocalFiberConnection.locations.findIndex((item) => {
-          return item._id.toString() === subId;
-        });
-
-      if (selectedLocalFiberConnectionSubIndex === -1) {
-        return res.status(400).json({
-          status: 'error',
-          message: 'location does not exist',
-        });
-      }
-
-      selectedLocalFiberConnection.locations.splice(
-        selectedLocalFiberConnectionSubIndex,
-        1
-      );
-
-      await selectedLocalFiberConnection.save();
-    }
+    await selectedLocalFiberConnection.parent.save();
+    await selectedLocalFiberConnection.remove();
 
     return res.status(200).json({
       status: 'success',
