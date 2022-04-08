@@ -293,6 +293,7 @@ document
 window.deleteConnection = async (...params) => {
   const { status } = await deleteConnection(...params);
   if (status === 'success') {
+    showMessage('Connection deleted successfully');
     const allConnections = [...window.allTheConnection];
     await printAllThePolylines();
 

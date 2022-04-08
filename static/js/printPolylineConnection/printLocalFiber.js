@@ -69,7 +69,9 @@ export default function (connection, map, index) {
   });
 
   polyline.setMap(map);
-  console.log(markers);
+
+  window.allTheConnection[index].markersPoint = [];
+
   markers.forEach(({ coordinates }) => {
     // printing tj box on the map
     const icon = {
@@ -90,5 +92,6 @@ export default function (connection, map, index) {
     google.maps.event.addListener(marker, 'click', function (event) {
       window.selectPolyline(event.latLng, { _id, type });
     });
+    window.allTheConnection[index].markersPoint.push(marker);
   });
 }
