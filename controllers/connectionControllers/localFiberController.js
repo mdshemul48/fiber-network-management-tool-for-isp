@@ -71,36 +71,26 @@ exports.createLocalFiberConnection = async (req, res) => {
         data: createLocalFiberConnection,
       });
     } else if (selectedParent.type === 'localFiber') {
-      let createLocalFiberConnection = null;
+      const createLocalFiberConnection = await localFiberConnectionModel.create(
+        {
+          name,
+          parent: selectedParent._id,
+          reseller: selectedParent.reseller,
+          parentType: 'localFiber',
+          totalCore,
+          type: 'localFiber',
+          totalCore,
+          locations: {
+            coordinates: coordinatesLatLngArr,
+          },
+        }
+      );
 
       if (selectedParent.mainLocalFiber) {
-        createLocalFiberConnection = await localFiberConnectionModel.create({
-          name,
-          parent: selectedParent._id,
-          reseller: selectedParent.reseller,
-          parentType: 'localFiber',
-          totalCore,
-          type: 'localFiber',
-          mainLocalFiber: selectedParent.mainLocalFiber,
-          totalCore,
-          locations: {
-            coordinates: coordinatesLatLngArr,
-          },
-        });
+        createLocalFiberConnection.mainLocalFiber =
+          selectedParent.mainLocalFiber;
       } else if (selectedParent.parent.type === 'reseller') {
-        createLocalFiberConnection = await localFiberConnectionModel.create({
-          name,
-          parent: selectedParent._id,
-          reseller: selectedParent.reseller,
-          parentType: 'localFiber',
-          totalCore,
-          type: 'localFiber',
-          mainLocalFiber: selectedParent._id,
-          totalCore,
-          locations: {
-            coordinates: coordinatesLatLngArr,
-          },
-        });
+        createLocalFiberConnection.mainLocalFiber = selectedParent._id;
       } else {
         return res.status(400).json({
           status: 'error',
@@ -164,7 +154,9 @@ exports.deleteLocalFiberConnection = async (req, res) => {
 
     selectedLocalFiberConnection.parent.childrens =
       selectedLocalFiberConnection.parent.childrens.filter((item) => {
-        return item.child.toString() !== selectedLocalFiberConnection._id;
+        return (
+          item.child.toString() !== selectedLocalFiberConnection._id.toString()
+        );
       });
 
     await selectedLocalFiberConnection.parent.save();
