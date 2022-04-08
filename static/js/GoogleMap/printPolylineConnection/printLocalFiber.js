@@ -1,5 +1,4 @@
 export default function (connection, map, index) {
-  console.log(connection);
   const {
     _id,
     name,
@@ -70,26 +69,26 @@ export default function (connection, map, index) {
   });
 
   polyline.setMap(map);
+  console.log(markers);
+  markers.forEach(({ coordinates }) => {
+    // printing tj box on the map
+    const icon = {
+      url: '../../../assets/img/tj.png',
+      scaledSize: new google.maps.Size(30, 30),
+      origin: new google.maps.Point(0, 0),
+      anchor: new google.maps.Point(15, 15),
+    };
 
-  // markers.forEach(({ coordinates }) => {
-  //   // printing tj box on the map
-  //   const icon = {
-  //     url: '../../../assets/img/tj.png',
-  //     scaledSize: new google.maps.Size(30, 30),
-  //     origin: new google.maps.Point(0, 0),
-  //     anchor: new google.maps.Point(15, 15),
-  //   };
-
-  //   const marker = new google.maps.Marker({
-  //     position: {
-  //       lat: coordinates[0],
-  //       lng: coordinates[1],
-  //     },
-  //     map,
-  //     icon: icon,
-  //   });
-  //   google.maps.event.addListener(marker, 'click', function (event) {
-  //     window.selectPolyline(event.latLng, { _id, type });
-  //   });
-  // });
+    const marker = new google.maps.Marker({
+      position: {
+        lat: coordinates[1],
+        lng: coordinates[0],
+      },
+      map,
+      icon: icon,
+    });
+    google.maps.event.addListener(marker, 'click', function (event) {
+      window.selectPolyline(event.latLng, { _id, type });
+    });
+  });
 }

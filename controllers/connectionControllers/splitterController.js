@@ -197,6 +197,7 @@ exports.createSplitterConnection = async (req, res) => {
         name,
         splitterLimit,
         portNo,
+        color,
         location: {
           coordinates: coordinatesLatLngArr,
         },

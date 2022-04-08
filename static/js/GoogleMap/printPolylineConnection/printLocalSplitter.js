@@ -1,6 +1,7 @@
 import allTheCoreColor from '../../utility/coreColor.js';
 
 export default function (connection, map, index) {
+  console.log(connection);
   const {
     _id,
     name,
@@ -54,10 +55,15 @@ ${
     ? `<p class='mb-1'>
     <span class='fw-bold'>Port No:</span> ${portNo}
   </p>`
-    : `<p class='mb-1'>
-    <span class='fw-bold'>Connected Core Color:</span> ${color}
-  </p>`
+    : ''
 } 
+      ${
+        color
+          ? `<p class='mb-1'>
+      <span class='fw-bold'>Connected Core Color:</span> ${color}
+    </p>`
+          : ''
+      }
        <p class="mb-1"><span class=" fw-bold">total Used Core:</span> ${splitterUsed}/${splitterLimit}</p>
       <p class="mb-1"><span class=" fw-bold">Distance:</span> ${Math.ceil(
         lengthInMeters
