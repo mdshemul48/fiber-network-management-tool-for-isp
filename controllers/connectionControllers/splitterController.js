@@ -385,7 +385,10 @@ exports.deleteSplitterConnection = async (req, res) => {
       });
     }
 
-    const splitterConnection = await splitterConnectionModel.findById(id);
+    const splitterConnection = await splitterConnectionModel
+      .findById(id)
+      .populate('parent')
+      .populate('reseller');
 
     if (!splitterConnection) {
       return res.status(400).json({
@@ -401,19 +404,8 @@ exports.deleteSplitterConnection = async (req, res) => {
       });
     }
 
-    if (splitterConnection.parentType === 'reseller') {
-      const reseller = await resellerConnectionModel.findById(
-        splitterConnection.parent.toString()
-      );
-
-      if (!reseller) {
-        return res.status(400).json({
-          status: 'error',
-          message: 'Invalid reseller id',
-        });
-      }
-
-      const index = reseller.childrens.findIndex((item) => {
+    if (splitterConnection.parent.type === 'reseller') {
+      const index = splitterConnection.parent.childrens.findIndex((item) => {
         return item.child.toString() === splitterConnection._id.toString();
       });
 
@@ -424,22 +416,11 @@ exports.deleteSplitterConnection = async (req, res) => {
         });
       }
 
-      await reseller.childrens.splice(index, 1);
-      await reseller.save();
+      await splitterConnection.parent.childrens.splice(index, 1);
+      await splitterConnection.parent.save();
       await splitterConnection.remove();
-    } else if (splitterConnection.parentType === 'localFiber') {
-      const localFiber = await localFiberConnectionModel.findById(
-        splitterConnection.parent.toString()
-      );
-
-      if (!localFiber) {
-        return res.status(400).json({
-          status: 'error',
-          message: 'Invalid localFiber id',
-        });
-      }
-
-      const index = localFiber.childrens.findIndex((item) => {
+    } else if (splitterConnection.parent.type === 'localFiber') {
+      const index = splitterConnection.parent.childrens.findIndex((item) => {
         return item.child.toString() === splitterConnection._id.toString();
       });
 
@@ -449,39 +430,63 @@ exports.deleteSplitterConnection = async (req, res) => {
           message: 'Invalid splitter connection id',
         });
       }
-      localFiber.childrens.splice(index, 1);
-      localFiber.totalConnected--;
+
+      splitterConnection.parent.childrens.splice(index, 1);
+      splitterConnection.parent.totalConnected--;
+
+      // ! deleting from main fiber
+      if (splitterConnection.parent.mainLocalFiber) {
+        const { mainLocalFiber } = await splitterConnection.parent.populate(
+          'mainLocalFiber'
+        );
+        const indexMain = mainLocalFiber.childrens.findIndex((item) => {
+          return item.child.toString() === splitterConnection._id.toString();
+        });
+
+        if (indexMain === -1) {
+          return res.status(400).json({
+            status: 'error',
+            message: 'Invalid splitter connection id',
+          });
+        }
+
+        mainLocalFiber.childrens.splice(indexMain, 1);
+        mainLocalFiber.totalConnected--;
+        await mainLocalFiber.save();
+      }
 
       // ! deleting from olt
-
-      const reseller = await resellerConnectionModel.findById(
-        splitterConnection.reseller.toString()
-      );
-
-      if (!reseller) {
+      if (!splitterConnection.reseller) {
         return res.status(400).json({
           status: 'error',
           message: 'Invalid reseller id',
         });
       }
 
-      const resellerChildIndex = reseller.childrens.findIndex((item) => {
-        return item.child.toString() === splitterConnection._id.toString();
-      });
+      const resellerChildIndex =
+        splitterConnection.reseller.childrens.findIndex((item) => {
+          return item.child.toString() === splitterConnection._id.toString();
+        });
 
-      reseller.childrens.splice(resellerChildIndex, 1);
+      splitterConnection.reseller.childrens.splice(resellerChildIndex, 1);
 
-      const markerPoint = localFiber.markers.findIndex((item) => {
-        return (
-          item.coordinates[0] === splitterConnection.location.coordinates[0][0]
-        );
-      });
+      // ! deleting marker from local fiber
+      const markerPoint = splitterConnection.parent.markers.findIndex(
+        (item) => {
+          return (
+            item.coordinates[0] ===
+            splitterConnection.location.coordinates[0][0]
+          );
+        }
+      );
 
       if (markerPoint !== -1) {
-        if (localFiber.markers[markerPoint].totalConnected === 1) {
-          localFiber.markers.splice(markerPoint, 1);
+        if (
+          splitterConnection.parent.markers[markerPoint].totalConnected === 1
+        ) {
+          splitterConnection.parent.markers.splice(markerPoint, 1);
         } else {
-          localFiber.markers[markerPoint].totalConnected--;
+          splitterConnection.parent.markers[markerPoint].totalConnected--;
         }
       } else {
         return res.status(400).json({
@@ -490,22 +495,11 @@ exports.deleteSplitterConnection = async (req, res) => {
         });
       }
 
-      await reseller.save();
-      await localFiber.save();
+      await splitterConnection.reseller.save();
+      await splitterConnection.parent.save();
       await splitterConnection.remove();
     } else if (splitterConnection.parentType === 'splitter') {
-      const parentSplitter = await splitterConnectionModel.findById(
-        splitterConnection.parent.toString()
-      );
-
-      if (!parentSplitter) {
-        return res.status(400).json({
-          status: 'error',
-          message: 'Invalid splitter id',
-        });
-      }
-
-      const index = parentSplitter.childrens.findIndex((item) => {
+      const index = splitterConnection.parent.childrens.findIndex((item) => {
         return item.child.toString() === splitterConnection._id.toString();
       });
 
@@ -516,11 +510,16 @@ exports.deleteSplitterConnection = async (req, res) => {
         });
       }
 
-      parentSplitter.childrens.splice(index, 1);
-      parentSplitter.splitterUsed--;
+      splitterConnection.parent.childrens.splice(index, 1);
+      splitterConnection.parent.splitterUsed--;
 
-      await parentSplitter.save();
+      await splitterConnection.parent.save();
       await splitterConnection.remove();
+    } else {
+      return res.status(400).json({
+        status: 'error',
+        message: 'Invalid parentType',
+      });
     }
 
     return res.status(200).json({
@@ -528,6 +527,7 @@ exports.deleteSplitterConnection = async (req, res) => {
       message: 'splitter connection deleted successfully',
     });
   } catch (error) {
+    console.log(error);
     return res.status(500).json({
       status: 'error',
       message: error.message,

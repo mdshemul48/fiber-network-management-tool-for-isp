@@ -191,10 +191,14 @@ export default (parentId, type) => {
                                   );
 
                                   const colors = coreColors.map((item) => {
-                                    const foundedColor =
-                                      parentPolyline.childrens.find((child) => {
-                                        return child.color === item.colorName;
-                                      });
+                                    const foundedColor = (
+                                      parentPolyline.mainLocalFiber
+                                        ? parentPolyline.mainLocalFiber
+                                            .childrens
+                                        : parentPolyline.childrens
+                                    ).find((child) => {
+                                      return child.color === item.colorName;
+                                    });
                                     return foundedColor
                                       ? ''
                                       : `<option value="${item.colorName}">${item.colorName}</option>`;
