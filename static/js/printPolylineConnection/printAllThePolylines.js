@@ -1,9 +1,9 @@
-import printPointToPointConnection from './printPolylineConnection/printPointToPoint.js';
-import printCorporateConnection from './printPolylineConnection/printCorporateConnection.js';
-import printResellerConnection from './printPolylineConnection/printReseller.js';
-import printLocalFiberConnection from './printPolylineConnection/printLocalFiber.js';
-import printHomeConnection from './printPolylineConnection/printHome.js';
-import printLocalSplitter from './printPolylineConnection/printLocalSplitter.js';
+import printPointToPointConnection from './printPointToPoint.js';
+import printCorporateConnection from './printCorporateConnection.js';
+import printResellerConnection from './printReseller.js';
+import printLocalFiberConnection from './printLocalFiber.js';
+import printHomeConnection from './printHome.js';
+import printLocalSplitter from './printLocalSplitter.js';
 
 const printAllThePolylines = async () => {
   const map = window.targetMap;

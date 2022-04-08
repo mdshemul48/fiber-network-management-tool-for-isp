@@ -1,5 +1,5 @@
 import { showError } from '../utility/showMessageAndError.js';
-import printCorporateConnection from '../GoogleMap/printPolylineConnection/printCorporateConnection.js';
+
 export default async (polylineKey, coordinates) => {
   const companyName = document.getElementById(
     'addPointToPointCompanyName'

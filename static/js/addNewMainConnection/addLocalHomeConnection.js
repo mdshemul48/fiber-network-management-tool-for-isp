@@ -1,5 +1,5 @@
 import { showError } from '../utility/showMessageAndError.js';
-import printHome from '../GoogleMap/printPolylineConnection/printHome.js';
+
 export default async (polylineKey, coordinates) => {
   const connectionName = document.getElementById(
     'addLocalHomeConnectionName'

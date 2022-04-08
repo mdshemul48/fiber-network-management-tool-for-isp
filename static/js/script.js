@@ -1,7 +1,7 @@
 import getShortestPath from './shortestPath/getShortestPath.js';
 
 import EditablePolyline from './GoogleMap/EditablePolyline.js';
-import printAllThePolylines from './GoogleMap/printAllThePolylines.js';
+import printAllThePolylines from './printPolylineConnection/printAllThePolylines.js';
 
 // all the from submit functions
 import customForm from './addNewMainConnection/customForm.js';

@@ -1,5 +1,4 @@
 import { showError } from '../utility/showMessageAndError.js';
-import printReseller from '../GoogleMap/printPolylineConnection/printReseller.js';
 
 export default async (polylineKey, coordinates) => {
   const connectionName = $('#addLocalConnectionName').val();

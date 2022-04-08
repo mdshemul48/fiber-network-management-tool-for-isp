@@ -1,5 +1,4 @@
 import { showError } from '../utility/showMessageAndError.js';
-import printLocalSplitter from '../GoogleMap/printPolylineConnection/printLocalSplitter.js';
 
 export default async (polylineKey, polylineType, coordinates) => {
   const connectionName = $('#addLocalSplitterName').val();
