@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import PrintLocalFiber from './PrintPolylines/PrintLocalFiber';
 import axiosInstance from '../../utility/axios';
 
 import PrintPointToPoint from './PrintPolylines/PrintPointToPoint';
@@ -24,6 +25,8 @@ const PrintAllConnection = () => {
         return <PrintPointToPoint key={item._id} connection={item} />;
       } else if (item.type === 'reseller') {
         return <PrintReseller key={item._id} connection={item} />;
+      } else if (item.type === 'localFiber') {
+        return <PrintLocalFiber key={item._id} connection={item} />;
       } else {
         return <></>;
       }
