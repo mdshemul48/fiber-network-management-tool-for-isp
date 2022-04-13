@@ -24,13 +24,7 @@ const PrintAllConnection = () => {
 
   return (
     <>
-      {polylines && (
-        <EditablePolyline
-          connection={polylines.find((item) => item.type === 'home')}
-        />
-      )}
-
-      {/* {polylines?.length ? (
+      {polylines?.length ? (
         polylines.map((item) => {
           if (item.type === 'pointToPoint') {
             return <PrintPointToPoint key={item._id} connection={item} />;
@@ -49,7 +43,7 @@ const PrintAllConnection = () => {
         })
       ) : (
         <></>
-      )} */}
+      )}
     </>
   );
 };

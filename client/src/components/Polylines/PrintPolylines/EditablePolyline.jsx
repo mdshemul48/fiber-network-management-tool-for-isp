@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { Polyline } from '@react-google-maps/api';
+import { useCallback } from 'react';
 const EditablePolyline = () => {
+  const [loaded, setLoaded] = useState(false);
+  const [polyline, setPolyline] = useState(null);
   const options = {
     path: [
       {
@@ -37,13 +40,27 @@ const EditablePolyline = () => {
       },
     ],
     geodesic: true,
-    strokeOpacity: 1.0,
+    strokeOpacity: '0.5',
     strokeWeight: 3,
+    editable: true,
   };
 
+  const onLoadHandler = useCallback((polyline) => {
+    setPolyline(polyline);
+    setLoaded(true);
+  }, []);
+
+  const unMountHandler = useCallback(() => {
+    setPolyline(null);
+  }, []);
+  console.log(loaded, polyline);
   return (
     <>
-      <Polyline options={options} />
+      <Polyline
+        options={options}
+        onLoad={onLoadHandler}
+        onUnmount={unMountHandler}
+      />
     </>
   );
 };
