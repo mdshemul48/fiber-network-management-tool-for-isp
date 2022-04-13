@@ -22,6 +22,7 @@ function Map({ children }) {
       zoom={13}
       onLoad={onLoad}
       onUnmount={onUnmount}
+      
     >
       {children}
     </GoogleMap>

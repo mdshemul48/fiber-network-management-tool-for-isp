@@ -9,6 +9,8 @@ const PrintPointToPoint = ({ connection }) => {
     lng: connection.lng,
   });
 
+  const [length, setLength] = useState(0);
+
   const {
     name,
     location,
@@ -46,6 +48,13 @@ const PrintPointToPoint = ({ connection }) => {
     }
   });
 
+  const onLoad = (polyline) => {
+    const lengthInMeters = window.google.maps.geometry.spherical.computeLength(
+      polyline.getPath()
+    );
+    setLength(lengthInMeters);
+  };
+
   return (
     <>
       <Polyline
@@ -55,6 +64,7 @@ const PrintPointToPoint = ({ connection }) => {
           setShowInfoWindow(true);
         }}
         onMouseOut={() => setShowInfoWindow(false)}
+        onLoad={onLoad}
       />
 
       {markers.map((marker) => {
@@ -85,8 +95,7 @@ const PrintPointToPoint = ({ connection }) => {
               {totalConnected}/{totalCore}
             </p>
             <p className='mb-1'>
-              <span className=' fw-bold'>Distance:</span>
-              {/* {Math.ceil(lengthInMeters)}m */}
+              <span className=' fw-bold'>Distance:</span> {Math.ceil(length)}m
             </p>
             <button
               className='badge mb-1 bg-danger border-0'

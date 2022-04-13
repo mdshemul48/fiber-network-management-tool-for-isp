@@ -8,9 +8,11 @@ export const MapCreatedContext = createContext({
 });
 
 export const MapContext = ({ children }) => {
+  const [libraries] = useState(['geometry']);
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
     googleMapsApiKey: process.env.REACT_APP_MAP_API_KEY,
+    libraries,
   });
 
   const [map, setMap] = useState(null);

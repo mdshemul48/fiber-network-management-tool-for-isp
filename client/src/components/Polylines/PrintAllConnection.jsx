@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axiosInstance from '../../utility/axios';
 
-import PrintHomeConnection from './PrintPolylines/PrintHomeConnection';
 import PrintPointToPoint from './PrintPolylines/PrintPointToPoint';
 
 const PrintAllConnection = () => {
