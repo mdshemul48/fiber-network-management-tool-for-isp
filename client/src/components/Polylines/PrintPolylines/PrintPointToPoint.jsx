@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Polyline, Marker, InfoWindow } from '@react-google-maps/api';
+
 import coreColor from '../../../utility/coreColor';
+import tjIcon from '../../../assets/img/tj.png';
 
 const PrintPointToPoint = ({ connection }) => {
   const [showInfoWindow, setShowInfoWindow] = useState(false);
@@ -67,6 +69,13 @@ const PrintPointToPoint = ({ connection }) => {
         const {
           location: { coordinates },
         } = marker;
+
+        const icon = {
+          url: tjIcon,
+          scaledSize: new window.google.maps.Size(30, 30),
+          origin: new window.google.maps.Point(0, 0),
+          anchor: new window.google.maps.Point(15, 15),
+        };
         return (
           <Marker
             key={marker._id}
@@ -74,6 +83,7 @@ const PrintPointToPoint = ({ connection }) => {
             onClick={() => {
               console.log(marker);
             }}
+            icon={icon}
           />
         );
       })}

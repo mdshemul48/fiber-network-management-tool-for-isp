@@ -2,6 +2,8 @@ import { InfoWindow, Marker, Polyline } from '@react-google-maps/api';
 import React, { useState } from 'react';
 import coreColor from '../../../utility/coreColor';
 
+import resellerIcon from '../../../assets/img/olt.png';
+
 const PrintReseller = ({ connection }) => {
   const [showInfoWindow, setShowInfoWindow] = useState(false);
   const [position, setPosition] = useState(null);
@@ -49,7 +51,14 @@ const PrintReseller = ({ connection }) => {
     );
     setLength(lengthInMeters);
   };
-  console.log(coordinates);
+
+  const icon = {
+    url: resellerIcon,
+    scaledSize: new window.google.maps.Size(35, 50),
+    origin: new window.google.maps.Point(0, 0),
+    anchor: new window.google.maps.Point(15, 15),
+  };
+
   return (
     <>
       <Polyline
@@ -69,11 +78,12 @@ const PrintReseller = ({ connection }) => {
         onClick={() => {
           console.log('marker');
         }}
+        icon={icon}
       />
       {showInfoWindow && (
         <InfoWindow position={position}>
           <>
-            <p className='mb-1 fw-bold'>${name}</p>
+            <p className='mb-1 fw-bold'>{name}</p>
             <hr className='my-1' />
             <p className='mb-1'>
               <span className='fw-bold'>Connection Type:</span> {type}
