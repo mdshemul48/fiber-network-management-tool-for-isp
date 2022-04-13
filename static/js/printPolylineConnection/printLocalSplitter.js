@@ -1,6 +1,5 @@
 import allTheCoreColor from '../utility/coreColor.js';
 export default function (connection, map, index) {
-  console.log(connection);
   const {
     _id,
     name,

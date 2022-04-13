@@ -24,6 +24,8 @@ const PrintAllConnection = () => {
 
   return (
     <>
+      <EditablePolyline />
+
       {polylines?.length ? (
         polylines.map((item) => {
           if (item.type === 'pointToPoint') {

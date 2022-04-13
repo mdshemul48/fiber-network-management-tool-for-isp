@@ -41,10 +41,9 @@ export const MapContext = ({ children }) => {
   const onUnmount = useCallback(function callback(map) {
     setMap(null);
   }, []);
-
   return (
     <MapCreatedContext.Provider value={{ map, onLoad, onUnmount, isLoaded }}>
-      {children}
+      {isLoaded && children}
     </MapCreatedContext.Provider>
   );
 };

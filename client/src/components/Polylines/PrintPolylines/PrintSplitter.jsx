@@ -28,7 +28,6 @@ const PrintSplitter = ({ connection }) => {
     return { lng: item[0], lat: item[1] };
   });
 
-  console.log(coordinates);
 
   const options = {
     path: coordinates,
