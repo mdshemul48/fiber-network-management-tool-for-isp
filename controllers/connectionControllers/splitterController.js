@@ -291,6 +291,7 @@ exports.createSplitterConnection = async (req, res) => {
         parent: splitter._id,
         reseller: reseller._id,
         name,
+        color,
         splitterLimit,
         portNo: splitter.portNo,
         location: {

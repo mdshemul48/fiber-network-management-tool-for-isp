@@ -1,4 +1,4 @@
-export default [
+const coreColor = [
   { colorName: 'blue', colorCode: '#1f1ff7' },
   { colorName: 'orange', colorCode: '#ffa500' },
   { colorName: 'green', colorCode: '#00dc00' },
@@ -12,3 +12,5 @@ export default [
   { colorName: 'rose', colorCode: '#ffe4e1' },
   { colorName: 'aqua', colorCode: '#03fefe' },
 ];
+
+export default coreColor;

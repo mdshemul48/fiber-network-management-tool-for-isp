@@ -1,5 +1,4 @@
 import allTheCoreColor from '../utility/coreColor.js';
-
 export default function (connection, map, index) {
   const { name, color, onuNo, type, locations, _id } = connection;
 
