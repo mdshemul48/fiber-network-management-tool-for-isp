@@ -7,10 +7,11 @@ const containerStyle = {
   height: '100vh',
 };
 
-const center = {
+const center = JSON.parse(localStorage.getItem('center')) || {
   lat: 23.824374476895283,
   lng: 90.27119894947462,
 };
+const zoom = parseInt(localStorage.getItem('zoom')) || 12;
 
 function Map({ children }) {
   const { isLoaded, onLoad, onUnmount } = useMap();
@@ -19,10 +20,9 @@ function Map({ children }) {
     <GoogleMap
       mapContainerStyle={containerStyle}
       center={center}
-      zoom={13}
+      zoom={zoom}
       onLoad={onLoad}
       onUnmount={onUnmount}
-      
     >
       {children}
     </GoogleMap>

@@ -19,6 +19,24 @@ export const MapContext = ({ children }) => {
 
   const onLoad = useCallback(function callback(map) {
     setMap(map);
+
+    map.addListener('zoom_changed', () => {
+      const zoom = map.getZoom();
+      localStorage.setItem('zoom', zoom);
+    });
+
+    map.addListener('center_changed', () => {
+      const { lat: latC, lng: lngC } = map.getCenter();
+      const lat = latC();
+      const lng = lngC();
+      localStorage.setItem(
+        'center',
+        JSON.stringify({
+          lat: lat,
+          lng: lng,
+        })
+      );
+    });
   }, []);
 
   const onUnmount = useCallback(function callback(map) {

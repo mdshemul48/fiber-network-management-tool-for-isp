@@ -1,7 +1,6 @@
 import { InfoWindow, Marker, Polyline } from '@react-google-maps/api';
 import React, { useState } from 'react';
 
-import coreColor from '../../../utility/coreColor';
 import tjIcon from '../../../assets/img/tj.png';
 
 const PrintLocalFiber = ({ connection }) => {
