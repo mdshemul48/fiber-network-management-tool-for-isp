@@ -10,7 +10,7 @@ export const MapCreatedContext = createContext({
 export const MapContext = ({ children }) => {
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
-    googleMapsApiKey: process.env.REACT_APP_API_KEY,
+    googleMapsApiKey: process.env.REACT_APP_MAP_API_KEY,
   });
 
   const [map, setMap] = useState(null);

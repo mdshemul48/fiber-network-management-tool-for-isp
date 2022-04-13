@@ -12,9 +12,9 @@ const center = {
   lng: 90.27119894947462,
 };
 
-function Map() {
+function Map({ children }) {
   const { isLoaded, onLoad, onUnmount } = useMap();
-  console.log(isLoaded);
+
   return isLoaded ? (
     <GoogleMap
       mapContainerStyle={containerStyle}
@@ -23,11 +23,13 @@ function Map() {
       onLoad={onLoad}
       onUnmount={onUnmount}
     >
-      {/* Child components, such as markers, info windows, etc. */}
-      <></>
+      {children}
     </GoogleMap>
   ) : (
-    <></>
+    <>
+      {' '}
+      <h1>Loading</h1>
+    </>
   );
 }
 
