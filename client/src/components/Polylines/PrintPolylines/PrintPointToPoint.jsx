@@ -4,11 +4,7 @@ import coreColor from '../../../utility/coreColor';
 
 const PrintPointToPoint = ({ connection }) => {
   const [showInfoWindow, setShowInfoWindow] = useState(false);
-  const [position, setPosition] = useState({
-    lat: connection.lat,
-    lng: connection.lng,
-  });
-
+  const [position, setPosition] = useState(null);
   const [length, setLength] = useState(0);
 
   const {
