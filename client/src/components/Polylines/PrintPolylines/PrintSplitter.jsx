@@ -2,10 +2,12 @@ import { InfoWindow, Marker, Polyline } from '@react-google-maps/api';
 import React, { useState } from 'react';
 
 import splitterImage from '../../../assets/img/splitter.png';
+import useEditablePolyline from '../../../hooks/useEditablePolyline';
 
 import coreColor from '../../../utility/coreColor';
 
 const PrintSplitter = ({ connection }) => {
+  const { setParent } = useEditablePolyline();
   const [showInfoWindow, setShowInfoWindow] = useState(false);
   const [position, setPosition] = useState(null);
   const [length, setLength] = useState(0);
@@ -26,6 +28,7 @@ const PrintSplitter = ({ connection }) => {
     return { lng: item[0], lat: item[1] };
   });
 
+  console.log(coordinates);
 
   const options = {
     path: coordinates,
@@ -45,7 +48,6 @@ const PrintSplitter = ({ connection }) => {
     );
   });
 
-
   const onLoad = (polyline) => {
     const lengthInMeters = window.google.maps.geometry.spherical.computeLength(
       polyline.getPath()
@@ -58,6 +60,11 @@ const PrintSplitter = ({ connection }) => {
     origin: new window.google.maps.Point(0, 0),
     anchor: new window.google.maps.Point(15, 15),
   };
+
+  const onClickHandler = () => {
+    setParent(connection);
+  };
+
   return (
     <>
       <Polyline
@@ -75,9 +82,7 @@ const PrintSplitter = ({ connection }) => {
           lat: coordinates[coordinates.length - 1].lat,
           lng: coordinates[coordinates.length - 1].lng,
         }}
-        onClick={() => {
-          console.log('marker');
-        }}
+        onClick={onClickHandler}
         icon={icon}
       />
 

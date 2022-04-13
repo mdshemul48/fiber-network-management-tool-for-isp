@@ -14,7 +14,6 @@ export const MapContext = ({ children }) => {
     googleMapsApiKey: process.env.REACT_APP_MAP_API_KEY,
     libraries,
   });
-
   const [map, setMap] = useState(null);
 
   const onLoad = useCallback(function callback(map) {

@@ -2,8 +2,10 @@ import { InfoWindow, Marker, Polyline } from '@react-google-maps/api';
 import React, { useState } from 'react';
 
 import tjIcon from '../../../assets/img/tj.png';
+import useEditablePolyline from '../../../hooks/useEditablePolyline';
 
 const PrintLocalFiber = ({ connection }) => {
+  const { setParent } = useEditablePolyline();
   const [showInfoWindow, setShowInfoWindow] = useState(false);
   const [position, setPosition] = useState(null);
   const [length, setLength] = useState(0);
@@ -50,6 +52,10 @@ const PrintLocalFiber = ({ connection }) => {
     }
   );
 
+  const onClickHandler = () => {
+    setParent(connection);
+  };
+
   return (
     <>
       <Polyline
@@ -60,6 +66,7 @@ const PrintLocalFiber = ({ connection }) => {
         }}
         onMouseOut={() => setShowInfoWindow(false)}
         onLoad={onLoad}
+        onClick={onClickHandler}
       />
 
       {markers.map((marker) => {

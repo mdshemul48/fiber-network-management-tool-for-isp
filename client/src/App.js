@@ -5,7 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 function App() {
   return (
     <div className='App'>
-      <Map libraries='spherical'>
+      <Map>
         <PrintAllConnection />
       </Map>
     </div>

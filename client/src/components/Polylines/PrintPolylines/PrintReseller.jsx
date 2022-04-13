@@ -3,8 +3,10 @@ import React, { useState } from 'react';
 import coreColor from '../../../utility/coreColor';
 
 import resellerIcon from '../../../assets/img/olt.png';
+import useEditablePolyline from '../../../hooks/useEditablePolyline';
 
 const PrintReseller = ({ connection }) => {
+  const { setParent } = useEditablePolyline();
   const [showInfoWindow, setShowInfoWindow] = useState(false);
   const [position, setPosition] = useState(null);
   const [length, setLength] = useState(0);
@@ -59,6 +61,10 @@ const PrintReseller = ({ connection }) => {
     anchor: new window.google.maps.Point(15, 15),
   };
 
+  const onClickHandler = () => {
+    setParent(connection);
+  };
+
   return (
     <>
       <Polyline
@@ -75,9 +81,7 @@ const PrintReseller = ({ connection }) => {
           lat: coordinates[coordinates.length - 1].lat,
           lng: coordinates[coordinates.length - 1].lng,
         }}
-        onClick={() => {
-          console.log('marker');
-        }}
+        onClick={onClickHandler}
         icon={icon}
       />
       {showInfoWindow && (

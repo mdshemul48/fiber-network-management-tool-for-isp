@@ -6,6 +6,7 @@ import PrintPointToPoint from './PrintPolylines/PrintPointToPoint';
 import PrintReseller from './PrintPolylines/PrintReseller';
 import PrintSplitter from './PrintPolylines/PrintSplitter';
 import PrintHome from './PrintPolylines/PrintHome';
+import EditablePolyline from './PrintPolylines/EditablePolyline';
 
 const PrintAllConnection = () => {
   const [polylines, setPolylines] = useState(null);
@@ -21,24 +22,35 @@ const PrintAllConnection = () => {
     fetchData();
   }, []);
 
-  return polylines?.length ? (
-    polylines.map((item) => {
-      if (item.type === 'pointToPoint') {
-        return <PrintPointToPoint key={item._id} connection={item} />;
-      } else if (item.type === 'reseller') {
-        return <PrintReseller key={item._id} connection={item} />;
-      } else if (item.type === 'localFiber') {
-        return <PrintLocalFiber key={item._id} connection={item} />;
-      } else if (item.type === 'splitter') {
-        return <PrintSplitter key={item._id} connection={item} />;
-      } else if (item.type === 'home') {
-        return <PrintHome key={item._id} connection={item} />;
-      } else {
-        return <></>;
-      }
-    })
-  ) : (
-    <></>
+  return (
+    <>
+      {polylines && (
+        <EditablePolyline
+          connection={polylines.find((item) => item.type === 'home')}
+        />
+      )}
+
+      {/* {polylines?.length ? (
+        polylines.map((item) => {
+          if (item.type === 'pointToPoint') {
+            return <PrintPointToPoint key={item._id} connection={item} />;
+          } else if (item.type === 'reseller') {
+            return <PrintReseller key={item._id} connection={item} />;
+          } else if (item.type === 'localFiber') {
+            return <PrintLocalFiber key={item._id} connection={item} />;
+          } else if (item.type === 'splitter') {
+            return <PrintSplitter key={item._id} connection={item} />;
+          } else if (item.type === 'home') {
+            return <PrintHome key={item._id} connection={item} />;
+          } else {
+            alert('error');
+            return null;
+          }
+        })
+      ) : (
+        <></>
+      )} */}
+    </>
   );
 };
 

@@ -3,8 +3,10 @@ import { Polyline, Marker, InfoWindow } from '@react-google-maps/api';
 
 import coreColor from '../../../utility/coreColor';
 import tjIcon from '../../../assets/img/tj.png';
+import useEditablePolyline from '../../../hooks/useEditablePolyline';
 
 const PrintPointToPoint = ({ connection }) => {
+  const { setParent } = useEditablePolyline();
   const [showInfoWindow, setShowInfoWindow] = useState(false);
   const [position, setPosition] = useState(null);
   const [length, setLength] = useState(0);
@@ -53,6 +55,10 @@ const PrintPointToPoint = ({ connection }) => {
     setLength(lengthInMeters);
   };
 
+  const onClickHandler = () => {
+    setParent(connection);
+  };
+
   return (
     <>
       <Polyline
@@ -63,6 +69,7 @@ const PrintPointToPoint = ({ connection }) => {
         }}
         onMouseOut={() => setShowInfoWindow(false)}
         onLoad={onLoad}
+        onClick={onClickHandler}
       />
 
       {markers.map((marker) => {
@@ -80,9 +87,7 @@ const PrintPointToPoint = ({ connection }) => {
           <Marker
             key={marker._id}
             position={{ lat: coordinates[0], lng: coordinates[1] }}
-            onClick={() => {
-              console.log(marker);
-            }}
+            onClick={onClickHandler}
             icon={icon}
           />
         );
