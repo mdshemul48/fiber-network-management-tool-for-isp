@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { Polyline } from '@react-google-maps/api';
 import { useCallback } from 'react';
-import useMap from '../../../hooks/useMap';
-import useEditablePolyline from '../../../hooks/useEditablePolyline';
+import useMap from '../../hooks/useMap';
+import useEditablePolyline from '../../hooks/useEditablePolyline';
 
 const EditablePolyline = () => {
-  const { setPolyline } = useEditablePolyline();
+  const { setPolyline, parentCoordinate } = useEditablePolyline();
   const [coordinates, setCoordinates] = useState([]);
   const { map } = useMap();
-
+  console.log(parentCoordinate);
   useEffect(() => {
     if (map) {
       map.addListener('click', (event) => {
@@ -18,6 +18,14 @@ const EditablePolyline = () => {
       });
     }
   }, [map]);
+
+  useEffect(() => {
+    if (parentCoordinate) {
+      setCoordinates((prevState) => {
+        return [parentCoordinate];
+      });
+    }
+  }, [parentCoordinate]);
 
   const options = {
     editable: true,

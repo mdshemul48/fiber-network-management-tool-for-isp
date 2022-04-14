@@ -28,7 +28,6 @@ const PrintSplitter = ({ connection }) => {
     return { lng: item[0], lat: item[1] };
   });
 
-
   const options = {
     path: coordinates,
     geodesic: true,
@@ -60,8 +59,8 @@ const PrintSplitter = ({ connection }) => {
     anchor: new window.google.maps.Point(15, 15),
   };
 
-  const onClickHandler = () => {
-    setParent(connection);
+  const onClickHandler = (event) => {
+    setParent(connection, event.latLng);
   };
 
   return (

@@ -61,10 +61,9 @@ const PrintReseller = ({ connection }) => {
     anchor: new window.google.maps.Point(15, 15),
   };
 
-  const onClickHandler = () => {
-    setParent(connection);
+  const onClickHandler = (event) => {
+    setParent(connection, event.latLng);
   };
-
   return (
     <>
       <Polyline

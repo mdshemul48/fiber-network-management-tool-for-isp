@@ -52,8 +52,8 @@ const PrintLocalFiber = ({ connection }) => {
     }
   );
 
-  const onClickHandler = () => {
-    setParent(connection);
+  const onClickHandler = (event) => {
+    setParent(connection, event.latLng);
   };
 
   return (

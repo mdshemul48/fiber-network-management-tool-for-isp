@@ -18,7 +18,6 @@ const PrintPointToPoint = ({ connection }) => {
     totalConnected,
     type,
     childrens,
-    _id,
     markers,
   } = connection;
 
@@ -55,8 +54,8 @@ const PrintPointToPoint = ({ connection }) => {
     setLength(lengthInMeters);
   };
 
-  const onClickHandler = () => {
-    setParent(connection);
+  const onClickHandler = (event) => {
+    setParent(connection, event.latLng);
   };
 
   return (

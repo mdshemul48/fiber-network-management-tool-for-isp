@@ -6,7 +6,7 @@ import PrintPointToPoint from './PrintPolylines/PrintPointToPoint';
 import PrintReseller from './PrintPolylines/PrintReseller';
 import PrintSplitter from './PrintPolylines/PrintSplitter';
 import PrintHome from './PrintPolylines/PrintHome';
-import EditablePolyline from './PrintPolylines/EditablePolyline';
+import EditablePolyline from './EditablePolyline';
 
 const PrintAllConnection = () => {
   const [polylines, setPolylines] = useState(null);
