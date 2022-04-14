@@ -4,3 +4,10 @@ body {
   margin: 0;
   padding: 0;
 }
+
+.add-button {
+  z-index: 90000;
+  position: absolute;
+  top: 10px;
+  right: 70px;
+}

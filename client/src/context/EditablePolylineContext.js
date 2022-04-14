@@ -1,4 +1,4 @@
-import { createContext, useState } from 'react';
+import { createContext, useEffect, useState } from 'react';
 
 const CreatedEditablePolylineContext = createContext({
   polyline: null,
@@ -13,6 +13,7 @@ const EditableContextProvider = ({ children }) => {
   const [polyline, setCurrentPolyline] = useState(null);
   const [parent, setParentPolyline] = useState(null);
   const [parentCoordinate, setParentCoordinate] = useState(null);
+  const [coordinates, setCoordinates] = useState([]);
 
   const setParent = (polyline, latLng) => {
     setParentPolyline(polyline);
@@ -22,6 +23,7 @@ const EditableContextProvider = ({ children }) => {
   const setPolyline = (polyline) => {
     setCurrentPolyline(polyline);
   };
+
   return (
     <CreatedEditablePolylineContext.Provider
       value={{
@@ -31,6 +33,8 @@ const EditableContextProvider = ({ children }) => {
         parent,
         parentCoordinate,
         setParentCoordinate,
+        coordinates,
+        setCoordinates,
       }}
     >
       {children}
