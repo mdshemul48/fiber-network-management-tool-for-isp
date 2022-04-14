@@ -1,16 +1,18 @@
-import { createContext, useEffect, useState } from 'react';
+import { createContext, useRef, useState } from 'react';
 
 const CreatedEditablePolylineContext = createContext({
-  polyline: null,
-  parent: null,
-  parentCoordinate: null,
+  polylineRef: {},
+  parent: {},
+  parentCoordinate: {},
+  coordinates: [],
   setParent: () => {},
   setPolyline: () => {},
   setParentCoordinate: () => {},
+  setCoordinates: () => {},
 });
 
 const EditableContextProvider = ({ children }) => {
-  const [polyline, setCurrentPolyline] = useState(null);
+  const polylineRef = useRef(null);
   const [parent, setParentPolyline] = useState(null);
   const [parentCoordinate, setParentCoordinate] = useState(null);
   const [coordinates, setCoordinates] = useState([]);
@@ -20,16 +22,11 @@ const EditableContextProvider = ({ children }) => {
     setParentCoordinate(latLng);
   };
 
-  const setPolyline = (polyline) => {
-    setCurrentPolyline(polyline);
-  };
-
   return (
     <CreatedEditablePolylineContext.Provider
       value={{
-        polyline,
+        polylineRef,
         setParent,
-        setPolyline,
         parent,
         parentCoordinate,
         setParentCoordinate,

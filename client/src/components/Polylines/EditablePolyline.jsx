@@ -1,11 +1,13 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Polyline } from '@react-google-maps/api';
 import { useCallback } from 'react';
 import useMap from '../../hooks/useMap';
 import useEditablePolyline from '../../hooks/useEditablePolyline';
 
 const EditablePolyline = () => {
-  const { setPolyline, parentCoordinate, coordinates, setCoordinates } =
+  const listenersRef = useRef([]);
+
+  const { parentCoordinate, coordinates, setCoordinates, polylineRef } =
     useEditablePolyline();
 
   const { map } = useMap();
@@ -14,16 +16,16 @@ const EditablePolyline = () => {
     if (map) {
       map.addListener('click', (event) => {
         setCoordinates((prevState) => {
-          return [...prevState, event.latLng];
+          return [...prevState, event.latLng.toJSON()];
         });
       });
     }
-  }, [map]);
+  }, [map, setCoordinates]);
 
   useEffect(() => {
     if (parentCoordinate) {
-      setCoordinates((prevState) => {
-        return [parentCoordinate];
+      setCoordinates(() => {
+        return [parentCoordinate.toJSON()];
       });
     }
   }, [parentCoordinate, setCoordinates]);
@@ -35,28 +37,57 @@ const EditablePolyline = () => {
     strokeWeight: 3,
   };
 
-  const onLoadHandler = useCallback((polyline) => {
-    polyline.addListener('contextmenu', (event) => {
-      if (event.vertex !== undefined) {
-        const path = polyline.getPath();
-        path.removeAt(event.vertex);
-        setCoordinates([...path.getArray()]);
+  const onEdit = useCallback(
+    (event) => {
+      console.log(event);
+      if (polylineRef) {
+        const nextPath = polylineRef.current
+          .getPath()
+          .getArray()
+          .map((latLng) => latLng.toJSON());
+        setCoordinates(nextPath);
       }
-    });
-    setPolyline(polyline);
-  }, []);
+    },
+    [setCoordinates, polylineRef]
+  );
 
-  const unMountHandler = useCallback(() => {
-    setPolyline(null);
-  }, []);
+  const onLoadHandler = useCallback(
+    (polyline) => {
+      polylineRef.current = polyline;
+
+      const path = polyline.getPath();
+      listenersRef.current.push(
+        path.addListener('set_at', onEdit),
+        path.addListener('insert_at', onEdit),
+        path.addListener('remove_at', (event) => {
+          console.log(event, '101');
+        })
+      );
+      polyline.addListener('rightclick', (event) => {
+        if (event.vertex !== undefined) {
+          const path = polylineRef.current.getPath();
+          path.removeAt(event.vertex);
+          onEdit(event);
+        }
+      });
+    },
+    [onEdit, polylineRef]
+  );
+
+  const onUnmount = useCallback(() => {
+    listenersRef.current.forEach((lis) => lis.remove());
+    polylineRef.current = null;
+  }, [polylineRef]);
 
   return (
     <>
-      <button className='btn btn-dark add-button'>Add Connection</button>
       <Polyline
+        draggable
+        editable
         options={options}
         onLoad={onLoadHandler}
-        onUnmount={unMountHandler}
+        onUnmount={onUnmount}
+        onMouseUp={onEdit}
         path={coordinates}
       />
     </>
