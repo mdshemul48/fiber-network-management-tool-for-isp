@@ -21,36 +21,41 @@ const CompanyForm = ({ show, handleClose }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const { name, coreColor, portNo } = formData;
 
-      const newCompanyConnection = {
-        parent: parent._id,
-        name,
-        portNo,
-        coreColor,
-        coordinates,
-      };
+    const { name, coreColor, portNo } = formData;
 
-      await axiosInstance.post('/corporate-connection', newCompanyConnection);
-      toast.success('Company Connection Created');
-      setNewAddedPolyline(true);
-      reset();
-      handleClose();
-    } catch (err) {
-      const {
-        data: { errors, message },
-      } = err.response;
-      if (errors) {
-        errors.forEach((item) => {
-          toast.error(item.msg);
-        });
+    const newCompanyConnection = {
+      parent: parent._id,
+      name,
+      portNo,
+      coreColor,
+      coordinates,
+    };
+    toast.promise(
+      axiosInstance.post('/corporate-connection', newCompanyConnection),
+      {
+        loading: () => 'Adding new company connection...',
+        success: ({ data: { data } }) => {
+          setNewAddedPolyline(true);
+          reset();
+          handleClose();
+          return `Successfully added new ${data.type} Connection`;
+        },
+        error: (error) => {
+          console.log(error.response);
+          const {
+            data: { errors, message },
+          } = error.response;
+          if (errors) {
+            return errors[0].msg;
+          }
+
+          if (message) {
+            return message;
+          }
+        },
       }
-
-      if (message) {
-        toast.error(message);
-      }
-    }
+    );
   };
 
   const coreColors = allCoreColor.slice(0, parent.totalCore);

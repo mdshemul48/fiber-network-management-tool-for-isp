@@ -1,4 +1,5 @@
 import { useCallback, useEffect } from 'react';
+import toast from 'react-hot-toast';
 import { createContext, useRef, useState } from 'react';
 
 const CreatedEditablePolylineContext = createContext({
@@ -17,20 +18,12 @@ const CreatedEditablePolylineContext = createContext({
 const EditableContextProvider = ({ children }) => {
   const polylineRef = useRef(null);
   const [parent, setParentPolyline] = useState(null);
-  const [parentCoordinate, setParentCoordinate] = useState(null);
   const [coordinates, setCoordinates] = useState([]);
-
-  useEffect(() => {
-    if (parentCoordinate) {
-      setCoordinates(() => {
-        return [parentCoordinate.toJSON()];
-      });
-    }
-  }, [parentCoordinate, setCoordinates]);
 
   const setParent = useCallback((polyline, latLng) => {
     setParentPolyline(polyline);
-    setParentCoordinate(latLng);
+    setCoordinates([latLng.toJSON()]);
+    toast.success(`${polyline.type} selected`);
   }, []);
 
   const addVertex = useCallback((event) => {
@@ -41,7 +34,6 @@ const EditableContextProvider = ({ children }) => {
 
   const reset = useCallback(() => {
     setParentPolyline(null);
-    setParentCoordinate(null);
     setCoordinates([]);
   }, []);
 
@@ -51,8 +43,6 @@ const EditableContextProvider = ({ children }) => {
         polylineRef,
         setParent,
         parent,
-        parentCoordinate,
-        setParentCoordinate,
         coordinates,
         setCoordinates,
         addVertex,
