@@ -72,10 +72,13 @@ const PrintHome = ({ connection }) => {
       />
 
       <Marker
-        position={{
-          lat: coordinates[coordinates.length - 1]?.lat,
-          lng: coordinates[coordinates.length - 1]?.lng,
-        }}
+        position={
+          coordinates[coordinates.length - 1] &&
+          new window.google.maps.LatLng({
+            lat: coordinates[coordinates.length - 1]?.lat,
+            lng: coordinates[coordinates.length - 1]?.lng,
+          })
+        }
         onClick={() => {
           console.log('marker');
         }}
