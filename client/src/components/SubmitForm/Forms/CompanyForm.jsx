@@ -1,0 +1,117 @@
+import React, { useState } from 'react';
+import { Button, Form, Modal } from 'react-bootstrap';
+import toast from 'react-hot-toast';
+import useEditablePolyline from '../../../hooks/useEditablePolyline';
+import usePolylines from '../../../hooks/usePolylines';
+import axiosInstance from '../../../utility/axios';
+import allCoreColor from '../../../utility/coreColor';
+
+const CompanyForm = ({ show, handleClose }) => {
+  const { coordinates, reset, parent } = useEditablePolyline();
+  const { setNewAddedPolyline } = usePolylines();
+  const [formData, setFormData] = useState({
+    name: '',
+    portNo: '',
+    coreColor: '',
+  });
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const { name, coreColor, portNo } = formData;
+
+      const newCompanyConnection = {
+        parent: parent._id,
+        name,
+        portNo,
+        coreColor,
+        coordinates,
+      };
+
+      await axiosInstance.post('/corporate-connection', newCompanyConnection);
+      toast.success('Company Connection Created');
+      setNewAddedPolyline(true);
+      reset();
+      handleClose();
+    } catch (err) {
+      const {
+        data: { errors, message },
+      } = err.response;
+      if (errors) {
+        errors.forEach((item) => {
+          toast.error(item.msg);
+        });
+      }
+
+      if (message) {
+        toast.error(message);
+      }
+    }
+  };
+
+  const coreColors = allCoreColor.slice(0, parent.totalCore);
+  const colors = coreColors.map((item) => {
+    const foundedColor = parent.childrens.find((child) => {
+      return child.color === item.colorName;
+    });
+    if (foundedColor) {
+      return null;
+    }
+    return <option value={item.colorName}>{item.colorName}</option>;
+  });
+
+  return (
+    <>
+      <Modal.Header>
+        <Modal.Title>Add Company Connection</Modal.Title>
+      </Modal.Header>
+      <Form onSubmit={handleSubmit}>
+        <Modal.Body>
+          <Form.Group>
+            <Form.Label>Enter Name:</Form.Label>
+            <Form.Control
+              type='text'
+              placeholder='Area Name'
+              name='name'
+              onChange={handleChange}
+            />
+          </Form.Group>
+          <Form.Group className='mt-2'>
+            <Form.Label>Port No:</Form.Label>
+            <Form.Control
+              type='text'
+              placeholder='Port No'
+              name='portNo'
+              onChange={handleChange}
+            />
+          </Form.Group>
+          <Form.Group className='mt-2'>
+            <Form.Label>Select Fiber Core</Form.Label>
+            <Form.Select
+              name='coreColor'
+              defaultValue={'0'}
+              onChange={handleChange}
+            >
+              <option value='0'>Choose...</option>
+              {colors}
+            </Form.Select>
+          </Form.Group>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant='secondary' onClick={handleClose}>
+            Close
+          </Button>
+          <Button variant='primary' type='submit'>
+            Submit
+          </Button>
+        </Modal.Footer>
+      </Form>
+    </>
+  );
+};
+
+export default CompanyForm;

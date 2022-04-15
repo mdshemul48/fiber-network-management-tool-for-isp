@@ -8,6 +8,7 @@ import PrintSplitter from './PrintPolylines/PrintSplitter';
 import PrintHome from './PrintPolylines/PrintHome';
 import EditablePolyline from './EditablePolyline';
 import usePolylines from '../../hooks/usePolylines';
+import PrintCorporate from './PrintPolylines/PrintCorporate';
 
 const PrintAllConnection = () => {
   const { polylines } = usePolylines();
@@ -19,6 +20,8 @@ const PrintAllConnection = () => {
           {polylines.map((item) => {
             if (item.type === 'pointToPoint') {
               return <PrintPointToPoint key={item._id} connection={item} />;
+            } else if (item.type === 'corporate') {
+              return <PrintCorporate key={item._id} connection={item} />;
             } else if (item.type === 'reseller') {
               return <PrintReseller key={item._id} connection={item} />;
             } else if (item.type === 'localFiber') {
