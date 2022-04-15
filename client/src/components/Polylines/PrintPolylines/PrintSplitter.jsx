@@ -87,48 +87,48 @@ const PrintSplitter = ({ connection }) => {
       {showInfoWindow && (
         <InfoWindow position={position}>
           <>
-            <p class='mb-1 fw-bold'>{name}</p>
-            <hr class='my-1' />
-            <p class='mb-1'>
-              <span class='fw-bold'>Connected with:</span> {parentType}
+            <p className='mb-1 fw-bold'>{name}</p>
+            <hr className='my-1' />
+            <p className='mb-1'>
+              <span className='fw-bold'>Connected with:</span> {parentType}
             </p>
-            <p class='mb-1'>
-              <span class='fw-bold'>Splitter Type:</span> {1} is to{' '}
+            <p className='mb-1'>
+              <span className='fw-bold'>Splitter Type:</span> {1} is to{' '}
               {splitterLimit}
             </p>
-            <p class='mb-1'>
-              <span class='fw-bold'>Connection Type:</span> {type}
+            <p className='mb-1'>
+              <span className='fw-bold'>Connection Type:</span> {type}
             </p>
 
             {portNo ? (
-              <p class='mb-1'>
-                <span class='fw-bold'>Port No:</span> {portNo}
+              <p className='mb-1'>
+                <span className='fw-bold'>Port No:</span> {portNo}
               </p>
             ) : (
               <></>
             )}
             {color ? (
-              <p class='mb-1'>
-                <span class='fw-bold'>Connected Core Color:</span> {color}
+              <p className='mb-1'>
+                <span className='fw-bold'>Connected Core Color:</span> {color}
               </p>
             ) : (
               <></>
             )}
-            <p class='mb-1'>
-              <span class=' fw-bold'>total Used Core:</span> {splitterUsed}/
+            <p className='mb-1'>
+              <span className=' fw-bold'>total Used Core:</span> {splitterUsed}/
               {splitterLimit}
             </p>
-            <p class='mb-1'>
-              <span class=' fw-bold'>Distance:</span> {Math.ceil(length)}m
+            <p className='mb-1'>
+              <span className=' fw-bold'>Distance:</span> {Math.ceil(length)}m
             </p>
-            <p class='mb-1 fw-bold'>Core Available: </p>
+            <p className='mb-1 fw-bold'>Core Available: </p>
             <button
-              class='badge mb-1 bg-danger border-0'
+              className='badge mb-1 bg-danger border-0'
               //   onclick="deleteConnection('${type}', '${_id}')"
             >
               Delete
             </button>
-            <hr class='my-1 w-50' />
+            <hr className='my-1 w-50' />
             {ChildConnection}
           </>
         </InfoWindow>

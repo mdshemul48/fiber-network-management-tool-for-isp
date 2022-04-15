@@ -45,7 +45,7 @@ const EditablePolyline = () => {
 
   const deleteVertexHandler = useCallback(
     (event) => {
-      if (event) {
+      if (event.vertex !== undefined) {
         const path = polylineRef.current.getPath();
         path.removeAt(event.vertex);
         onEdit();
