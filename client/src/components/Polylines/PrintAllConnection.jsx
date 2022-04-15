@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import PrintLocalFiber from './PrintPolylines/PrintLocalFiber';
-import axiosInstance from '../../utility/axios';
 
 import PrintPointToPoint from './PrintPolylines/PrintPointToPoint';
 import PrintReseller from './PrintPolylines/PrintReseller';

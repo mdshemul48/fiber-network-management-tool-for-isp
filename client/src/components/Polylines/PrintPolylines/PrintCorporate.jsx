@@ -6,7 +6,7 @@ const PrintCorporate = ({ connection }) => {
   const [showInfoWindow, setShowInfoWindow] = useState(false);
   const [position, setPosition] = useState(null);
   const [length, setLength] = useState(0);
-  const { _id, name, location, type, portNo, color } = connection;
+  const { name, location, type, portNo, color } = connection;
 
   const coordinates = location.coordinates.map((item) => {
     return { lat: item[0], lng: item[1] };
