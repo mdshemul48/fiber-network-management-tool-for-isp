@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
+import { InfoWindow, Marker, Polyline } from '@react-google-maps/api';
 import coreColor from '../../../utility/coreColor';
 import homeIcon from '../../../assets/img/onu.png';
-import { InfoWindow, Marker, Polyline } from '@react-google-maps/api';
 const PrintHome = ({ connection }) => {
   const [showInfoWindow, setShowInfoWindow] = useState(false);
   const [position, setPosition] = useState(null);
   const [length, setLength] = useState(0);
-  const { name, color, onuNo, type, locations, _id } = connection;
+  const { name, color, onuNo, type, locations } = connection;
 
   const coordinates = locations.coordinates.map((item) => {
     return { lat: item[0], lng: item[1] };

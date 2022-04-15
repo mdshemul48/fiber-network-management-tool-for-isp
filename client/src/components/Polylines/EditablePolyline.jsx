@@ -1,24 +1,11 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import { Polyline } from '@react-google-maps/api';
 import { useCallback } from 'react';
-import useMap from '../../hooks/useMap';
 import useEditablePolyline from '../../hooks/useEditablePolyline';
 
 const EditablePolyline = () => {
   const listenersRef = useRef([]);
-
-  const { parentCoordinate, coordinates, setCoordinates, polylineRef } =
-    useEditablePolyline();
-
-  const { map } = useMap();
-
-  useEffect(() => {
-    if (parentCoordinate) {
-      setCoordinates(() => {
-        return [parentCoordinate.toJSON()];
-      });
-    }
-  }, [parentCoordinate, setCoordinates]);
+  const { coordinates, setCoordinates, polylineRef } = useEditablePolyline();
 
   const options = {
     editable: true,
@@ -27,19 +14,15 @@ const EditablePolyline = () => {
     strokeWeight: 3,
   };
 
-  const onEdit = useCallback(
-    (event) => {
-      console.log(event);
-      if (polylineRef) {
-        const nextPath = polylineRef.current
-          .getPath()
-          .getArray()
-          .map((latLng) => latLng.toJSON());
-        setCoordinates(nextPath);
-      }
-    },
-    [setCoordinates, polylineRef]
-  );
+  const onEdit = useCallback(() => {
+    if (polylineRef) {
+      const nextPath = polylineRef.current
+        .getPath()
+        .getArray()
+        .map((latLng) => latLng.toJSON());
+      setCoordinates(nextPath);
+    }
+  }, [setCoordinates, polylineRef]);
 
   const onLoadHandler = useCallback(
     (polyline) => {
@@ -49,17 +32,8 @@ const EditablePolyline = () => {
       listenersRef.current.push(
         path.addListener('set_at', onEdit),
         path.addListener('insert_at', onEdit),
-        path.addListener('remove_at', (event) => {
-          console.log(event, '101');
-        })
+        path.addListener('remove_at', onEdit)
       );
-      polyline.addListener('rightclick', (event) => {
-        if (event.vertex !== undefined) {
-          const path = polylineRef.current.getPath();
-          path.removeAt(event.vertex);
-          onEdit(event);
-        }
-      });
     },
     [onEdit, polylineRef]
   );
@@ -69,18 +43,28 @@ const EditablePolyline = () => {
     polylineRef.current = null;
   }, [polylineRef]);
 
+  const deleteVertexHandler = useCallback(
+    (event) => {
+      if (event) {
+        const path = polylineRef.current.getPath();
+        path.removeAt(event.vertex);
+        onEdit();
+      }
+    },
+    [onEdit, polylineRef]
+  );
+
   return (
-    <>
-      <Polyline
-        draggable
-        editable
-        options={options}
-        onLoad={onLoadHandler}
-        onUnmount={onUnmount}
-        onMouseUp={onEdit}
-        path={coordinates}
-      />
-    </>
+    <Polyline
+      draggable
+      editable
+      options={options}
+      onLoad={onLoadHandler}
+      onUnmount={onUnmount}
+      onMouseUp={onEdit}
+      path={coordinates}
+      onRightClick={deleteVertexHandler}
+    />
   );
 };
 

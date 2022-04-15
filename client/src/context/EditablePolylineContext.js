@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import { createContext, useRef, useState } from 'react';
 
 const CreatedEditablePolylineContext = createContext({
@@ -18,6 +18,14 @@ const EditableContextProvider = ({ children }) => {
   const [parent, setParentPolyline] = useState(null);
   const [parentCoordinate, setParentCoordinate] = useState(null);
   const [coordinates, setCoordinates] = useState([]);
+
+  useEffect(() => {
+    if (parentCoordinate) {
+      setCoordinates(() => {
+        return [parentCoordinate.toJSON()];
+      });
+    }
+  }, [parentCoordinate, setCoordinates]);
 
   const setParent = useCallback((polyline, latLng) => {
     setParentPolyline(polyline);
