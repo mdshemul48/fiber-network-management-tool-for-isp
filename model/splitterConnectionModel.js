@@ -100,4 +100,4 @@ const splitterConnectionModel = new Schema(
 );
 
 splitterConnectionModel.index({ lastPoint: '2dsphere' });
-module.exports = model('Splitter', splitterConnectionModel);
+module.exports = model('splitter', splitterConnectionModel);

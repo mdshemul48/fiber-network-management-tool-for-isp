@@ -73,7 +73,7 @@ const PrintSplitter = ({ connection }) => {
   };
 
   const deleteHandler = () => {
-    toast.promise(axiosInstance.delete(`/corporate-connection?id=${_id}`), {
+    toast.promise(axiosInstance.delete(`/splitter-connection?id=${_id}`), {
       loading: 'Deleting...',
       success: () => {
         setFetch(true);

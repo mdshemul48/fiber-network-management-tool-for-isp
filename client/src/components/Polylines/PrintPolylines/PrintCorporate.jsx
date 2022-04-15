@@ -5,11 +5,9 @@ import officeIcon from '../../../assets/img/office.png';
 import axiosInstance from '../../../utility/axios';
 import toast from 'react-hot-toast';
 import usePolylines from '../../../hooks/usePolylines';
-import { useCallback } from 'react';
 
 const PrintCorporate = ({ connection }) => {
   const [coordinates, setCoordinates] = useState([]);
-  const [polyline, setPolyline] = useState(null);
   const { setFetch } = usePolylines();
   const [showInfoWindow, setShowInfoWindow] = useState(false);
   const [position, setPosition] = useState(null);
@@ -37,7 +35,6 @@ const PrintCorporate = ({ connection }) => {
       polyline.getPath()
     );
     setLength(lengthInMeters);
-    setPolyline(polyline);
   };
 
   const icon = {
