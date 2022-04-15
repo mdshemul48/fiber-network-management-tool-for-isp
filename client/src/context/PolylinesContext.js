@@ -4,29 +4,30 @@ import axiosInstance from '../utility/axios';
 export const PolylinesContext = createContext({
   polylines: [],
   setPolylines: () => {},
-  fetch: () => {},
+  setFetch: () => {},
 });
 
 export const PolylinesContextProvider = (props) => {
   const [polylines, setPolylines] = useState([]);
   const [newAddedPolyline, setNewAddedPolyline] = useState(null);
+  const [fetch, setFetch] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
-      console.log('fetching polylines');
       const response = await axiosInstance.get('/getAllConnection');
       const {
         data: { data },
       } = response;
       setPolylines(data);
       setNewAddedPolyline(null);
+      setFetch(null);
     };
     fetchData();
-  }, [newAddedPolyline]);
+  }, [newAddedPolyline, fetch]);
 
   return (
     <PolylinesContext.Provider
-      value={{ polylines, setPolylines, setNewAddedPolyline }}
+      value={{ polylines, setPolylines, setNewAddedPolyline, setFetch }}
     >
       {props.children}
     </PolylinesContext.Provider>

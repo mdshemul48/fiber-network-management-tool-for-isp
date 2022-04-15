@@ -1,16 +1,27 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { InfoWindow, Marker, Polyline } from '@react-google-maps/api';
 import coreColor from '../../../utility/coreColor';
 import homeIcon from '../../../assets/img/onu.png';
+import toast from 'react-hot-toast';
+import axiosInstance from '../../../utility/axios';
+import usePolylines from '../../../hooks/usePolylines';
+
 const PrintHome = ({ connection }) => {
+  const { setFetch } = usePolylines();
+  const [coordinates, setCoordinates] = useState([]);
   const [showInfoWindow, setShowInfoWindow] = useState(false);
   const [position, setPosition] = useState(null);
   const [length, setLength] = useState(0);
-  const { name, color, onuNo, type, locations } = connection;
+  const { name, color, onuNo, type, locations, _id } = connection;
 
-  const coordinates = locations.coordinates.map((item) => {
-    return { lat: item[0], lng: item[1] };
-  });
+  useEffect(() => {
+    if (locations?.coordinates) {
+      const coordinates = locations.coordinates.map((item) => {
+        return { lat: item[0], lng: item[1] };
+      });
+      setCoordinates(coordinates);
+    }
+  }, [locations.coordinates]);
 
   const options = {
     path: coordinates,
@@ -34,6 +45,20 @@ const PrintHome = ({ connection }) => {
     anchor: new window.google.maps.Point(15, 15),
   };
 
+  const deleteHandler = () => {
+    toast.promise(axiosInstance.delete(`/home-connection?id=${_id}`), {
+      loading: 'Deleting...',
+      success: () => {
+        setFetch(true);
+        return 'Deleted successfully';
+      },
+      error: ({
+        response: {
+          data: { message },
+        },
+      }) => message,
+    });
+  };
   return (
     <>
       <Polyline
@@ -48,8 +73,8 @@ const PrintHome = ({ connection }) => {
 
       <Marker
         position={{
-          lat: coordinates[coordinates.length - 1].lat,
-          lng: coordinates[coordinates.length - 1].lng,
+          lat: coordinates[coordinates.length - 1]?.lat,
+          lng: coordinates[coordinates.length - 1]?.lng,
         }}
         onClick={() => {
           console.log('marker');
@@ -76,7 +101,7 @@ const PrintHome = ({ connection }) => {
             </p>
             <button
               className='badge mb-1 bg-danger border-0'
-              //   onclick="deleteConnection('${type}', '${_id}')"
+              onClick={deleteHandler}
             >
               Delete
             </button>

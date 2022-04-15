@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import useEditablePolyline from '../../hooks/useEditablePolyline';
 import SubmitForm from './SubmitForm';
 
 const Submit = () => {

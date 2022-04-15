@@ -1,10 +1,15 @@
 import { InfoWindow, Marker, Polyline } from '@react-google-maps/api';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
 
 import tjIcon from '../../../assets/img/tj.png';
 import useEditablePolyline from '../../../hooks/useEditablePolyline';
+import usePolylines from '../../../hooks/usePolylines';
+import axiosInstance from '../../../utility/axios';
 
 const PrintLocalFiber = ({ connection }) => {
+  const [coordinates, setCoordinates] = useState([]);
+  const { setFetch } = usePolylines();
   const { setParent } = useEditablePolyline();
   const [showInfoWindow, setShowInfoWindow] = useState(false);
   const [position, setPosition] = useState(null);
@@ -21,12 +26,16 @@ const PrintLocalFiber = ({ connection }) => {
     mainLocalFiber,
   } = connection;
 
-  const coordinates = locations.coordinates.map((item) => {
-    return { lat: item[0], lng: item[1] };
-  });
+  useEffect(() => {
+    if (locations?.coordinates) {
+      const coordinates = locations.coordinates.map((item) => {
+        return { lat: item[0], lng: item[1] };
+      });
+      setCoordinates(coordinates);
+    }
+  }, [locations.coordinates]);
 
   const options = {
-    path: coordinates,
     geodesic: true,
     strokeColor: '#142F43',
     strokeOpacity: 1.0,
@@ -56,9 +65,25 @@ const PrintLocalFiber = ({ connection }) => {
     setParent(connection, event.latLng);
   };
 
+  const deleteHandler = () => {
+    toast.promise(axiosInstance.delete(`/local-fiber-connection?id=${_id}`), {
+      loading: 'Deleting...',
+      success: () => {
+        setFetch(true);
+        return 'Deleted successfully';
+      },
+      error: ({
+        response: {
+          data: { message },
+        },
+      }) => message,
+    });
+  };
+
   return (
     <>
       <Polyline
+        path={coordinates}
         options={options}
         onMouseOver={({ latLng }) => {
           setPosition(latLng);
@@ -108,9 +133,7 @@ const PrintLocalFiber = ({ connection }) => {
             </p>
             <button
               className='badge mb-1 bg-danger border-0'
-              //   onclick="deleteConnection('${type}', '${_id}', '${
-              //   location._id
-              // }')"
+              onClick={deleteHandler}
             >
               Delete
             </button>

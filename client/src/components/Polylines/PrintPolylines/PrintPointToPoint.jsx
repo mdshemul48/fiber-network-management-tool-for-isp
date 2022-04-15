@@ -1,17 +1,23 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Polyline, Marker, InfoWindow } from '@react-google-maps/api';
 
 import coreColor from '../../../utility/coreColor';
 import tjIcon from '../../../assets/img/tj.png';
 import useEditablePolyline from '../../../hooks/useEditablePolyline';
+import toast from 'react-hot-toast';
+import axiosInstance from '../../../utility/axios';
+import usePolylines from '../../../hooks/usePolylines';
 
 const PrintPointToPoint = ({ connection }) => {
+  const [coordinates, setCoordinates] = useState([]);
+  const { setFetch } = usePolylines();
   const { setParent } = useEditablePolyline();
   const [showInfoWindow, setShowInfoWindow] = useState(false);
   const [position, setPosition] = useState(null);
   const [length, setLength] = useState(0);
 
   const {
+    _id,
     name,
     location,
     totalCore,
@@ -21,10 +27,16 @@ const PrintPointToPoint = ({ connection }) => {
     markers,
   } = connection;
 
+  useEffect(() => {
+    if (location?.coordinates) {
+      const coordinates = location.coordinates.map((item) => {
+        return { lat: item[1], lng: item[0] };
+      });
+      setCoordinates(coordinates);
+    }
+  }, [location.coordinates]);
+
   const options = {
-    path: location.coordinates.map((item) => {
-      return { lng: item[0], lat: item[1] };
-    }),
     geodesic: true,
     strokeColor: '#142F43',
     strokeOpacity: 1.0,
@@ -58,9 +70,25 @@ const PrintPointToPoint = ({ connection }) => {
     setParent(connection, event.latLng);
   };
 
+  const deleteHandler = () => {
+    toast.promise(axiosInstance.delete(`/ptp-connection?id=${_id}`), {
+      loading: 'Deleting...',
+      success: () => {
+        setFetch(true);
+        return 'Deleted successfully';
+      },
+      error: ({
+        response: {
+          data: { message },
+        },
+      }) => message,
+    });
+  };
+
   return (
     <>
       <Polyline
+        path={coordinates}
         options={options}
         onMouseOver={({ latLng }) => {
           setPosition(latLng);
@@ -109,7 +137,7 @@ const PrintPointToPoint = ({ connection }) => {
             </p>
             <button
               className='badge mb-1 bg-danger border-0'
-              //   onclick="deleteConnection('${type}', '${_id}')"
+              onClick={deleteHandler}
             >
               Delete
             </button>

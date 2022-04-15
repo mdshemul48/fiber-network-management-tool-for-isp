@@ -1,19 +1,31 @@
 import { InfoWindow, Marker, Polyline } from '@react-google-maps/api';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import coreColor from '../../../utility/coreColor';
 import officeIcon from '../../../assets/img/office.png';
+import axiosInstance from '../../../utility/axios';
+import toast from 'react-hot-toast';
+import usePolylines from '../../../hooks/usePolylines';
+import { useCallback } from 'react';
+
 const PrintCorporate = ({ connection }) => {
+  const [coordinates, setCoordinates] = useState([]);
+  const [polyline, setPolyline] = useState(null);
+  const { setFetch } = usePolylines();
   const [showInfoWindow, setShowInfoWindow] = useState(false);
   const [position, setPosition] = useState(null);
   const [length, setLength] = useState(0);
-  const { name, location, type, portNo, color } = connection;
+  const { name, location, type, portNo, color, _id } = connection;
 
-  const coordinates = location.coordinates.map((item) => {
-    return { lat: item[0], lng: item[1] };
-  });
+  useEffect(() => {
+    if (location?.coordinates) {
+      const coordinates = location.coordinates.map((item) => {
+        return { lat: item[0], lng: item[1] };
+      });
+      setCoordinates(coordinates);
+    }
+  }, [location.coordinates]);
 
   const options = {
-    path: coordinates,
     geodesic: true,
     strokeColor: coreColor.find((item) => item.colorName === color).colorCode,
     strokeOpacity: 1.0,
@@ -25,6 +37,7 @@ const PrintCorporate = ({ connection }) => {
       polyline.getPath()
     );
     setLength(lengthInMeters);
+    setPolyline(polyline);
   };
 
   const icon = {
@@ -33,9 +46,26 @@ const PrintCorporate = ({ connection }) => {
     origin: new window.google.maps.Point(0, 0),
     anchor: new window.google.maps.Point(15, 15),
   };
+
+  const deleteHandler = () => {
+    toast.promise(axiosInstance.delete(`/corporate-connection?id=${_id}`), {
+      loading: 'Deleting...',
+      success: () => {
+        setFetch(true);
+        return 'Deleted successfully';
+      },
+      error: ({
+        response: {
+          data: { message },
+        },
+      }) => message,
+    });
+  };
+
   return (
     <>
       <Polyline
+        path={coordinates}
         options={options}
         onMouseOver={({ latLng }) => {
           setPosition(latLng);
@@ -46,8 +76,8 @@ const PrintCorporate = ({ connection }) => {
       />
       <Marker
         position={{
-          lat: coordinates[coordinates.length - 1].lat,
-          lng: coordinates[coordinates.length - 1].lng,
+          lat: coordinates[coordinates.length - 1]?.lat,
+          lng: coordinates[coordinates.length - 1]?.lng,
         }}
         icon={icon}
       />
@@ -70,7 +100,7 @@ const PrintCorporate = ({ connection }) => {
             </p>
             <button
               className='badge mb-1 bg-danger border-0'
-              //   onclick="deleteConnection('${type}', '${_id}')"
+              onClick={deleteHandler}
             >
               Delete
             </button>

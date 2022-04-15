@@ -1,17 +1,23 @@
 import { InfoWindow, Marker, Polyline } from '@react-google-maps/api';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
 
 import splitterImage from '../../../assets/img/splitter.png';
 import useEditablePolyline from '../../../hooks/useEditablePolyline';
-
+import usePolylines from '../../../hooks/usePolylines';
+import axiosInstance from '../../../utility/axios';
 import coreColor from '../../../utility/coreColor';
 
 const PrintSplitter = ({ connection }) => {
+  const [coordinates, setCoordinates] = useState([]);
+  const { setFetch } = usePolylines();
+
   const { setParent } = useEditablePolyline();
   const [showInfoWindow, setShowInfoWindow] = useState(false);
   const [position, setPosition] = useState(null);
   const [length, setLength] = useState(0);
   const {
+    _id,
     name,
     parentType,
     color,
@@ -23,12 +29,16 @@ const PrintSplitter = ({ connection }) => {
     childrens,
   } = connection;
 
-  const coordinates = location.coordinates.map((item) => {
-    return { lng: item[0], lat: item[1] };
-  });
+  useEffect(() => {
+    if (location?.coordinates) {
+      const coordinates = location.coordinates.map((item) => {
+        return { lng: item[0], lat: item[1] };
+      });
+      setCoordinates(coordinates);
+    }
+  }, [location.coordinates]);
 
   const options = {
-    path: coordinates,
     geodesic: true,
     strokeColor: color
       ? coreColor.find((item) => item.colorName === color)?.colorCode
@@ -62,9 +72,25 @@ const PrintSplitter = ({ connection }) => {
     setParent(connection, event.latLng);
   };
 
+  const deleteHandler = () => {
+    toast.promise(axiosInstance.delete(`/corporate-connection?id=${_id}`), {
+      loading: 'Deleting...',
+      success: () => {
+        setFetch(true);
+        return 'Deleted successfully';
+      },
+      error: ({
+        response: {
+          data: { message },
+        },
+      }) => message,
+    });
+  };
+
   return (
     <>
       <Polyline
+        path={coordinates}
         options={options}
         onMouseOver={({ latLng }) => {
           setPosition(latLng);
@@ -76,8 +102,8 @@ const PrintSplitter = ({ connection }) => {
 
       <Marker
         position={{
-          lat: coordinates[coordinates.length - 1].lat,
-          lng: coordinates[coordinates.length - 1].lng,
+          lat: coordinates[coordinates.length - 1]?.lat,
+          lng: coordinates[coordinates.length - 1]?.lng,
         }}
         onClick={onClickHandler}
         icon={icon}
@@ -123,7 +149,7 @@ const PrintSplitter = ({ connection }) => {
             <p className='mb-1 fw-bold'>Core Available: </p>
             <button
               className='badge mb-1 bg-danger border-0'
-              //   onclick="deleteConnection('${type}', '${_id}')"
+              onClick={deleteHandler}
             >
               Delete
             </button>
