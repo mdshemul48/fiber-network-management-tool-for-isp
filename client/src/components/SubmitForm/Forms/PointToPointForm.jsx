@@ -1,21 +1,54 @@
-import { Button, Form, Modal } from 'react-bootstrap';
 import React, { useState } from 'react';
+import { Button, Form, Modal } from 'react-bootstrap';
+import toast from 'react-hot-toast';
+import axiosInstance from '../../../utility/axios';
+
 import useEditablePolyline from '../../../hooks/useEditablePolyline';
+import usePolylines from '../../../hooks/usePolylines';
 
 const PointToPointForm = ({ show, handleClose }) => {
-  const { parent } = useEditablePolyline();
+  const { coordinates, reset } = useEditablePolyline();
+  const { setNewAddedPolyline } = usePolylines();
 
   const [formData, setFormData] = useState({
     name: '',
-    coreCount: 0,
+    coreCount: '',
   });
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    try {
+      const { name, coreCount } = formData;
+
+      const newPointToPointConnection = {
+        name: name,
+        totalCore: coreCount,
+        coordinates,
+      };
+
+      await axiosInstance.post('/ptp-connection', newPointToPointConnection);
+      toast.success('Point to Point Connection Created');
+      setNewAddedPolyline(true);
+      reset();
+      handleClose();
+    } catch (err) {
+      const {
+        data: { errors, message },
+      } = err.response;
+      if (errors) {
+        errors.forEach((item) => {
+          toast.error(item.msg);
+        });
+      }
+
+      if (message) {
+        toast.error(message);
+      }
+    }
   };
 
   return (

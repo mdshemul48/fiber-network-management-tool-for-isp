@@ -12,7 +12,6 @@ const PrintSplitter = ({ connection }) => {
   const [position, setPosition] = useState(null);
   const [length, setLength] = useState(0);
   const {
-    _id,
     name,
     parentType,
     color,

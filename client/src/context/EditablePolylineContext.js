@@ -11,6 +11,7 @@ const CreatedEditablePolylineContext = createContext({
   setParentCoordinate: () => {},
   setCoordinates: () => {},
   addVertex: () => {},
+  reset: () => {},
 });
 
 const EditableContextProvider = ({ children }) => {
@@ -38,6 +39,12 @@ const EditableContextProvider = ({ children }) => {
     });
   }, []);
 
+  const reset = useCallback(() => {
+    setParentPolyline(null);
+    setParentCoordinate(null);
+    setCoordinates([]);
+  }, []);
+
   return (
     <CreatedEditablePolylineContext.Provider
       value={{
@@ -49,6 +56,7 @@ const EditableContextProvider = ({ children }) => {
         coordinates,
         setCoordinates,
         addVertex,
+        reset,
       }}
     >
       {children}
