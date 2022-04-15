@@ -13,16 +13,6 @@ const EditablePolyline = () => {
   const { map } = useMap();
 
   useEffect(() => {
-    if (map) {
-      map.addListener('click', (event) => {
-        setCoordinates((prevState) => {
-          return [...prevState, event.latLng.toJSON()];
-        });
-      });
-    }
-  }, [map, setCoordinates]);
-
-  useEffect(() => {
     if (parentCoordinate) {
       setCoordinates(() => {
         return [parentCoordinate.toJSON()];

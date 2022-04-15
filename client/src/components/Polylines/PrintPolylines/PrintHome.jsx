@@ -60,22 +60,22 @@ const PrintHome = ({ connection }) => {
       {showInfoWindow && (
         <InfoWindow position={position}>
           <>
-            <p class='mb-1 fw-bold'>{name}</p>
-            <hr class='my-1' />
-            <p class='mb-1'>
-              <span class='fw-bold'>Onu No:</span> {onuNo}
+            <p className='mb-1 fw-bold'>{name}</p>
+            <hr className='my-1' />
+            <p className='mb-1'>
+              <span className='fw-bold'>Onu No:</span> {onuNo}
             </p>
-            <p class='mb-1'>
-              <span class='fw-bold'>connection Type:</span> {type}
+            <p className='mb-1'>
+              <span className='fw-bold'>connection Type:</span> {type}
             </p>
-            <p class='mb-1'>
-              <span class='fw-bold'>Core Color:</span> {color}
+            <p className='mb-1'>
+              <span className='fw-bold'>Core Color:</span> {color}
             </p>
-            <p class='mb-1'>
-              <span class='fw-bold'>Distance:</span> {Math.ceil(length)}m
+            <p className='mb-1'>
+              <span className='fw-bold'>Distance:</span> {Math.ceil(length)}m
             </p>
             <button
-              class='badge mb-1 bg-danger border-0'
+              className='badge mb-1 bg-danger border-0'
               //   onclick="deleteConnection('${type}', '${_id}')"
             >
               Delete

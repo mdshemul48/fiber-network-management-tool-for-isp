@@ -1,6 +1,7 @@
 import React from 'react';
 import { GoogleMap } from '@react-google-maps/api';
 import useMap from '../../hooks/useMap';
+import useEditablePolyline from '../../hooks/useEditablePolyline';
 
 const containerStyle = {
   width: '100vw',
@@ -15,6 +16,7 @@ const zoom = parseInt(localStorage.getItem('zoom')) || 12;
 
 function Map({ children }) {
   const { isLoaded, onLoad, onUnmount } = useMap();
+  const { addVertex } = useEditablePolyline();
 
   return isLoaded ? (
     <GoogleMap
@@ -23,6 +25,7 @@ function Map({ children }) {
       zoom={zoom}
       onLoad={onLoad}
       onUnmount={onUnmount}
+      onClick={addVertex}
     >
       {children}
     </GoogleMap>
