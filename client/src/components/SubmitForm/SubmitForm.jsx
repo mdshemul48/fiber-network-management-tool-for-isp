@@ -3,6 +3,7 @@ import { Modal, Tab, Tabs } from 'react-bootstrap';
 import useEditablePolyline from '../../hooks/useEditablePolyline';
 import CompanyForm from './Forms/CompanyForm';
 import PointToPointForm from './Forms/PointToPointForm';
+import ResellerForm from './Forms/ResellerForm';
 
 const SubmitForm = ({ show, handleClose }) => {
   const { parent, coordinates } = useEditablePolyline();
@@ -14,13 +15,11 @@ const SubmitForm = ({ show, handleClose }) => {
     return (
       <Modal show={show} onHide={handleClose}>
         <Tabs defaultActiveKey='reseller' className='mt-1 mx-2'>
-          <Tab eventKey='reseller' title='Reseller'></Tab>
-          <Tab eventKey='company' title='Company'>
-            <CompanyForm
-              parent={parent}
-              show={show}
-              handleClose={handleClose}
-            />
+          <Tab eventKey='reseller' title='Add Reseller'>
+            <ResellerForm handleClose={handleClose} />
+          </Tab>
+          <Tab eventKey='company' title='Add Company'>
+            <CompanyForm parent={parent} handleClose={handleClose} />
           </Tab>
         </Tabs>
       </Modal>

@@ -1,61 +1,23 @@
 import React, { useState } from 'react';
 import { Button, Form, Modal } from 'react-bootstrap';
-import toast from 'react-hot-toast';
 import useEditablePolyline from '../../../hooks/useEditablePolyline';
 import usePolylines from '../../../hooks/usePolylines';
-import axiosInstance from '../../../utility/axios';
+
 import allCoreColor from '../../../utility/coreColor';
 
-const CompanyForm = ({ handleClose }) => {
+const ResellerForm = ({ handleClose }) => {
   const { coordinates, reset, parent } = useEditablePolyline();
   const { setNewAddedPolyline } = usePolylines();
   const [formData, setFormData] = useState({
     name: '',
+    oltSerialNumber: '',
     portNo: '',
-    coreColor: '',
+    oltType: '',
+    color: '',
   });
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    const { name, coreColor, portNo } = formData;
-
-    const newCompanyConnection = {
-      parent: parent._id,
-      name,
-      portNo,
-      coreColor,
-      coordinates,
-    };
-    toast.promise(
-      axiosInstance.post('/corporate-connection', newCompanyConnection),
-      {
-        loading: () => 'Adding new company connection...',
-        success: ({ data: { data } }) => {
-          setNewAddedPolyline(true);
-          reset();
-          handleClose();
-          return `Successfully added new ${data.type} Connection`;
-        },
-        error: (error) => {
-          console.log(error.response);
-          const {
-            data: { errors, message },
-          } = error.response;
-          if (errors) {
-            return errors[0].msg;
-          }
-
-          if (message) {
-            return message;
-          }
-        },
-      }
-    );
   };
 
   const coreColors = allCoreColor.slice(0, parent.totalCore);
@@ -69,11 +31,13 @@ const CompanyForm = ({ handleClose }) => {
     return <option value={item.colorName}>{item.colorName}</option>;
   });
 
+  console.log(formData);
+
   return (
     <>
-      <Form onSubmit={handleSubmit}>
+      <Form onSubmit={'handleSubmit'}>
         <Modal.Body>
-          <Form.Group>
+          <Form.Group className='mb-2'>
             <Form.Control
               type='text'
               placeholder='Name'
@@ -81,7 +45,16 @@ const CompanyForm = ({ handleClose }) => {
               onChange={handleChange}
             />
           </Form.Group>
-          <Form.Group className='mt-2'>
+          <Form.Group className='mb-2'>
+            <Form.Control
+              type='text'
+              placeholder='Olt Serial Number'
+              name='oltSerialNumber'
+              onChange={handleChange}
+            />
+          </Form.Group>
+
+          <Form.Group className='mb-2'>
             <Form.Control
               type='text'
               placeholder='Port No'
@@ -89,10 +62,26 @@ const CompanyForm = ({ handleClose }) => {
               onChange={handleChange}
             />
           </Form.Group>
-          <Form.Group className='mt-2'>
+          <Form.Group className='mb-2'>
+            <Form.Check
+              type='radio'
+              label='EPON'
+              value='epon'
+              name='oltType'
+              onChange={handleChange}
+            />
+            <Form.Check
+              type='radio'
+              label='GPON'
+              value='gpon'
+              name='oltType'
+              onChange={handleChange}
+            />
+          </Form.Group>
+          <Form.Group className='mb-1'>
             <Form.Label>Select Fiber Core</Form.Label>
             <Form.Select
-              name='coreColor'
+              name='color'
               defaultValue={'0'}
               onChange={handleChange}
             >
@@ -114,4 +103,4 @@ const CompanyForm = ({ handleClose }) => {
   );
 };
 
-export default CompanyForm;
+export default ResellerForm;
