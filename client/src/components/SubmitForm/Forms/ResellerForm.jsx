@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { Button, Form, Modal } from 'react-bootstrap';
+import toast from 'react-hot-toast';
 import useEditablePolyline from '../../../hooks/useEditablePolyline';
 import usePolylines from '../../../hooks/usePolylines';
+import axiosInstance from '../../../utility/axios';
 
 import allCoreColor from '../../../utility/coreColor';
 
@@ -31,11 +33,46 @@ const ResellerForm = ({ handleClose }) => {
     return <option value={item.colorName}>{item.colorName}</option>;
   });
 
-  console.log(formData);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const newPolyline = {
+      parent: parent._id,
+      type: 'reseller',
+      name: formData.name,
+      oltSerialNumber: formData.oltSerialNumber,
+      portNo: formData.portNo,
+      oltType: formData.oltType,
+      coordinates,
+      color: formData.color,
+    };
+
+    toast.promise(axiosInstance.post('/reseller-connection', newPolyline), {
+      loading: () => 'Adding new reseller connection...',
+      success: ({ data: { data } }) => {
+        setNewAddedPolyline(true);
+        reset();
+        handleClose();
+        return `Successfully added new ${data.type} Connection`;
+      },
+      error: (error) => {
+        console.log(error.response);
+        const {
+          data: { errors, message },
+        } = error.response;
+        if (errors) {
+          return errors[0].msg;
+        }
+
+        if (message) {
+          return message;
+        }
+      },
+    });
+  };
 
   return (
     <>
-      <Form onSubmit={'handleSubmit'}>
+      <Form onSubmit={handleSubmit}>
         <Modal.Body>
           <Form.Group className='mb-2'>
             <Form.Control
