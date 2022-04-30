@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { Button, Form, Modal } from 'react-bootstrap';
+import toast from 'react-hot-toast';
 
 import useEditablePolyline from '../../../hooks/useEditablePolyline';
 import usePolylines from '../../../hooks/usePolylines';
+import axiosInstance from '../../../utility/axios';
 
 import allCoreColor from '../../../utility/coreColor';
 
@@ -16,6 +18,42 @@ const SplitterForm = ({ handleClose }) => {
     color: '',
     splitterType: '',
   });
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    const newPolyline = {
+      parentType: parent.type,
+      parent: parent._id,
+      name: formData.name,
+      coordinates,
+      splitterLimit: formData.splitterType,
+      color: formData.color,
+      portNo: formData.OltPortNo,
+    };
+    toast.promise(axiosInstance.post('/splitter-connection', newPolyline), {
+      loading: () => 'Adding new reseller connection...',
+      success: ({ data: { data } }) => {
+        setNewAddedPolyline(true);
+        reset();
+        handleClose();
+        return `Successfully added new ${data.type} Connection`;
+      },
+      error: (error) => {
+        console.log(error.response);
+        const {
+          data: { errors, message },
+        } = error.response;
+        if (errors) {
+          return errors[0].msg;
+        }
+
+        if (message) {
+          return message;
+        }
+      },
+    });
+  };
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -36,7 +74,7 @@ const SplitterForm = ({ handleClose }) => {
   };
 
   return (
-    <Form>
+    <Form onSubmit={handleSubmit}>
       <Modal.Body>
         <Form.Group className='mb-2'>
           <Form.Control
