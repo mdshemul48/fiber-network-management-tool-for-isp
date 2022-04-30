@@ -56,19 +56,18 @@ const SplitterForm = ({ handleClose }) => {
         </Form.Group>
 
         {parent.type === 'localFiber' && (
-          <Form.Group className='mb-1'>
-            <Form.Label>Select Fiber Core</Form.Label>
+          <Form.Group className='mb-2'>
             <Form.Select
               name='color'
               defaultValue={'0'}
               onChange={handleChange}
             >
-              <option value='0'>Choose...</option>
+              <option value='0'>Select Fiber Core</option>
               {getUnusedColor()}
             </Form.Select>
           </Form.Group>
         )}
-        <Form.Group>
+        <Form.Group className='mb-2'>
           <Form.Select
             defaultValue={'0'}
             onChange={handleChange}
