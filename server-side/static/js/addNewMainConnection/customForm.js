@@ -210,7 +210,7 @@ export default (parentId, type) => {
                             : ''
                         }
                         <div>
-                            <div class=" mt-2">
+                            <div class="mt-2">
                                 <select class="form-select" aria-label="Default select example"
                                     id="addLocalSplitterType">
                                     <option selected>Select Splitter Type</option>
