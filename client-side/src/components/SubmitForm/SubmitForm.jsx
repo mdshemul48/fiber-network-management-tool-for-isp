@@ -26,7 +26,7 @@ const SubmitForm = ({ show, handleClose }) => {
         </Tabs>
       </Modal>
     );
-  } else if (parent?.type == 'reseller' || parent?.type == 'localFiber') {
+  } else if (parent?.type === 'reseller' || parent?.type === 'localFiber') {
     return (
       <Modal show={show} onHide={handleClose}>
         <Tabs defaultActiveKey='splitter' className='mt-1 mx-2'>
@@ -35,6 +35,17 @@ const SubmitForm = ({ show, handleClose }) => {
           </Tab>
           <Tab eventKey='localFiber' title='Add Local Fiber'>
             <LocalFiberForm handleClose={handleClose} />
+          </Tab>
+        </Tabs>
+      </Modal>
+    );
+  } else if (parent?.type === 'splitter') {
+    return (
+      <Modal show={show} onHide={handleClose}>
+        <Tabs defaultActiveKey='home' className='mt-1 mx-2'>
+          <Tab eventKey='home' title='Add Home'></Tab>
+          <Tab eventKey='splitter' title='Add Splitter'>
+            <SplitterForm handleClose={handleClose} />
           </Tab>
         </Tabs>
       </Modal>

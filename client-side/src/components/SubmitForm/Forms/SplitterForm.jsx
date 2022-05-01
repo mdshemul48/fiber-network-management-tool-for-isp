@@ -7,8 +7,6 @@ import usePolylines from '../../../hooks/usePolylines';
 import axiosInstance from '../../../utility/axios';
 import coreColor from '../../../utility/coreColor';
 
-import allCoreColor from '../../../utility/coreColor';
-
 const SplitterForm = ({ handleClose }) => {
   const { coordinates, reset, parent } = useEditablePolyline();
   const { setNewAddedPolyline } = usePolylines();
@@ -62,7 +60,7 @@ const SplitterForm = ({ handleClose }) => {
 
   const getUnusedColor = () => {
     if (parent.type === 'splitter') {
-      const coreColors = allCoreColor.slice(0, parent.totalCore);
+      const coreColors = coreColor.slice(0, parent.splitterLimit);
       const colors = coreColors.map((item) => {
         const foundedColor = parent.childrens.find((child) => {
           return child.color === item.colorName;
@@ -105,27 +103,30 @@ const SplitterForm = ({ handleClose }) => {
             onChange={handleChange}
           />
         </Form.Group>
-        <Form.Group className='mb-2'>
-          <Form.Control
-            type='text'
-            placeholder='Olt Port No'
-            name='OltPortNo'
-            onChange={handleChange}
-          />
-        </Form.Group>
-
-        {parent.type === 'localFiber' && (
+        {parent.type !== 'splitter' && (
           <Form.Group className='mb-2'>
-            <Form.Select
-              name='color'
-              defaultValue={'0'}
+            <Form.Control
+              type='text'
+              placeholder='Olt Port No'
+              name='OltPortNo'
               onChange={handleChange}
-            >
-              <option value='0'>Select Fiber Core</option>
-              {getUnusedColor()}
-            </Form.Select>
+            />
           </Form.Group>
         )}
+
+        {parent.type === 'localFiber' ||
+          (parent.type === 'splitter' && (
+            <Form.Group className='mb-2'>
+              <Form.Select
+                name='color'
+                defaultValue={'0'}
+                onChange={handleChange}
+              >
+                <option value='0'>Select Fiber Core</option>
+                {getUnusedColor()}
+              </Form.Select>
+            </Form.Group>
+          ))}
         <Form.Group className='mb-2'>
           <Form.Select
             defaultValue={'0'}
