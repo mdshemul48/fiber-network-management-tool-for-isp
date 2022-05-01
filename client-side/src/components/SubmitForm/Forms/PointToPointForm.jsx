@@ -74,13 +74,12 @@ const PointToPointForm = ({ show, handleClose }) => {
             />
           </Form.Group>
           <Form.Group className='mb-3'>
-            <Form.Label>Enter Fiber Core:</Form.Label>
             <Form.Select
               name='coreCount'
               defaultValue={'0'}
               onChange={handleChange}
             >
-              <option value='0'>Choose...</option>
+              <option value='0'>Select Fiber Core..</option>
               <option value='2'>2</option>
               <option value='4'>4</option>
               <option value='8'>8</option>

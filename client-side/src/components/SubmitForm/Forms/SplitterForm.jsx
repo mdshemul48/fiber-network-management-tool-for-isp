@@ -5,6 +5,7 @@ import toast from 'react-hot-toast';
 import useEditablePolyline from '../../../hooks/useEditablePolyline';
 import usePolylines from '../../../hooks/usePolylines';
 import axiosInstance from '../../../utility/axios';
+import coreColor from '../../../utility/coreColor';
 
 import allCoreColor from '../../../utility/coreColor';
 
@@ -60,17 +61,37 @@ const SplitterForm = ({ handleClose }) => {
   };
 
   const getUnusedColor = () => {
-    const coreColors = allCoreColor.slice(0, parent.totalCore);
-    const colors = coreColors.map((item) => {
-      const foundedColor = parent.childrens.find((child) => {
-        return child.color === item.colorName;
+    if (parent.type === 'splitter') {
+      const coreColors = allCoreColor.slice(0, parent.totalCore);
+      const colors = coreColors.map((item) => {
+        const foundedColor = parent.childrens.find((child) => {
+          return child.color === item.colorName;
+        });
+        if (foundedColor) {
+          return null;
+        }
+        return <option value={item.colorName}>{item.colorName}</option>;
       });
-      if (foundedColor) {
-        return null;
-      }
-      return <option value={item.colorName}>{item.colorName}</option>;
-    });
-    return colors;
+      return colors;
+    } else if (parent.type === 'localFiber') {
+      const coreColors = coreColor.slice(0, parent.totalCore);
+
+      const colors = coreColors.map((item) => {
+        const foundedColor = (
+          parent.mainLocalFiber
+            ? parent.mainLocalFiber.childrens
+            : parent.childrens
+        ).find((child) => {
+          return child.color === item.colorName;
+        });
+        return foundedColor ? (
+          ''
+        ) : (
+          <option value={item.colorName}>{item.colorName}</option>
+        );
+      });
+      return colors;
+    }
   };
 
   return (

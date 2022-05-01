@@ -2,6 +2,7 @@ import React from 'react';
 import { Modal, Tab, Tabs } from 'react-bootstrap';
 import useEditablePolyline from '../../hooks/useEditablePolyline';
 import CompanyForm from './Forms/CompanyForm';
+import LocalFiberForm from './Forms/LocalFiberForm';
 import PointToPointForm from './Forms/PointToPointForm';
 import ResellerForm from './Forms/ResellerForm';
 import SplitterForm from './Forms/SplitterForm';
@@ -32,7 +33,9 @@ const SubmitForm = ({ show, handleClose }) => {
           <Tab eventKey='splitter' title='Add Splitter'>
             <SplitterForm handleClose={handleClose} />
           </Tab>
-          <Tab eventKey='localFiber' title='Add Local Fiber'></Tab>
+          <Tab eventKey='localFiber' title='Add Local Fiber'>
+            <LocalFiberForm handleClose={handleClose} />
+          </Tab>
         </Tabs>
       </Modal>
     );
