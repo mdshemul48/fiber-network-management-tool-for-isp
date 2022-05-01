@@ -2,6 +2,7 @@ import React from 'react';
 import { Modal, Tab, Tabs } from 'react-bootstrap';
 import useEditablePolyline from '../../hooks/useEditablePolyline';
 import CompanyForm from './Forms/CompanyForm';
+import HomeForm from './Forms/HomeForm';
 import LocalFiberForm from './Forms/LocalFiberForm';
 import PointToPointForm from './Forms/PointToPointForm';
 import ResellerForm from './Forms/ResellerForm';
@@ -43,7 +44,9 @@ const SubmitForm = ({ show, handleClose }) => {
     return (
       <Modal show={show} onHide={handleClose}>
         <Tabs defaultActiveKey='home' className='mt-1 mx-2'>
-          <Tab eventKey='home' title='Add Home'></Tab>
+          <Tab eventKey='home' title='Add Home'>
+            <HomeForm handleClose={handleClose} />
+          </Tab>
           <Tab eventKey='splitter' title='Add Splitter'>
             <SplitterForm handleClose={handleClose} />
           </Tab>
