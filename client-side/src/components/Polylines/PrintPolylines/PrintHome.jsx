@@ -63,12 +63,11 @@ const PrintHome = ({ connection }) => {
     <>
       <Polyline
         options={options}
-        onMouseOver={({ latLng }) => {
+        onLoad={onLoad}
+        onRightClick={({ latLng }) => {
           setPosition(latLng);
           setShowInfoWindow(true);
         }}
-        onMouseOut={() => setShowInfoWindow(false)}
-        onLoad={onLoad}
       />
 
       <Marker
@@ -83,34 +82,41 @@ const PrintHome = ({ connection }) => {
           console.log('marker');
         }}
         icon={icon}
-      />
-
-      {showInfoWindow && (
-        <InfoWindow position={position}>
-          <>
-            <p className='mb-1 fw-bold'>{name}</p>
-            <hr className='my-1' />
-            <p className='mb-1'>
-              <span className='fw-bold'>Onu No:</span> {onuNo}
-            </p>
-            <p className='mb-1'>
-              <span className='fw-bold'>connection Type:</span> {type}
-            </p>
-            <p className='mb-1'>
-              <span className='fw-bold'>Core Color:</span> {color}
-            </p>
-            <p className='mb-1'>
-              <span className='fw-bold'>Distance:</span> {Math.ceil(length)}m
-            </p>
-            <button
-              className='badge mb-1 bg-danger border-0'
-              onClick={deleteHandler}
-            >
-              Delete
-            </button>
-          </>
-        </InfoWindow>
-      )}
+        onRightClick={({ latLng }) => {
+          setPosition(latLng);
+          setShowInfoWindow(true);
+        }}
+      >
+        {showInfoWindow && (
+          <InfoWindow
+            position={position}
+            onCloseClick={() => setShowInfoWindow(false)}
+          >
+            <>
+              <p className='mb-1 fw-bold'>{name}</p>
+              <hr className='my-1' />
+              <p className='mb-1'>
+                <span className='fw-bold'>Onu No:</span> {onuNo}
+              </p>
+              <p className='mb-1'>
+                <span className='fw-bold'>connection Type:</span> {type}
+              </p>
+              <p className='mb-1'>
+                <span className='fw-bold'>Core Color:</span> {color}
+              </p>
+              <p className='mb-1'>
+                <span className='fw-bold'>Distance:</span> {Math.ceil(length)}m
+              </p>
+              <button
+                className='badge mb-1 bg-danger border-0'
+                onClick={deleteHandler}
+              >
+                Delete
+              </button>
+            </>
+          </InfoWindow>
+        )}
+      </Marker>
     </>
   );
 };

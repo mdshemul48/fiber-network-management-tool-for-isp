@@ -95,11 +95,10 @@ const PrintReseller = ({ connection }) => {
       <Polyline
         path={coordinates}
         options={options}
-        onMouseOver={({ latLng }) => {
+        onRightClick={({ latLng }) => {
           setPosition(latLng);
           setShowInfoWindow(true);
         }}
-        onMouseOut={() => setShowInfoWindow(false)}
         onLoad={onLoad}
       />
       <Marker
@@ -112,9 +111,16 @@ const PrintReseller = ({ connection }) => {
         }
         onClick={onClickHandler}
         icon={icon}
+        onRightClick={({ latLng }) => {
+          setPosition(latLng);
+          setShowInfoWindow(true);
+        }}
       />
       {showInfoWindow && (
-        <InfoWindow position={position}>
+        <InfoWindow
+          position={position}
+          onCloseClick={() => setShowInfoWindow(false)}
+        >
           <>
             <p className='mb-1 fw-bold'>{name}</p>
             <hr className='my-1' />
