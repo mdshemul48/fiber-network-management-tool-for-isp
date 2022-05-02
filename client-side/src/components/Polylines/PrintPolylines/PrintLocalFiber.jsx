@@ -106,9 +106,7 @@ const PrintLocalFiber = ({ connection }) => {
           <Marker
             key={marker._id}
             position={{ lat: coordinates[1], lng: coordinates[0] }}
-            onClick={() => {
-              console.log(marker);
-            }}
+            onClick={onClickHandler}
             icon={icon}
             onRightClick={({ latLng }) => {
               setPosition(latLng);
