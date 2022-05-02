@@ -2,16 +2,18 @@ import React from 'react';
 import { Button } from 'react-bootstrap';
 
 import useEditablePolyline from '../../hooks/useEditablePolyline';
+import usePolylines from '../../hooks/usePolylines';
 import axiosInstance from '../../utility/axios';
 import findNearbyPTP from '../../utility/findNearbyPTP';
 
 const NearbyConnection = () => {
   const {
     coordinates: target,
-    setCoordinates,
     addVertex,
+    setParent,
     reset,
   } = useEditablePolyline();
+  const { polylines } = usePolylines();
 
   const findNearbyPointToPointConnection = async () => {
     if (target.length === 0) {
@@ -28,13 +30,15 @@ const NearbyConnection = () => {
       data: {
         data: {
           location: { coordinates },
+          _id,
         },
       },
     } = response;
 
     findNearbyPTP(coordinates, target[0], (result) => {
-      console.log(result);
+      const parentPolyline = polylines.find((item) => item._id === _id);
       reset();
+      setParent(parentPolyline);
       for (let i = 0; i < result.length; i++) {
         setTimeout(
           function (latLng) {

@@ -22,7 +22,9 @@ const EditableContextProvider = ({ children }) => {
 
   const setParent = useCallback((polyline, latLng) => {
     setParentPolyline(polyline);
-    setCoordinates([latLng.toJSON()]);
+    if (latLng) {
+      setCoordinates([latLng.toJSON()]);
+    }
     toast.success(`${polyline.type} selected`);
   }, []);
 
