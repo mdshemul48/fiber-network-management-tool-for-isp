@@ -1,5 +1,6 @@
 import React from 'react';
 import { Button } from 'react-bootstrap';
+import toast from 'react-hot-toast';
 
 import useEditablePolyline from '../../hooks/useEditablePolyline';
 import usePolylines from '../../hooks/usePolylines';
@@ -17,8 +18,17 @@ const NearbyConnection = () => {
 
   const findNearbyPointToPointConnection = async () => {
     if (target.length === 0) {
-      return alert('Please click on the map first');
+      return toast.error(
+        "Can't find nearby point to point connection without target"
+      );
     }
+
+    if (target.length > 1) {
+      return toast.error(
+        "Can't find nearby point to point connection with more than one target"
+      );
+    }
+
     const response = await axiosInstance.get(
       '/ptp-connection?coordinates=' +
         JSON.stringify({
