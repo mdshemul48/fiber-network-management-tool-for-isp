@@ -1,0 +1,29 @@
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.add-button {
+  z-index: 90000;
+  position: absolute;
+  top: 10px;
+  right: 70px;
+}
+
+.modal-content {
+  margin-top: 100px;
+}
+.nearbyPTP {
+  z-index: 90000;
+  position: absolute;
+  top: 10px;
+  right: 215px;
+}
+.nearbySplitter {
+  z-index: 90000;
+  position: absolute;
+  top: 10px;
+  right: 363px;
+}
