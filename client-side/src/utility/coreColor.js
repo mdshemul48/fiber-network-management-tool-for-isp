@@ -4,7 +4,7 @@ const coreColor = [
   { colorName: 'green', colorCode: '#00dc00' },
   { colorName: 'brown', colorCode: '#a52a2a' },
   { colorName: 'slate', colorCode: '#708090' },
-  { colorName: 'white', colorCode: '#ffffff' },
+  { colorName: 'white', colorCode: '#c5c6c6' },
   { colorName: 'red', colorCode: '#fe0202' },
   { colorName: 'black', colorCode: '#000000' },
   { colorName: 'yellow', colorCode: '#ffff02' },
