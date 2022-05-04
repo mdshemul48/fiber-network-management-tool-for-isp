@@ -6,6 +6,7 @@ import useEditablePolyline from "../../../hooks/useEditablePolyline";
 import usePolylines from "../../../hooks/usePolylines";
 import axiosInstance from "../../../utility/axios";
 import coreColor from "../../../utility/coreColor";
+import CoreSelect from "../../Shared/Form/CoreSelect";
 
 const HomeForm = ({ handleClose }) => {
   const { coordinates, reset, parent } = useEditablePolyline();
@@ -14,6 +15,7 @@ const HomeForm = ({ handleClose }) => {
     name: "",
     onuNo: "",
     color: "",
+    coreCount: "",
   });
 
   const handleChange = (e) => {
@@ -37,12 +39,14 @@ const HomeForm = ({ handleClose }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    const { name, onuNo, color, coreCount } = formData;
     const homeConnection = {
       parent: parent._id,
-      name: formData.name,
+      name: name,
       coordinates,
-      onuNo: formData.onuNo,
-      color: formData.color,
+      onuNo: onuNo,
+      color: color,
+      coreCount: coreCount,
     };
     toast.promise(axiosInstance.post("/home-connection", homeConnection), {
       loading: () => "Adding new reseller connection...",
@@ -81,6 +85,9 @@ const HomeForm = ({ handleClose }) => {
             <option value="0">Select Fiber Core</option>
             {getUnusedColor()}
           </Form.Select>
+        </Form.Group>
+        <Form.Group className="mt-2">
+          <CoreSelect name="coreCount" onChange={handleChange} />
         </Form.Group>
       </Modal.Body>
       <Modal.Footer>

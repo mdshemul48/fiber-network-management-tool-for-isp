@@ -7,6 +7,8 @@ import usePolylines from "../../../hooks/usePolylines";
 import axiosInstance from "../../../utility/axios";
 import coreColor from "../../../utility/coreColor";
 
+import CoreSelect from "../../Shared/Form/CoreSelect";
+
 const SplitterForm = ({ handleClose }) => {
   const { coordinates, reset, parent } = useEditablePolyline();
   const { setNewAddedPolyline } = usePolylines();
@@ -16,19 +18,23 @@ const SplitterForm = ({ handleClose }) => {
     OltPortNo: "",
     color: "",
     splitterType: "",
+    coreCount: "",
   });
 
   const handleSubmit = (event) => {
     event.preventDefault();
 
+    const { name, OltPortNo, color, splitterType, coreCount } = formData;
+
     const newPolyline = {
       parentType: parent.type,
       parent: parent._id,
-      name: formData.name,
+      name: name,
       coordinates,
-      splitterLimit: formData.splitterType,
-      color: formData.color,
-      portNo: formData.OltPortNo,
+      splitterLimit: splitterType,
+      color: color,
+      portNo: OltPortNo,
+      coreCount: coreCount,
     };
     toast.promise(axiosInstance.post("/splitter-connection", newPolyline), {
       loading: () => "Adding new reseller connection...",
@@ -117,6 +123,9 @@ const SplitterForm = ({ handleClose }) => {
             <option value="16">1/16</option>
             <option value="32">1/32</option>
           </Form.Select>
+        </Form.Group>
+        <Form.Group className="mt-2">
+          <CoreSelect name="coreCount" onChange={handleChange} />
         </Form.Group>
       </Modal.Body>
       <Modal.Footer>

@@ -5,6 +5,7 @@ import useEditablePolyline from "../../../hooks/useEditablePolyline";
 import usePolylines from "../../../hooks/usePolylines";
 import axiosInstance from "../../../utility/axios";
 import allCoreColor from "../../../utility/coreColor";
+import CoreSelect from "../../Shared/Form/CoreSelect";
 
 const CompanyForm = ({ handleClose }) => {
   const { coordinates, reset, parent } = useEditablePolyline();
@@ -13,6 +14,7 @@ const CompanyForm = ({ handleClose }) => {
     name: "",
     portNo: "",
     coreColor: "",
+    coreCount: "",
   });
 
   const handleChange = (e) => {
@@ -22,7 +24,7 @@ const CompanyForm = ({ handleClose }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const { name, coreColor, portNo } = formData;
+    const { name, coreColor, portNo, coreCount } = formData;
 
     const newCompanyConnection = {
       parent: parent._id,
@@ -30,6 +32,7 @@ const CompanyForm = ({ handleClose }) => {
       portNo,
       coreColor,
       coordinates,
+      coreCount,
     };
     toast.promise(axiosInstance.post("/corporate-connection", newCompanyConnection), {
       loading: () => "Adding new company connection...",
@@ -77,11 +80,13 @@ const CompanyForm = ({ handleClose }) => {
             <Form.Control type="text" placeholder="Port No" name="portNo" onChange={handleChange} />
           </Form.Group>
           <Form.Group className="mt-2">
-            <Form.Label>Select Fiber Core</Form.Label>
             <Form.Select name="coreColor" defaultValue={"0"} onChange={handleChange}>
-              <option value="0">Choose...</option>
+              <option value="0">Select Core Color...</option>
               {colors}
             </Form.Select>
+          </Form.Group>
+          <Form.Group className="mt-2">
+            <CoreSelect name="coreCount" onChange={handleChange} />
           </Form.Group>
         </Modal.Body>
         <Modal.Footer>

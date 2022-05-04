@@ -4,6 +4,7 @@ import toast from "react-hot-toast";
 import useEditablePolyline from "../../../hooks/useEditablePolyline";
 import usePolylines from "../../../hooks/usePolylines";
 import axiosInstance from "../../../utility/axios";
+import CoreSelect from "../../Shared/Form/CoreSelect";
 
 const LocalFiberForm = ({ handleClose }) => {
   const { coordinates, reset, parent } = useEditablePolyline();
@@ -63,15 +64,7 @@ const LocalFiberForm = ({ handleClose }) => {
           <Form.Control type="text" placeholder="Name" name="name" onChange={handleChange} />
         </Form.Group>
         <Form.Group className="mb-3">
-          <Form.Select name="coreCount" defaultValue={"0"} onChange={handleChange}>
-            <option value="0">Select Fiber Core..</option>
-            <option value="2">2</option>
-            <option value="4">4</option>
-            <option value="8">8</option>
-            <option value="12">12</option>
-            <option value="16">16</option>
-            <option value="24">24</option>
-          </Form.Select>
+          <CoreSelect name="coreCount" onChange={handleChange} />
         </Form.Group>
       </Modal.Body>
       <Modal.Footer>

@@ -6,6 +6,7 @@ import usePolylines from "../../../hooks/usePolylines";
 import axiosInstance from "../../../utility/axios";
 
 import allCoreColor from "../../../utility/coreColor";
+import CoreSelect from "../../Shared/Form/CoreSelect";
 
 const ResellerForm = ({ handleClose }) => {
   const { coordinates, reset, parent } = useEditablePolyline();
@@ -16,6 +17,7 @@ const ResellerForm = ({ handleClose }) => {
     portNo: "",
     oltType: "",
     color: "",
+    coreCount: "",
   });
 
   const handleChange = (e) => {
@@ -35,15 +37,18 @@ const ResellerForm = ({ handleClose }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    const { name, oltSerialNumber, portNo, oltType, color, coreCount } = formData;
     const newPolyline = {
       parent: parent._id,
       type: "reseller",
-      name: formData.name,
-      oltSerialNumber: formData.oltSerialNumber,
-      portNo: formData.portNo,
-      oltType: formData.oltType,
+      name: name,
+      oltSerialNumber: oltSerialNumber,
+      portNo: portNo,
+      oltType: oltType,
       coordinates,
-      color: formData.color,
+      color: color,
+      coreCount: coreCount,
     };
 
     toast.promise(axiosInstance.post("/reseller-connection", newPolyline), {
@@ -89,11 +94,13 @@ const ResellerForm = ({ handleClose }) => {
             <Form.Check type="radio" label="GPON" value="gpon" name="oltType" onChange={handleChange} />
           </Form.Group>
           <Form.Group className="mb-1">
-            <Form.Label>Select Fiber Core</Form.Label>
             <Form.Select name="color" defaultValue={"0"} onChange={handleChange}>
-              <option value="0">Choose...</option>
+              <option value="0">Select Core Color...</option>
               {colors}
             </Form.Select>
+          </Form.Group>
+          <Form.Group className="mt-2">
+            <CoreSelect name="coreCount" onChange={handleChange} />
           </Form.Group>
         </Modal.Body>
         <Modal.Footer>
