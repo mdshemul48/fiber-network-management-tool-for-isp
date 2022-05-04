@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 // this module exports a function that connect with mongodb
 
@@ -13,7 +13,8 @@ const connectDB = async (callBack) => {
     },
     (err) => {
       if (err) {
-        console.log('Error connecting to database: ', err);
+        // eslint-disable-next-line no-console
+        console.log("Error connecting to database: ", err);
       } else {
         callBack();
       }
