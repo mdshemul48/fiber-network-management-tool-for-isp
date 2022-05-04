@@ -44,7 +44,7 @@ const corporateConnectionSchema = new Schema(
       },
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 module.exports = model('corporate', corporateConnectionSchema);

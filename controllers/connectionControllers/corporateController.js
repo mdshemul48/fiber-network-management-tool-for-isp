@@ -1,8 +1,8 @@
 /* eslint-disable no-underscore-dangle */
 const { body, validationResult } = require('express-validator');
 
-const pointToPointConnectionModel = require('../../model/pointToPointConnectionModel.js');
-const corporateConnectionModel = require('../../model/corporateConnectionModel.js');
+const pointToPointConnectionModel = require('../../model/pointToPointConnectionModel');
+const corporateConnectionModel = require('../../model/corporateConnectionModel');
 
 // validating the request body for create corporate connection request
 exports.createCorporateConnectionValidation = [
@@ -32,7 +32,9 @@ exports.createCorporateConnection = async (req, res) => {
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { parent, name, portNo, coreColor, coordinates } = req.body;
+    const {
+      parent, name, portNo, coreColor, coordinates,
+    } = req.body;
 
     const parentConnection = await pointToPointConnectionModel.findById(parent);
 
@@ -52,7 +54,7 @@ exports.createCorporateConnection = async (req, res) => {
 
     if (
       parentConnection.childrens.find(
-        (item) => item.color === coreColor || item.portNo === parseInt(portNo, 10)
+        (item) => item.color === coreColor || item.portNo === parseInt(portNo, 10),
       )
     ) {
       return res.status(400).json({
@@ -85,7 +87,7 @@ exports.createCorporateConnection = async (req, res) => {
     });
 
     const markerPoint = parentConnection.markers.find(
-      (item) => item.location.coordinates[0] === coordinatesLatLngArr[0][0]
+      (item) => item.location.coordinates[0] === coordinatesLatLngArr[0][0],
     );
 
     if (!markerPoint) {
@@ -93,10 +95,10 @@ exports.createCorporateConnection = async (req, res) => {
         location: { coordinates: coordinatesLatLngArr[0] },
       });
     } else {
-      markerPoint.totalConnected++;
+      markerPoint.totalConnected += 1;
     }
 
-    parentConnection.totalConnected++;
+    parentConnection.totalConnected += 1;
     await parentConnection.save();
 
     return res.status(201).json({
@@ -136,7 +138,7 @@ exports.deleteCorporateConnection = async (req, res) => {
     }
 
     const parentConnectionIndex = parentConnection.childrens.findIndex(
-      (item) => item.child.toString() === id
+      (item) => item.child.toString() === id,
     );
 
     if (parentConnectionIndex === -1) {
@@ -147,20 +149,18 @@ exports.deleteCorporateConnection = async (req, res) => {
     }
 
     parentConnection.childrens.splice(parentConnectionIndex, 1);
-    parentConnection.totalConnected--;
+    parentConnection.totalConnected -= 1;
 
-    const markerPoint = parentConnection.markers.findIndex((item) => {
-      return (
-        item.location.coordinates[0] ===
-        corporateConnection.location.coordinates[0][0]
-      );
-    });
+    const markerPoint = parentConnection.markers.findIndex((item) => (
+      item.location.coordinates[0]
+        === corporateConnection.location.coordinates[0][0]
+    ));
 
     if (markerPoint !== -1) {
       if (parentConnection.markers[markerPoint].totalConnected === 1) {
         parentConnection.markers.splice(markerPoint, 1);
       } else {
-        parentConnection.markers[markerPoint].totalConnected--;
+        parentConnection.markers[markerPoint].totalConnected -= 1;
       }
     } else {
       return res.status(400).json({

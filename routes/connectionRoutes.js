@@ -6,41 +6,41 @@ const {
   createPointToPointConnectionValidation,
   findNearestPointToPointConnection,
   deletePointToPointConnection,
-} = require('../controllers/connectionControllers/pointToPointController.js');
+} = require('../controllers/connectionControllers/pointToPointController');
 
 const {
   createCorporateConnection,
   createCorporateConnectionValidation,
   deleteCorporateConnection,
-} = require('../controllers/connectionControllers/corporateController.js');
+} = require('../controllers/connectionControllers/corporateController');
 
 const {
   createResellerConnection,
   createResellerConnectionValidation,
   deleteResellerConnection,
-} = require('../controllers/connectionControllers/resellerController.js');
+} = require('../controllers/connectionControllers/resellerController');
 
 const {
   createLocalFiberConnection,
   createLocalFiberConnectionValidation,
   deleteLocalFiberConnection,
   deleteLocalFiberConnectionValidation,
-} = require('../controllers/connectionControllers/localFiberController.js');
+} = require('../controllers/connectionControllers/localFiberController');
 
 const {
   createSplitterConnection,
   createSplitterValidation,
   deleteSplitterConnection,
   findNearestSplitterConnection,
-} = require('../controllers/connectionControllers/splitterController.js');
+} = require('../controllers/connectionControllers/splitterController');
 
 const {
   createHomeConnection,
   createHomeConnectionValidation,
   deleteHomeConnection,
-} = require('../controllers/connectionControllers/homeController.js');
+} = require('../controllers/connectionControllers/homeController');
 
-const { getAllConnection } = require('../controllers/getAllConnection.js');
+const { getAllConnection } = require('../controllers/getAllConnection');
 
 router.get('/getAllConnection', getAllConnection);
 
