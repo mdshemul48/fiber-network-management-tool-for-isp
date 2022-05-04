@@ -1,19 +1,19 @@
-import React, { useState } from 'react';
-import { Button, Form, Modal } from 'react-bootstrap';
-import toast from 'react-hot-toast';
+import React, { useState } from "react";
+import { Button, Form, Modal } from "react-bootstrap";
+import toast from "react-hot-toast";
 
-import useEditablePolyline from '../../../hooks/useEditablePolyline';
-import usePolylines from '../../../hooks/usePolylines';
-import axiosInstance from '../../../utility/axios';
-import coreColor from '../../../utility/coreColor';
+import useEditablePolyline from "../../../hooks/useEditablePolyline";
+import usePolylines from "../../../hooks/usePolylines";
+import axiosInstance from "../../../utility/axios";
+import coreColor from "../../../utility/coreColor";
 
 const HomeForm = ({ handleClose }) => {
   const { coordinates, reset, parent } = useEditablePolyline();
   const { setNewAddedPolyline } = usePolylines();
   const [formData, setFormData] = useState({
-    name: '',
-    onuNo: '',
-    color: '',
+    name: "",
+    onuNo: "",
+    color: "",
   });
 
   const handleChange = (e) => {
@@ -44,8 +44,8 @@ const HomeForm = ({ handleClose }) => {
       onuNo: formData.onuNo,
       color: formData.color,
     };
-    toast.promise(axiosInstance.post('/home-connection', homeConnection), {
-      loading: () => 'Adding new reseller connection...',
+    toast.promise(axiosInstance.post("/home-connection", homeConnection), {
+      loading: () => "Adding new reseller connection...",
       success: ({ data: { data } }) => {
         setNewAddedPolyline(true);
         reset();
@@ -71,35 +71,23 @@ const HomeForm = ({ handleClose }) => {
     <Form onSubmit={handleSubmit}>
       <Modal.Body>
         <Form.Group>
-          <Form.Control
-            className='mt-2'
-            type='text'
-            placeholder='Name'
-            name='name'
-            onChange={handleChange}
-          />
+          <Form.Control className="mt-2" type="text" placeholder="Name" name="name" onChange={handleChange} />
         </Form.Group>
         <Form.Group>
-          <Form.Control
-            className='mt-2'
-            type='text'
-            placeholder='ONU Number'
-            name='onuNo'
-            onChange={handleChange}
-          />
+          <Form.Control className="mt-2" type="text" placeholder="ONU Number" name="onuNo" onChange={handleChange} />
         </Form.Group>
-        <Form.Group className='mt-2'>
-          <Form.Select name='color' defaultValue={'0'} onChange={handleChange}>
-            <option value='0'>Select Fiber Core</option>
+        <Form.Group className="mt-2">
+          <Form.Select name="color" defaultValue={"0"} onChange={handleChange}>
+            <option value="0">Select Fiber Core</option>
             {getUnusedColor()}
           </Form.Select>
         </Form.Group>
       </Modal.Body>
       <Modal.Footer>
-        <Button variant='secondary' onClick={handleClose}>
+        <Button variant="secondary" onClick={handleClose}>
           Close
         </Button>
-        <Button variant='primary' type='submit'>
+        <Button variant="primary" type="submit">
           Submit
         </Button>
       </Modal.Footer>

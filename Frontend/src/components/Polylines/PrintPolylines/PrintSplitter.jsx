@@ -1,12 +1,12 @@
-import { InfoWindow, Marker, Polyline } from '@react-google-maps/api';
-import React, { useEffect, useState } from 'react';
-import toast from 'react-hot-toast';
+import { InfoWindow, Marker, Polyline } from "@react-google-maps/api";
+import React, { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
-import splitterImage from '../../../assets/img/splitter.png';
-import useEditablePolyline from '../../../hooks/useEditablePolyline';
-import usePolylines from '../../../hooks/usePolylines';
-import axiosInstance from '../../../utility/axios';
-import coreColor from '../../../utility/coreColor';
+import splitterImage from "../../../assets/img/splitter.png";
+import useEditablePolyline from "../../../hooks/useEditablePolyline";
+import usePolylines from "../../../hooks/usePolylines";
+import axiosInstance from "../../../utility/axios";
+import coreColor from "../../../utility/coreColor";
 
 const PrintSplitter = ({ connection }) => {
   const [coordinates, setCoordinates] = useState([]);
@@ -16,18 +16,7 @@ const PrintSplitter = ({ connection }) => {
   const [showInfoWindow, setShowInfoWindow] = useState(false);
   const [position, setPosition] = useState(null);
   const [length, setLength] = useState(0);
-  const {
-    _id,
-    name,
-    parentType,
-    color,
-    location,
-    splitterLimit,
-    splitterUsed,
-    portNo,
-    type,
-    childrens,
-  } = connection;
+  const { _id, name, parentType, color, location, splitterLimit, splitterUsed, portNo, type, childrens } = connection;
 
   useEffect(() => {
     if (location?.coordinates) {
@@ -40,25 +29,21 @@ const PrintSplitter = ({ connection }) => {
 
   const options = {
     geodesic: true,
-    strokeColor: color
-      ? coreColor.find((item) => item.colorName === color)?.colorCode
-      : '#24A19C',
+    strokeColor: color ? coreColor.find((item) => item.colorName === color)?.colorCode : "#24A19C",
     strokeOpacity: 1.0,
     strokeWeight: 4,
   };
 
   const ChildConnection = childrens.map((item) => {
     return (
-      <p className='mb-1'>
-        {item.color}: {item.connectionType}{' '}
+      <p className="mb-1">
+        {item.color}: {item.connectionType}{" "}
       </p>
     );
   });
 
   const onLoad = (polyline) => {
-    const lengthInMeters = window.google.maps.geometry.spherical.computeLength(
-      polyline.getPath()
-    );
+    const lengthInMeters = window.google.maps.geometry.spherical.computeLength(polyline.getPath());
     setLength(lengthInMeters);
   };
   const icon = {
@@ -74,10 +59,10 @@ const PrintSplitter = ({ connection }) => {
 
   const deleteHandler = () => {
     toast.promise(axiosInstance.delete(`/splitter-connection?id=${_id}`), {
-      loading: 'Deleting...',
+      loading: "Deleting...",
       success: () => {
         setFetch(true);
-        return 'Deleted successfully';
+        return "Deleted successfully";
       },
       error: ({
         response: {
@@ -116,53 +101,45 @@ const PrintSplitter = ({ connection }) => {
       />
 
       {showInfoWindow && (
-        <InfoWindow
-          position={position}
-          onCloseClick={() => setShowInfoWindow(false)}
-        >
+        <InfoWindow position={position} onCloseClick={() => setShowInfoWindow(false)}>
           <>
-            <p className='mb-1 fw-bold'>{name}</p>
-            <hr className='my-1' />
-            <p className='mb-1'>
-              <span className='fw-bold'>Connected with:</span> {parentType}
+            <p className="mb-1 fw-bold">{name}</p>
+            <hr className="my-1" />
+            <p className="mb-1">
+              <span className="fw-bold">Connected with:</span> {parentType}
             </p>
-            <p className='mb-1'>
-              <span className='fw-bold'>Splitter Type:</span> {1} is to{' '}
-              {splitterLimit}
+            <p className="mb-1">
+              <span className="fw-bold">Splitter Type:</span> {1} is to {splitterLimit}
             </p>
-            <p className='mb-1'>
-              <span className='fw-bold'>Connection Type:</span> {type}
+            <p className="mb-1">
+              <span className="fw-bold">Connection Type:</span> {type}
             </p>
 
             {portNo ? (
-              <p className='mb-1'>
-                <span className='fw-bold'>Port No:</span> {portNo}
+              <p className="mb-1">
+                <span className="fw-bold">Port No:</span> {portNo}
               </p>
             ) : (
               <></>
             )}
             {color ? (
-              <p className='mb-1'>
-                <span className='fw-bold'>Connected Core Color:</span> {color}
+              <p className="mb-1">
+                <span className="fw-bold">Connected Core Color:</span> {color}
               </p>
             ) : (
               <></>
             )}
-            <p className='mb-1'>
-              <span className=' fw-bold'>total Used Core:</span> {splitterUsed}/
-              {splitterLimit}
+            <p className="mb-1">
+              <span className=" fw-bold">total Used Core:</span> {splitterUsed}/{splitterLimit}
             </p>
-            <p className='mb-1'>
-              <span className=' fw-bold'>Distance:</span> {Math.ceil(length)}m
+            <p className="mb-1">
+              <span className=" fw-bold">Distance:</span> {Math.ceil(length)}m
             </p>
-            <p className='mb-1 fw-bold'>Core Available: </p>
-            <button
-              className='badge mb-1 bg-danger border-0'
-              onClick={deleteHandler}
-            >
+            <p className="mb-1 fw-bold">Core Available: </p>
+            <button className="badge mb-1 bg-danger border-0" onClick={deleteHandler}>
               Delete
             </button>
-            <hr className='my-1 w-50' />
+            <hr className="my-1 w-50" />
             {ChildConnection}
           </>
         </InfoWindow>

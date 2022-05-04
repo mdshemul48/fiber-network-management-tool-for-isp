@@ -1,18 +1,18 @@
-import React from 'react';
-import { GoogleMap } from '@react-google-maps/api';
-import useMap from '../../hooks/useMap';
-import useEditablePolyline from '../../hooks/useEditablePolyline';
+import React from "react";
+import { GoogleMap } from "@react-google-maps/api";
+import useMap from "../../hooks/useMap";
+import useEditablePolyline from "../../hooks/useEditablePolyline";
 
 const containerStyle = {
-  width: '100vw',
-  height: '100vh',
+  width: "100vw",
+  height: "100vh",
 };
 
-const center = JSON.parse(localStorage.getItem('center')) || {
+const center = JSON.parse(localStorage.getItem("center")) || {
   lat: 23.824374476895283,
   lng: 90.27119894947462,
 };
-const zoom = parseInt(localStorage.getItem('zoom')) || 12;
+const zoom = parseInt(localStorage.getItem("zoom")) || 12;
 
 function Map({ children }) {
   const { isLoaded, onLoad, onUnmount } = useMap();
@@ -31,7 +31,7 @@ function Map({ children }) {
     </GoogleMap>
   ) : (
     <>
-      {' '}
+      {" "}
       <h1>Loading</h1>
     </>
   );

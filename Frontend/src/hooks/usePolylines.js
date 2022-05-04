@@ -1,6 +1,6 @@
-import { useContext } from 'react';
+import { useContext } from "react";
 
-import { PolylinesContext } from '../context/PolylinesContext';
+import { PolylinesContext } from "../context/PolylinesContext";
 
 const usePolylines = () => {
   return useContext(PolylinesContext);

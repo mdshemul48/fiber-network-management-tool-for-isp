@@ -1,5 +1,5 @@
-import { createContext, useEffect, useState } from 'react';
-import axiosInstance from '../utility/axios';
+import { createContext, useEffect, useState } from "react";
+import axiosInstance from "../utility/axios";
 
 export const PolylinesContext = createContext({
   polylines: [],
@@ -14,7 +14,7 @@ export const PolylinesContextProvider = (props) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await axiosInstance.get('/getAllConnection');
+      const response = await axiosInstance.get("/getAllConnection");
       const {
         data: { data },
       } = response;
@@ -26,9 +26,7 @@ export const PolylinesContextProvider = (props) => {
   }, [newAddedPolyline, fetch]);
 
   return (
-    <PolylinesContext.Provider
-      value={{ polylines, setPolylines, setNewAddedPolyline, setFetch }}
-    >
+    <PolylinesContext.Provider value={{ polylines, setPolylines, setNewAddedPolyline, setFetch }}>
       {props.children}
     </PolylinesContext.Provider>
   );
