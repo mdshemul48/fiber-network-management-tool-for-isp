@@ -33,6 +33,11 @@ const corporateConnectionSchema = new Schema(
       required: true,
     },
 
+    totalCore: {
+      type: Number,
+      required: true,
+    },
+
     location: {
       type: {
         type: String,

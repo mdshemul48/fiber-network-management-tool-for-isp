@@ -41,6 +41,11 @@ const splitterConnectionModel = new Schema(
       required: () => this.splitterUsed < this.splitterLimit,
     },
 
+    totalCore: {
+      type: Number,
+      required: true,
+    },
+
     portNo: {
       type: Number,
       required: true,

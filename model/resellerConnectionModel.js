@@ -55,6 +55,11 @@ const resellerConnectionSchema = new Schema(
       required: () => this.connectionUsed < this.connectionLimit,
     },
 
+    totalCore: {
+      type: Number,
+      required: true,
+    },
+
     location: {
       type: {
         type: String,

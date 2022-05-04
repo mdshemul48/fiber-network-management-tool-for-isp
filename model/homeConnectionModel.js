@@ -32,6 +32,11 @@ const homeConnectionSchema = Schema(
       required: true,
     },
 
+    totalCore: {
+      type: Number,
+      required: true,
+    },
+
     color: {
       type: String,
       required: true,
