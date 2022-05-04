@@ -2,16 +2,16 @@ const {
   Schema,
   model,
   Types: { ObjectId },
-} = require('mongoose');
+} = require("mongoose");
 
 const resellerConnectionSchema = new Schema(
   {
     parentType: {
       type: String,
-      default: 'pointToPoint',
-      enum: ['pointToPoint'],
+      default: "pointToPoint",
+      enum: ["pointToPoint"],
     },
-    parent: { type: ObjectId, refPath: 'parentType' },
+    parent: { type: ObjectId, refPath: "parentType" },
 
     name: {
       type: String,
@@ -20,7 +20,7 @@ const resellerConnectionSchema = new Schema(
 
     type: {
       type: String,
-      default: 'reseller',
+      default: "reseller",
     },
 
     portNo: {
@@ -31,7 +31,7 @@ const resellerConnectionSchema = new Schema(
     oltType: {
       type: String,
       required: true,
-      enum: ['epon', 'gpon'],
+      enum: ["epon", "gpon"],
     },
 
     oltSerialNumber: {
@@ -52,15 +52,13 @@ const resellerConnectionSchema = new Schema(
     connectionUsed: {
       type: Number,
       default: 0,
-      required: () => {
-        return this.connectionUsed < this.connectionLimit;
-      },
+      required: () => this.connectionUsed < this.connectionLimit,
     },
 
     location: {
       type: {
         type: String,
-        default: 'LineString',
+        default: "LineString",
       },
       coordinates: {
         type: [[Number]],
@@ -73,7 +71,7 @@ const resellerConnectionSchema = new Schema(
         connectionType: {
           type: String,
           required: true,
-          enum: ['splitter', 'localFiber'],
+          enum: ["splitter", "localFiber"],
         },
         portNo: {
           type: Number,
@@ -82,7 +80,7 @@ const resellerConnectionSchema = new Schema(
         child: {
           type: ObjectId,
           required: true,
-          refPath: 'connectionType',
+          refPath: "connectionType",
         },
         connectionUsed: {
           type: Number,
@@ -94,4 +92,4 @@ const resellerConnectionSchema = new Schema(
   { timestamps: true }
 );
 
-module.exports = model('reseller', resellerConnectionSchema);
+module.exports = model("reseller", resellerConnectionSchema);

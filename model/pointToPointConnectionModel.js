@@ -2,7 +2,7 @@ const {
   Schema,
   model,
   Types: { ObjectId },
-} = require('mongoose');
+} = require("mongoose");
 
 const pointToPointConnectionSchema = new Schema(
   {
@@ -13,7 +13,7 @@ const pointToPointConnectionSchema = new Schema(
 
     type: {
       type: String,
-      default: 'pointToPoint',
+      default: "pointToPoint",
     },
 
     totalCore: {
@@ -24,9 +24,7 @@ const pointToPointConnectionSchema = new Schema(
     totalConnected: {
       type: Number,
       default: 0,
-      required: () => {
-        return this.totalConnected < this.totalCore;
-      },
+      required: () => this.totalConnected < this.totalCore,
     },
 
     markers: [
@@ -37,7 +35,7 @@ const pointToPointConnectionSchema = new Schema(
         },
         type: {
           type: String,
-          default: 'Point',
+          default: "Point",
         },
         location: {
           coordinates: {
@@ -51,7 +49,7 @@ const pointToPointConnectionSchema = new Schema(
     location: {
       type: {
         type: String,
-        default: 'LineString',
+        default: "LineString",
       },
       coordinates: {
         type: [[Number]],
@@ -72,12 +70,12 @@ const pointToPointConnectionSchema = new Schema(
         connectionType: {
           type: String,
           required: true,
-          enum: ['reseller', 'corporate'],
+          enum: ["reseller", "corporate"],
         },
         child: {
           type: ObjectId,
           required: true,
-          refPath: 'connectionType',
+          refPath: "connectionType",
         },
       },
     ],
@@ -85,6 +83,6 @@ const pointToPointConnectionSchema = new Schema(
   { timestamps: true }
 );
 
-pointToPointConnectionSchema.index({ location: '2dsphere' });
+pointToPointConnectionSchema.index({ location: "2dsphere" });
 
-module.exports = model('pointToPoint', pointToPointConnectionSchema);
+module.exports = model("pointToPoint", pointToPointConnectionSchema);

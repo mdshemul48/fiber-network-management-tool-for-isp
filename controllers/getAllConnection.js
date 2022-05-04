@@ -1,9 +1,9 @@
-const pointToPointConnectionModel = require('../model/pointToPointConnectionModel.js');
-const corporateConnectionModel = require('../model/corporateConnectionModel.js');
-const resellerConnectionModel = require('../model/resellerConnectionModel.js');
-const createLocalFiberModel = require('../model/localFiberConnectionModel.js');
-const splitterConnectionModel = require('../model/splitterConnectionModel.js');
-const homeConnectionModel = require('../model/homeConnectionModel.js');
+const pointToPointConnectionModel = require("../model/pointToPointConnectionModel");
+const corporateConnectionModel = require("../model/corporateConnectionModel");
+const resellerConnectionModel = require("../model/resellerConnectionModel");
+const createLocalFiberModel = require("../model/localFiberConnectionModel");
+const splitterConnectionModel = require("../model/splitterConnectionModel");
+const homeConnectionModel = require("../model/homeConnectionModel");
 
 exports.getAllConnection = async (req, res) => {
   const pointToPointData = await pointToPointConnectionModel.find();
@@ -11,19 +11,12 @@ exports.getAllConnection = async (req, res) => {
   const resellerData = await resellerConnectionModel.find();
   const localFiberData = await createLocalFiberModel
     .find()
-    .populate('mainLocalFiber', 'totalConnected totalCore childrens');
+    .populate("mainLocalFiber", "totalConnected totalCore childrens");
   const splitterData = await splitterConnectionModel.find();
   const homeData = await homeConnectionModel.find();
 
   return res.status(200).json({
-    status: 'success',
-    data: [
-      ...pointToPointData,
-      ...corporateData,
-      ...resellerData,
-      ...localFiberData,
-      ...splitterData,
-      ...homeData,
-    ],
+    status: "success",
+    data: [...pointToPointData, ...corporateData, ...resellerData, ...localFiberData, ...splitterData, ...homeData],
   });
 };

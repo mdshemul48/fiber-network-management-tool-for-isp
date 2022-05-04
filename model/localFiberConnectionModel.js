@@ -2,23 +2,23 @@ const {
   Schema,
   model,
   Types: { ObjectId },
-} = require('mongoose');
+} = require("mongoose");
 
 const localFiberConnectionSchema = new Schema(
   {
     parentType: {
       type: String,
-      enum: ['reseller', 'localFiber'],
+      enum: ["reseller", "localFiber"],
       required: true,
     },
 
-    parent: { type: ObjectId, refPath: 'parentType' },
+    parent: { type: ObjectId, refPath: "parentType" },
 
     reseller: {
       type: ObjectId,
-      ref: 'reseller',
+      ref: "reseller",
     },
-    
+
     name: {
       type: String,
       required: true,
@@ -26,7 +26,7 @@ const localFiberConnectionSchema = new Schema(
 
     type: {
       type: String,
-      default: 'localFiber',
+      default: "localFiber",
     },
 
     totalCore: {
@@ -37,9 +37,7 @@ const localFiberConnectionSchema = new Schema(
     totalConnected: {
       type: Number,
       default: 0,
-      required: () => {
-        return this.totalConnected < this.totalCore;
-      },
+      required: () => this.totalConnected < this.totalCore,
     },
 
     markers: [
@@ -50,7 +48,7 @@ const localFiberConnectionSchema = new Schema(
         },
         type: {
           type: String,
-          default: 'Point',
+          default: "Point",
         },
 
         coordinates: {
@@ -62,13 +60,13 @@ const localFiberConnectionSchema = new Schema(
 
     mainLocalFiber: {
       type: ObjectId,
-      ref: 'localFiber',
+      ref: "localFiber",
     },
 
     locations: {
       type: {
         type: String,
-        default: 'LineString',
+        default: "LineString",
       },
       coordinates: {
         type: [[Number]],
@@ -81,12 +79,12 @@ const localFiberConnectionSchema = new Schema(
         connectionType: {
           type: String,
           required: true,
-          enum: ['splitter', 'localFiber'],
+          enum: ["splitter", "localFiber"],
         },
         child: {
           type: ObjectId,
           required: true,
-          refPath: 'connectionType',
+          refPath: "connectionType",
         },
         color: {
           type: String || Number,
@@ -98,4 +96,4 @@ const localFiberConnectionSchema = new Schema(
   { timestamps: true }
 );
 
-module.exports = model('localFiber', localFiberConnectionSchema);
+module.exports = model("localFiber", localFiberConnectionSchema);

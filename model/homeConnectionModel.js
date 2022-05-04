@@ -2,19 +2,19 @@ const {
   Schema,
   model,
   Types: { ObjectId },
-} = require('mongoose');
+} = require("mongoose");
 
 const homeConnectionSchema = Schema(
   {
     parentType: {
       type: String,
-      enum: ['splitter'],
+      enum: ["splitter"],
       required: true,
     },
 
     parent: {
       type: ObjectId,
-      refPath: 'parentType',
+      refPath: "parentType",
     },
 
     name: {
@@ -24,7 +24,7 @@ const homeConnectionSchema = Schema(
 
     type: {
       type: String,
-      default: 'home',
+      default: "home",
     },
 
     onuNo: {
@@ -40,7 +40,7 @@ const homeConnectionSchema = Schema(
     locations: {
       type: {
         type: String,
-        default: 'LineString',
+        default: "LineString",
       },
       coordinates: {
         type: [[Number]],
@@ -51,4 +51,4 @@ const homeConnectionSchema = Schema(
   { timestamps: true }
 );
 
-module.exports = model('home', homeConnectionSchema);
+module.exports = model("home", homeConnectionSchema);

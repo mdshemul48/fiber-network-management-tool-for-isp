@@ -2,21 +2,21 @@ const {
   Schema,
   model,
   Types: { ObjectId },
-} = require('mongoose');
+} = require("mongoose");
 
 const splitterConnectionModel = new Schema(
   {
     parentType: {
       type: String,
-      enum: ['reseller', 'splitter', 'localFiber'],
+      enum: ["reseller", "splitter", "localFiber"],
       required: true,
     },
 
-    parent: { type: ObjectId, refPath: 'parentType' },
+    parent: { type: ObjectId, refPath: "parentType" },
 
     reseller: {
       type: ObjectId,
-      ref: 'reseller',
+      ref: "reseller",
       required: true,
     },
 
@@ -27,7 +27,7 @@ const splitterConnectionModel = new Schema(
 
     type: {
       type: String,
-      default: 'splitter',
+      default: "splitter",
     },
 
     splitterLimit: {
@@ -38,9 +38,7 @@ const splitterConnectionModel = new Schema(
     splitterUsed: {
       type: Number,
       default: 0,
-      required: () => {
-        return this.splitterUsed < this.splitterLimit;
-      },
+      required: () => this.splitterUsed < this.splitterLimit,
     },
 
     portNo: {
@@ -56,7 +54,7 @@ const splitterConnectionModel = new Schema(
     location: {
       type: {
         type: String,
-        default: 'LineString',
+        default: "LineString",
       },
       coordinates: {
         type: [[Number]],
@@ -67,7 +65,7 @@ const splitterConnectionModel = new Schema(
     lastPoint: {
       type: {
         type: String,
-        default: 'Point',
+        default: "Point",
       },
       coordinates: {
         type: [Number],
@@ -84,12 +82,12 @@ const splitterConnectionModel = new Schema(
         connectionType: {
           type: String,
           required: true,
-          enum: ['home', 'splitter'],
+          enum: ["home", "splitter"],
         },
         child: {
           type: ObjectId,
           required: true,
-          refPath: 'connectionType',
+          refPath: "connectionType",
         },
       },
     ],
@@ -99,5 +97,5 @@ const splitterConnectionModel = new Schema(
   }
 );
 
-splitterConnectionModel.index({ lastPoint: '2dsphere' });
-module.exports = model('splitter', splitterConnectionModel);
+splitterConnectionModel.index({ lastPoint: "2dsphere" });
+module.exports = model("splitter", splitterConnectionModel);

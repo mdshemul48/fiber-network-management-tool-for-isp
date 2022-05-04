@@ -1,26 +1,26 @@
 /* eslint-disable no-underscore-dangle */
-const { body, validationResult } = require('express-validator');
+const { body, validationResult } = require("express-validator");
 
-const pointToPointConnectionModel = require('../../model/pointToPointConnectionModel');
-const corporateConnectionModel = require('../../model/corporateConnectionModel');
+const pointToPointConnectionModel = require("../../model/pointToPointConnectionModel");
+const corporateConnectionModel = require("../../model/corporateConnectionModel");
 
 // validating the request body for create corporate connection request
 exports.createCorporateConnectionValidation = [
-  body('parent').notEmpty().withMessage('parent is required'),
-  body('name').notEmpty().withMessage('name is required'),
-  body('portNo')
+  body("parent").notEmpty().withMessage("parent is required"),
+  body("name").notEmpty().withMessage("name is required"),
+  body("portNo")
     .notEmpty()
-    .withMessage('portNo is required')
+    .withMessage("portNo is required")
     .isInt({ min: 1 })
-    .withMessage('portNo must be an integer or greater than 0'),
-  body('coreColor').notEmpty().withMessage('coreColor is required'),
-  body('coordinates')
+    .withMessage("portNo must be an integer or greater than 0"),
+  body("coreColor").notEmpty().withMessage("coreColor is required"),
+  body("coordinates")
     .notEmpty()
-    .withMessage('coordinates is required')
+    .withMessage("coordinates is required")
     .isArray()
-    .withMessage('coordinates must be an array')
+    .withMessage("coordinates must be an array")
     .isLength({ min: 2 })
-    .withMessage('coordinates must be an array of at least 2 items'),
+    .withMessage("coordinates must be an array of at least 2 items"),
 ];
 
 // creating corporate connection
@@ -32,43 +32,33 @@ exports.createCorporateConnection = async (req, res) => {
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const {
-      parent, name, portNo, coreColor, coordinates,
-    } = req.body;
+    const { parent, name, portNo, coreColor, coordinates } = req.body;
 
     const parentConnection = await pointToPointConnectionModel.findById(parent);
 
     if (!parentConnection) {
       return res.status(400).json({
-        status: 'error',
-        message: 'parent connection does not exist',
+        status: "error",
+        message: "parent connection does not exist",
       });
     }
 
     if (!(parentConnection.totalConnected < parentConnection.totalCore)) {
       return res.status(400).json({
-        status: 'error',
-        message: 'parent connection is full',
+        status: "error",
+        message: "parent connection is full",
       });
     }
 
-    if (
-      parentConnection.childrens.find(
-        (item) => item.color === coreColor || item.portNo === parseInt(portNo, 10),
-      )
-    ) {
+    if (parentConnection.childrens.find((item) => item.color === coreColor || item.portNo === parseInt(portNo, 10))) {
       return res.status(400).json({
-        status: 'error',
-        message:
-          'parent connection already has a child with the same color or port number',
+        status: "error",
+        message: "parent connection already has a child with the same color or port number",
       });
     }
 
     // creating the connection
-    const coordinatesLatLngArr = coordinates.map((item) => [
-      item.lat,
-      item.lng,
-    ]);
+    const coordinatesLatLngArr = coordinates.map((item) => [item.lat, item.lng]);
 
     const createdCorporateConnection = await corporateConnectionModel.create({
       parentType: parentConnection.type,
@@ -82,12 +72,12 @@ exports.createCorporateConnection = async (req, res) => {
     parentConnection.childrens.push({
       color: coreColor,
       portNo,
-      connectionType: 'corporate',
+      connectionType: "corporate",
       child: createdCorporateConnection._id.toString(),
     });
 
     const markerPoint = parentConnection.markers.find(
-      (item) => item.location.coordinates[0] === coordinatesLatLngArr[0][0],
+      (item) => item.location.coordinates[0] === coordinatesLatLngArr[0][0]
     );
 
     if (!markerPoint) {
@@ -102,12 +92,12 @@ exports.createCorporateConnection = async (req, res) => {
     await parentConnection.save();
 
     return res.status(201).json({
-      status: 'success',
+      status: "success",
       data: createdCorporateConnection,
     });
   } catch (err) {
     return res.status(500).json({
-      status: 'error',
+      status: "error",
       message: err.message,
     });
   }
@@ -117,14 +107,12 @@ exports.deleteCorporateConnection = async (req, res) => {
   try {
     const { id } = req.query;
 
-    const corporateConnection = await corporateConnectionModel
-      .findById(id)
-      .populate('parent');
+    const corporateConnection = await corporateConnectionModel.findById(id).populate("parent");
 
     if (!corporateConnection) {
       return res.status(400).json({
-        status: 'error',
-        message: 'corporate connection does not exist',
+        status: "error",
+        message: "corporate connection does not exist",
       });
     }
 
@@ -132,29 +120,26 @@ exports.deleteCorporateConnection = async (req, res) => {
 
     if (!parentConnection) {
       return res.status(400).json({
-        status: 'error',
-        message: 'parent connection does not exist',
+        status: "error",
+        message: "parent connection does not exist",
       });
     }
 
-    const parentConnectionIndex = parentConnection.childrens.findIndex(
-      (item) => item.child.toString() === id,
-    );
+    const parentConnectionIndex = parentConnection.childrens.findIndex((item) => item.child.toString() === id);
 
     if (parentConnectionIndex === -1) {
       return res.status(400).json({
-        status: 'error',
-        message: 'parent connection does not have this child',
+        status: "error",
+        message: "parent connection does not have this child",
       });
     }
 
     parentConnection.childrens.splice(parentConnectionIndex, 1);
     parentConnection.totalConnected -= 1;
 
-    const markerPoint = parentConnection.markers.findIndex((item) => (
-      item.location.coordinates[0]
-        === corporateConnection.location.coordinates[0][0]
-    ));
+    const markerPoint = parentConnection.markers.findIndex(
+      (item) => item.location.coordinates[0] === corporateConnection.location.coordinates[0][0]
+    );
 
     if (markerPoint !== -1) {
       if (parentConnection.markers[markerPoint].totalConnected === 1) {
@@ -164,8 +149,8 @@ exports.deleteCorporateConnection = async (req, res) => {
       }
     } else {
       return res.status(400).json({
-        status: 'error',
-        message: 'parent connection does not have this child',
+        status: "error",
+        message: "parent connection does not have this child",
       });
     }
 
@@ -174,14 +159,14 @@ exports.deleteCorporateConnection = async (req, res) => {
     await corporateConnection.remove();
 
     return res.status(200).json({
-      status: 'success',
+      status: "success",
       data: {
-        message: 'corporate connection deleted successfully',
+        message: "corporate connection deleted successfully",
       },
     });
   } catch (err) {
     return res.status(500).json({
-      status: 'error',
+      status: "error",
       message: err.message,
     });
   }

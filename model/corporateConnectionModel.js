@@ -2,16 +2,16 @@ const {
   Schema,
   model,
   Types: { ObjectId },
-} = require('mongoose');
+} = require("mongoose");
 
 const corporateConnectionSchema = new Schema(
   {
     parentType: {
       type: String,
-      default: 'pointToPoint',
-      enum: ['pointToPoint'],
+      default: "pointToPoint",
+      enum: ["pointToPoint"],
     },
-    parent: { type: ObjectId, refPath: 'parentType' },
+    parent: { type: ObjectId, refPath: "parentType" },
 
     name: {
       type: String,
@@ -20,7 +20,7 @@ const corporateConnectionSchema = new Schema(
 
     type: {
       type: String,
-      default: 'corporate',
+      default: "corporate",
     },
 
     color: {
@@ -36,7 +36,7 @@ const corporateConnectionSchema = new Schema(
     location: {
       type: {
         type: String,
-        default: 'LineString',
+        default: "LineString",
       },
       coordinates: {
         type: [[Number]],
@@ -44,7 +44,7 @@ const corporateConnectionSchema = new Schema(
       },
     },
   },
-  { timestamps: true },
+  { timestamps: true }
 );
 
-module.exports = model('corporate', corporateConnectionSchema);
+module.exports = model("corporate", corporateConnectionSchema);

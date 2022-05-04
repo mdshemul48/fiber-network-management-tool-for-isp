@@ -1,18 +1,18 @@
-const { body, validationResult } = require('express-validator');
-const homeConnectionModel = require('../../model/homeConnectionModel.js');
-const splitterConnectionModel = require('../../model/splitterConnectionModel.js');
+const { body, validationResult } = require("express-validator");
+const homeConnectionModel = require("../../model/homeConnectionModel");
+const splitterConnectionModel = require("../../model/splitterConnectionModel");
 
 exports.createHomeConnectionValidation = [
-  body('parent').notEmpty().withMessage('parent is required'),
-  body('name').notEmpty().withMessage('name is required'),
-  body('color').notEmpty().withMessage('color is required'),
-  body('coordinates')
+  body("parent").notEmpty().withMessage("parent is required"),
+  body("name").notEmpty().withMessage("name is required"),
+  body("color").notEmpty().withMessage("color is required"),
+  body("coordinates")
     .notEmpty()
-    .withMessage('coordinates is required')
+    .withMessage("coordinates is required")
     .isArray()
-    .withMessage('coordinates must be an array')
+    .withMessage("coordinates must be an array")
     .isLength({ min: 2 })
-    .withMessage('coordinates must be an array of at least 2 items'),
+    .withMessage("coordinates must be an array of at least 2 items"),
 ];
 
 exports.createHomeConnection = async (req, res) => {
@@ -24,71 +24,58 @@ exports.createHomeConnection = async (req, res) => {
     }
 
     const { parent, name, coordinates, onuNo, color } = req.body;
-    const coordinatesLatLngArr = coordinates.map((item) => {
-      return [item.lat, item.lng];
-    });
+    const coordinatesLatLngArr = coordinates.map((item) => [item.lat, item.lng]);
 
-    const splitter = await splitterConnectionModel
-      .findById(parent)
-      .populate('reseller');
+    const splitter = await splitterConnectionModel.findById(parent).populate("reseller");
 
     if (!splitter) {
       return res.status(400).json({
-        status: 'error',
-        message: 'Invalid splitter id',
+        status: "error",
+        message: "Invalid splitter id",
       });
     }
 
     if (!(splitter.splitterUsed < splitter.splitterLimit)) {
       return res.json({
-        status: 'error',
-        message: 'Splitter fiber is full',
+        status: "error",
+        message: "Splitter fiber is full",
       });
     }
 
     if (!splitter.reseller) {
       return res.status(400).json({
-        status: 'error',
-        message: 'Invalid reseller id',
+        status: "error",
+        message: "Invalid reseller id",
       });
     }
 
-    const targetSplitterInReseller = splitter.reseller.childrens.find(
-      (item) => item.portNo === splitter.portNo
-    );
+    const targetSplitterInReseller = splitter.reseller.childrens.find((item) => item.portNo === splitter.portNo);
 
     if (!targetSplitterInReseller) {
       return res.status(400).json({
-        status: 'error',
-        message: 'Invalid splitter id',
+        status: "error",
+        message: "Invalid splitter id",
       });
     }
 
-    if (
-      !(
-        targetSplitterInReseller.connectionUsed <
-        splitter.reseller.connectionLimit
-      )
-    ) {
+    if (!(targetSplitterInReseller.connectionUsed < splitter.reseller.connectionLimit)) {
       return res.json({
-        status: 'error',
-        message: 'port is full',
+        status: "error",
+        message: "port is full",
       });
     }
 
-    const alreadyExistColoredConnection = splitter.childrens.find(
-      (item) => item.color === color
-    );
+    const alreadyExistColoredConnection = splitter.childrens.find((item) => item.color === color);
 
     if (alreadyExistColoredConnection) {
       return res.status(400).json({
-        status: 'error',
-        message: 'splitter already has a colored connection',
+        status: "error",
+        message: "splitter already has a colored connection",
       });
     }
 
     const newHomeConnection = await homeConnectionModel.create({
-      parentType: 'splitter',
+      parentType: "splitter",
       parent: splitter._id,
       name,
       onuNo,
@@ -99,31 +86,31 @@ exports.createHomeConnection = async (req, res) => {
     });
 
     splitter.childrens.push({
-      connectionType: 'home',
+      connectionType: "home",
       child: newHomeConnection._id,
       color,
     });
 
     if (!targetSplitterInReseller) {
       return res.status(400).json({
-        status: 'error',
-        message: 'Invalid splitter id',
+        status: "error",
+        message: "Invalid splitter id",
       });
     }
 
-    splitter.splitterUsed++;
-    splitter.reseller.connectionUsed++;
-    targetSplitterInReseller.connectionUsed++;
+    splitter.splitterUsed += 1;
+    splitter.reseller.connectionUsed += 1;
+    targetSplitterInReseller.connectionUsed += 1;
 
     splitter.save();
     splitter.reseller.save();
     return res.status(201).json({
-      status: 'success',
+      status: "success",
       data: newHomeConnection,
     });
   } catch (error) {
     return res.status(500).json({
-      status: 'error',
+      status: "error",
       message: error.message,
     });
   }
@@ -136,19 +123,17 @@ exports.deleteHomeConnection = async (req, res) => {
 
     if (!homeConnection) {
       return res.status(400).json({
-        status: 'error',
-        message: 'Invalid home connection id',
+        status: "error",
+        message: "Invalid home connection id",
       });
     }
 
-    const splitter = await splitterConnectionModel
-      .findById(homeConnection.parent)
-      .populate('reseller');
+    const splitter = await splitterConnectionModel.findById(homeConnection.parent).populate("reseller");
 
     if (!splitter) {
       return res.status(400).json({
-        status: 'error',
-        message: 'Invalid splitter id',
+        status: "error",
+        message: "Invalid splitter id",
       });
     }
 
@@ -158,38 +143,36 @@ exports.deleteHomeConnection = async (req, res) => {
 
     if (homeConnectionIndex === -1) {
       return res.status(400).json({
-        status: 'error',
-        message: 'Invalid home connection id',
+        status: "error",
+        message: "Invalid home connection id",
       });
     }
 
     splitter.childrens.splice(homeConnectionIndex, 1);
 
-    const targetSplitterInReseller = splitter.reseller.childrens.find(
-      (item) => item.portNo === splitter.portNo
-    );
+    const targetSplitterInReseller = splitter.reseller.childrens.find((item) => item.portNo === splitter.portNo);
 
     if (!targetSplitterInReseller) {
       return res.status(400).json({
-        status: 'error',
-        message: 'Invalid splitter id',
+        status: "error",
+        message: "Invalid splitter id",
       });
     }
 
-    splitter.splitterUsed--;
-    splitter.reseller.connectionUsed--;
-    targetSplitterInReseller.connectionUsed--;
+    splitter.splitterUsed -= 1;
+    splitter.reseller.connectionUsed -= 1;
+    targetSplitterInReseller.connectionUsed -= 1;
 
     splitter.save();
     splitter.reseller.save();
     homeConnection.remove();
     return res.status(200).json({
-      status: 'success',
-      message: 'home connection deleted',
+      status: "success",
+      message: "home connection deleted",
     });
   } catch (error) {
     return res.status(500).json({
-      status: 'error',
+      status: "error",
       message: error.message,
     });
   }
