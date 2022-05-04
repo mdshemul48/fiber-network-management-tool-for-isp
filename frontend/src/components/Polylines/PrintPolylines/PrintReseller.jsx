@@ -28,6 +28,7 @@ const PrintReseller = ({ connection }) => {
     location,
     childrens,
     connectionUsed,
+    totalCore,
   } = connection;
 
   useEffect(() => {
@@ -58,8 +59,6 @@ const PrintReseller = ({ connection }) => {
     }
     return <></>;
   });
-
-
 
   const icon = {
     url: resellerIcon,
@@ -137,8 +136,11 @@ const PrintReseller = ({ connection }) => {
               {connectionUsed}
             </p>
             <p className="mb-1">
-              <span className="fw-bold"> oltSwitchNumber:</span>
+              <span className="fw-bold"> oltNumber:</span>
               {oltSerialNumber}
+            </p>
+            <p className="mb-1">
+              <span className="fw-bold"> total Core:</span> {totalCore}
             </p>
             <button className="badge mb-1 bg-danger border-0" onClick={deleteHandler}>
               Delete

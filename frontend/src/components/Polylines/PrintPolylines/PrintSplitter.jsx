@@ -16,7 +16,8 @@ const PrintSplitter = ({ connection }) => {
   const [showInfoWindow, setShowInfoWindow] = useState(false);
   const [position, setPosition] = useState(null);
   const [length, setLength] = useState(0);
-  const { _id, name, parentType, color, location, splitterLimit, splitterUsed, portNo, type, childrens } = connection;
+  const { _id, name, parentType, color, location, splitterLimit, splitterUsed, portNo, type, childrens, totalCore } =
+    connection;
 
   useEffect(() => {
     if (location?.coordinates) {
@@ -132,10 +133,13 @@ const PrintSplitter = ({ connection }) => {
             <p className="mb-1">
               <span className=" fw-bold">Distance:</span> {Math.ceil(length)}m
             </p>
-            <p className="mb-1 fw-bold">Core Available: </p>
+            <p className="mb-1">
+              <span className=" fw-bold">Total Core:</span> {totalCore}
+            </p>
             <button className="badge mb-1 bg-danger border-0" onClick={deleteHandler}>
               Delete
             </button>
+            <p className="mb-1 fw-bold">Core Available: </p>
             <hr className="my-1 w-50" />
             {ChildConnection}
           </>

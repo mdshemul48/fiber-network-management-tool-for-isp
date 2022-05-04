@@ -34,7 +34,6 @@ const PrintLocalFiber = ({ connection }) => {
     strokeWeight: 4,
   };
 
-
   const localFiberChildrens = (mainLocalFiber?.childrens || childrens).map((item) => {
     return item.connectionType === "splitter" ? (
       <p className="mb-1" key={item._id}>

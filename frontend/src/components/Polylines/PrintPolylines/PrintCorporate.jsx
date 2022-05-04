@@ -12,7 +12,7 @@ const PrintCorporate = ({ connection }) => {
   const [showInfoWindow, setShowInfoWindow] = useState(false);
   const [position, setPosition] = useState(null);
   const [length, setLength] = useState(0);
-  const { name, location, type, portNo, color, _id } = connection;
+  const { name, location, type, portNo, color, _id, totalCore } = connection;
 
   useEffect(() => {
     if (location?.coordinates) {
@@ -94,6 +94,9 @@ const PrintCorporate = ({ connection }) => {
             </p>
             <p className="mb-1">
               <span className=" fw-bold">Distance:</span> {Math.ceil(length)}m
+            </p>
+            <p className="mb-1">
+              <span className="fw-bold">Total Core:</span> {totalCore}
             </p>
             <button className="badge mb-1 bg-danger border-0" onClick={deleteHandler}>
               Delete

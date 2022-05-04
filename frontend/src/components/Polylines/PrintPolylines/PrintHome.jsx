@@ -12,7 +12,7 @@ const PrintHome = ({ connection }) => {
   const [showInfoWindow, setShowInfoWindow] = useState(false);
   const [position, setPosition] = useState(null);
   const [length, setLength] = useState(0);
-  const { name, color, onuNo, type, locations, _id } = connection;
+  const { name, color, onuNo, type, locations, _id, totalCore } = connection;
 
   useEffect(() => {
     if (locations?.coordinates) {
@@ -97,6 +97,9 @@ const PrintHome = ({ connection }) => {
             </p>
             <p className="mb-1">
               <span className="fw-bold">Distance:</span> {Math.ceil(length)}m
+            </p>
+            <p className="mb-1">
+              <span className="fw-bold">Total Core:</span> {totalCore}
             </p>
             <button className="badge mb-1 bg-danger border-0" onClick={deleteHandler}>
               Delete
