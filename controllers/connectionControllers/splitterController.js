@@ -20,7 +20,7 @@ exports.createSplitterValidation = [
     .isNumeric()
     .withMessage("Splitter limit must be a number"),
   body("totalCore").notEmpty().withMessage("totalCore is required").isIn().withMessage("totalCore must be a number"),
-  body("length").notEmpty().withMessage("length is required").isInt().withMessage("length must be an integer"),
+  body("length").notEmpty().withMessage("length is required").isNumeric().withMessage("length must be an integer"),
 ];
 
 exports.createSplitterConnection = async (req, res) => {

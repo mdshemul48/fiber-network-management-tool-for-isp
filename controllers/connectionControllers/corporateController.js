@@ -21,7 +21,7 @@ exports.createCorporateConnectionValidation = [
     .isLength({ min: 2 })
     .withMessage("coordinates must be an array of at least 2 items"),
   body("totalCore").notEmpty().withMessage("totalCore is required").isInt().withMessage("totalCore must be an integer"),
-  body("length").notEmpty().withMessage("length is required").isInt().withMessage("length must be an integer"),
+  body("length").notEmpty().withMessage("length is required").isNumeric().withMessage("length must be an integer"),
 ];
 
 // creating corporate connection

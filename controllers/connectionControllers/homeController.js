@@ -14,7 +14,7 @@ exports.createHomeConnectionValidation = [
     .isLength({ min: 2 })
     .withMessage("coordinates must be an array of at least 2 items"),
   body("totalCore").notEmpty().withMessage("totalCore is required").isIn().withMessage("totalCore must be a number"),
-  body("length").notEmpty().withMessage("length is required").isInt().withMessage("length must be an integer"),
+  body("length").notEmpty().withMessage("length is required").isNumeric().withMessage("length must be an integer"),
 ];
 
 exports.createHomeConnection = async (req, res) => {

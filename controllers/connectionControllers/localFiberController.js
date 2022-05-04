@@ -9,7 +9,7 @@ exports.createLocalFiberConnectionValidation = [
   body("parentType").notEmpty().withMessage("parentType is required"),
   body("coordinates").notEmpty().withMessage("coordinates is required"),
   body("totalCore").notEmpty().withMessage("totalCore is required").isIn().withMessage("totalCore must be a number"),
-  body("length").notEmpty().withMessage("length is required").isInt().withMessage("length must be an integer"),
+  body("length").notEmpty().withMessage("length is required").isNumeric().withMessage("length must be an integer"),
 ];
 
 exports.createLocalFiberConnection = async (req, res) => {
