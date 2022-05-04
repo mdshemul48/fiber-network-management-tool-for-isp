@@ -50,7 +50,7 @@ const ResellerForm = ({ handleClose }) => {
       oltType: oltType,
       coordinates,
       color: color,
-      totalCore: coreCount,
+      totalCore: parseInt(coreCount),
       length,
     };
 

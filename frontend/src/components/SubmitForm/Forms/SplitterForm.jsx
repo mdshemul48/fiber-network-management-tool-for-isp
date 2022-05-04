@@ -34,7 +34,7 @@ const SplitterForm = ({ handleClose }) => {
       splitterLimit: splitterType,
       color: color,
       portNo: OltPortNo,
-      totalCore: coreCount,
+      totalCore: parseInt(coreCount),
       length,
     };
     toast.promise(axiosInstance.post("/splitter-connection", newPolyline), {

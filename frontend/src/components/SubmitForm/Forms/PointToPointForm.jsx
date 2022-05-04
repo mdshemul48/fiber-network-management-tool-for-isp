@@ -28,7 +28,7 @@ const PointToPointForm = ({ show, handleClose }) => {
     const length = window.google.maps.geometry.spherical.computeLength(coordinates);
     const newPointToPointConnection = {
       name: name,
-      totalCore: coreCount,
+      totalCore: parseInt(coreCount),
       coordinates,
       length,
     };

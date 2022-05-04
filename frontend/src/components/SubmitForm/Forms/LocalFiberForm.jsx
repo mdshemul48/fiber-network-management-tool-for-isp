@@ -29,7 +29,7 @@ const LocalFiberForm = ({ handleClose }) => {
       name: name,
       parent: parent._id,
       parentType: parent.type,
-      totalCore: coreCount,
+      totalCore: parseInt(coreCount),
       coordinates,
       length,
     };

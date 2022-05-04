@@ -19,7 +19,7 @@ exports.createSplitterValidation = [
     .withMessage("Splitter limit is required")
     .isNumeric()
     .withMessage("Splitter limit must be a number"),
-  body("totalCore").notEmpty().withMessage("totalCore is required").isIn().withMessage("totalCore must be a number"),
+  body("totalCore").notEmpty().withMessage("totalCore is required").isInt().withMessage("totalCore must be a number"),
   body("length").notEmpty().withMessage("length is required").isNumeric().withMessage("length must be an integer"),
 ];
 

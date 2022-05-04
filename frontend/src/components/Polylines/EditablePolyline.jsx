@@ -2,8 +2,10 @@ import React, { useRef } from "react";
 import { Polyline } from "@react-google-maps/api";
 import { useCallback } from "react";
 import useEditablePolyline from "../../hooks/useEditablePolyline";
+import useMap from "../../hooks/useMap";
 
 const EditablePolyline = () => {
+  const { map } = useMap();
   const listenersRef = useRef([]);
   const { coordinates, setCoordinates, polylineRef } = useEditablePolyline();
 
@@ -55,16 +57,18 @@ const EditablePolyline = () => {
   );
 
   return (
-    <Polyline
-      draggable
-      editable
-      options={options}
-      onLoad={onLoadHandler}
-      onUnmount={onUnmount}
-      onMouseUp={onEdit}
-      path={coordinates}
-      onRightClick={deleteVertexHandler}
-    />
+    map?.renderingType === "RASTER" && (
+      <Polyline
+        draggable
+        editable
+        options={options}
+        onLoad={onLoadHandler}
+        onUnmount={onUnmount}
+        onMouseUp={onEdit}
+        path={coordinates}
+        onRightClick={deleteVertexHandler}
+      />
+    )
   );
 };
 

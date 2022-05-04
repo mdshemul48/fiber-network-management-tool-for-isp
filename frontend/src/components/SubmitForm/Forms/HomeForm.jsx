@@ -47,7 +47,7 @@ const HomeForm = ({ handleClose }) => {
       coordinates,
       onuNo: onuNo,
       color: color,
-      totalCore: coreCount,
+      totalCore: parseInt(coreCount),
       length,
     };
     toast.promise(axiosInstance.post("/home-connection", homeConnection), {

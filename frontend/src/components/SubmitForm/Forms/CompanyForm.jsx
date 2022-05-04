@@ -33,7 +33,7 @@ const CompanyForm = ({ handleClose }) => {
       portNo,
       coreColor,
       coordinates,
-      totalCore: coreCount,
+      totalCore: parseInt(coreCount),
       length,
     };
     toast.promise(axiosInstance.post("/corporate-connection", newCompanyConnection), {

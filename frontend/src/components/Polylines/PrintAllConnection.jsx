@@ -14,31 +14,26 @@ const PrintAllConnection = () => {
 
   return (
     <>
-      {polylines?.length ? (
-        <>
-          {polylines.map((item) => {
-            if (item.type === "pointToPoint") {
-              return <PrintPointToPoint key={item._id} connection={item} />;
-            } else if (item.type === "corporate") {
-              return <PrintCorporate key={item._id} connection={item} />;
-            } else if (item.type === "reseller") {
-              return <PrintReseller key={item._id} connection={item} />;
-            } else if (item.type === "localFiber") {
-              return <PrintLocalFiber key={item._id} connection={item} />;
-            } else if (item.type === "splitter") {
-              return <PrintSplitter key={item._id} connection={item} />;
-            } else if (item.type === "home") {
-              return <PrintHome key={item._id} connection={item} />;
-            } else {
-              alert("error");
-              return null;
-            }
-          })}
-          <EditablePolyline />
-        </>
-      ) : (
-        <></>
-      )}
+      {polylines?.length &&
+        polylines.map((item) => {
+          if (item.type === "pointToPoint") {
+            return <PrintPointToPoint key={item._id} connection={item} />;
+          } else if (item.type === "corporate") {
+            return <PrintCorporate key={item._id} connection={item} />;
+          } else if (item.type === "reseller") {
+            return <PrintReseller key={item._id} connection={item} />;
+          } else if (item.type === "localFiber") {
+            return <PrintLocalFiber key={item._id} connection={item} />;
+          } else if (item.type === "splitter") {
+            return <PrintSplitter key={item._id} connection={item} />;
+          } else if (item.type === "home") {
+            return <PrintHome key={item._id} connection={item} />;
+          } else {
+            alert("error");
+            return null;
+          }
+        })}
+      <EditablePolyline />
     </>
   );
 };

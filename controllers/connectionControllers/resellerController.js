@@ -22,7 +22,7 @@ exports.createResellerConnectionValidation = [
     .isLength({ min: 2 })
     .withMessage("coordinates must have at least 2 items"),
   body("color").notEmpty().withMessage("color is required"),
-  body("totalCore").notEmpty().withMessage("totalCore is required").isIn().withMessage("totalCore must be a number"),
+  body("totalCore").notEmpty().withMessage("totalCore is required").isInt().withMessage("totalCore must be a number"),
   body("length").notEmpty().withMessage("length is required").isNumeric().withMessage("length must be an integer"),
 ];
 
