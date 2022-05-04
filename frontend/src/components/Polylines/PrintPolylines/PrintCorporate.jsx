@@ -12,8 +12,7 @@ const PrintCorporate = ({ connection }) => {
   const { setFetch } = usePolylines();
   const [showInfoWindow, setShowInfoWindow] = useState(false);
   const [position, setPosition] = useState(null);
-  const [length, setLength] = useState(0);
-  const { name, location, type, portNo, color, _id, totalCore } = connection;
+  const { name, location, type, portNo, color, _id, totalCore, length } = connection;
 
   useEffect(() => {
     if (location?.coordinates) {
@@ -21,8 +20,6 @@ const PrintCorporate = ({ connection }) => {
         return { lat: item[0], lng: item[1] };
       });
       setCoordinates(coordinates);
-      const lengthInMeters = window.google.maps.geometry.spherical.computeLength(coordinates);
-      setLength(lengthInMeters);
     }
   }, [location.coordinates]);
 
@@ -94,7 +91,7 @@ const PrintCorporate = ({ connection }) => {
               <span className="fw-bold">Core Color:</span> {color}
             </p>
             <p className="mb-1">
-              <span className=" fw-bold">Distance:</span> {Math.ceil(length)}m
+              <span className=" fw-bold">Distance:</span> {length.toFixed(2)}m
             </p>
             <p className="mb-1">
               <span className="fw-bold">Total Core:</span> {totalCore}

@@ -14,9 +14,8 @@ const PrintPointToPoint = ({ connection }) => {
   const { setParent } = useEditablePolyline();
   const [showInfoWindow, setShowInfoWindow] = useState(false);
   const [position, setPosition] = useState(null);
-  const [length, setLength] = useState(0);
 
-  const { _id, name, location, totalCore, totalConnected, type, childrens, markers } = connection;
+  const { _id, name, location, totalCore, totalConnected, type, childrens, markers, length } = connection;
 
   useEffect(() => {
     if (location?.coordinates) {
@@ -24,8 +23,6 @@ const PrintPointToPoint = ({ connection }) => {
         return { lat: item[1], lng: item[0] };
       });
       setCoordinates(coordinates);
-      const lengthInMeters = window.google.maps.geometry.spherical.computeLength(coordinates);
-      setLength(lengthInMeters);
     }
   }, [location.coordinates]);
 
@@ -49,8 +46,6 @@ const PrintPointToPoint = ({ connection }) => {
       return <p className="mb-1">{item.colorName} : available</p>;
     }
   });
-
-  
 
   const onClickHandler = (event) => {
     setParent(connection, event.latLng);
@@ -121,7 +116,7 @@ const PrintPointToPoint = ({ connection }) => {
               {totalConnected}/{totalCore}
             </p>
             <p className="mb-1">
-              <span className=" fw-bold">Distance:</span> {Math.ceil(length)}m
+              <span className=" fw-bold">Distance:</span> {length.toFixed(2)}m
             </p>
             <button className="badge mb-1 bg-danger border-0" onClick={deleteHandler}>
               Delete

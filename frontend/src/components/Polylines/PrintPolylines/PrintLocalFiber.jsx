@@ -13,15 +13,13 @@ const PrintLocalFiber = ({ connection }) => {
   const { setParent } = useEditablePolyline();
   const [showInfoWindow, setShowInfoWindow] = useState(false);
   const [position, setPosition] = useState(null);
-  const [length, setLength] = useState(0);
-  const { _id, name, locations, type, totalCore, totalConnected, markers, childrens, mainLocalFiber } = connection;
+  const { _id, name, locations, type, totalCore, totalConnected, markers, childrens, mainLocalFiber, length } =
+    connection;
 
   useEffect(() => {
     if (locations?.coordinates) {
       const coordinates = locations.coordinates.map((item) => ({ lat: item[0], lng: item[1] }));
       setCoordinates(coordinates);
-      const lengthInMeters = window.google.maps.geometry.spherical.computeLength(coordinates);
-      setLength(lengthInMeters);
     }
   }, [locations.coordinates]);
 
@@ -109,7 +107,7 @@ const PrintLocalFiber = ({ connection }) => {
               {mainLocalFiber?.totalConnected || totalConnected}/{mainLocalFiber?.totalCore || totalCore}
             </p>
             <p className="mb-1">
-              <span className=" fw-bold">Distance:</span> {Math.ceil(length)}m
+              <span className=" fw-bold">Distance:</span> {length.toFixed(2)}m
             </p>
             <button className="badge mb-1 bg-danger border-0" onClick={deleteHandler}>
               Delete

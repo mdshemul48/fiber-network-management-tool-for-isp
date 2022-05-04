@@ -15,9 +15,20 @@ const PrintSplitter = ({ connection }) => {
   const { setParent } = useEditablePolyline();
   const [showInfoWindow, setShowInfoWindow] = useState(false);
   const [position, setPosition] = useState(null);
-  const [length, setLength] = useState(0);
-  const { _id, name, parentType, color, location, splitterLimit, splitterUsed, portNo, type, childrens, totalCore } =
-    connection;
+  const {
+    _id,
+    name,
+    parentType,
+    color,
+    location,
+    splitterLimit,
+    splitterUsed,
+    portNo,
+    type,
+    childrens,
+    totalCore,
+    length,
+  } = connection;
 
   useEffect(() => {
     if (location?.coordinates) {
@@ -25,8 +36,6 @@ const PrintSplitter = ({ connection }) => {
         return { lng: item[0], lat: item[1] };
       });
       setCoordinates(coordinates);
-      const lengthInMeters = window.google.maps.geometry.spherical.computeLength(coordinates);
-      setLength(lengthInMeters);
     }
   }, [location.coordinates]);
 
@@ -131,7 +140,7 @@ const PrintSplitter = ({ connection }) => {
               <span className=" fw-bold">total Used Core:</span> {splitterUsed}/{splitterLimit}
             </p>
             <p className="mb-1">
-              <span className=" fw-bold">Distance:</span> {Math.ceil(length)}m
+              <span className=" fw-bold">Distance:</span> {length.toFixed(2)}m
             </p>
             <p className="mb-1">
               <span className=" fw-bold">Total Core:</span> {totalCore}

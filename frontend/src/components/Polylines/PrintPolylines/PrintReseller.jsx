@@ -13,7 +13,6 @@ const PrintReseller = ({ connection }) => {
   const { setFetch } = usePolylines();
   const [showInfoWindow, setShowInfoWindow] = useState(false);
   const [position, setPosition] = useState(null);
-  const [length, setLength] = useState(0);
   const [coordinates, setCoordinates] = useState([]);
 
   const {
@@ -29,6 +28,7 @@ const PrintReseller = ({ connection }) => {
     childrens,
     connectionUsed,
     totalCore,
+    length,
   } = connection;
 
   useEffect(() => {
@@ -37,8 +37,6 @@ const PrintReseller = ({ connection }) => {
         return { lat: item[0], lng: item[1] };
       });
       setCoordinates(coordinates);
-      const lengthInMeters = window.google.maps.geometry.spherical.computeLength(coordinates);
-      setLength(lengthInMeters);
     }
   }, [location.coordinates]);
 
@@ -126,7 +124,7 @@ const PrintReseller = ({ connection }) => {
               <span className="fw-bold">Port No:</span> {portNo}
             </p>
             <p className="mb-1">
-              <span className=" fw-bold">Distance:</span> {Math.ceil(length)}m
+              <span className=" fw-bold">Distance:</span> {length.toFixed(2)}m
             </p>
             <p className="mb-1">
               <span className="fw-bold"> Olt Type:</span> {oltType}
