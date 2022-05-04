@@ -29,7 +29,7 @@ exports.createSplitterConnection = async (req, res) => {
       return res.status(422).json({ errors: errors.array() });
     }
 
-    const { parent, parentType, name, coordinates, splitterLimit, color, portNo } = req.body;
+    const { parent, parentType, name, coordinates, splitterLimit, color, portNo, totalCore } = req.body;
 
     // creating the connection
     const coordinatesLatLngArr = coordinates.map((item) => [item.lng, item.lat]);
@@ -71,6 +71,7 @@ exports.createSplitterConnection = async (req, res) => {
         lastPoint: {
           coordinates: coordinatesLatLngArr[coordinatesLatLngArr.length - 1],
         },
+        totalCore,
       });
 
       reseller.childrens.push({
@@ -170,6 +171,7 @@ exports.createSplitterConnection = async (req, res) => {
         lastPoint: {
           coordinates: coordinatesLatLngArr[coordinatesLatLngArr.length - 1],
         },
+        totalCore,
       });
 
       localFiber.reseller.childrens.push({
@@ -263,6 +265,7 @@ exports.createSplitterConnection = async (req, res) => {
         lastPoint: {
           coordinates: coordinatesLatLngArr[coordinatesLatLngArr.length - 1],
         },
+        totalCore,
       });
 
       splitter.childrens.push({

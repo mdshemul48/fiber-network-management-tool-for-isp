@@ -33,7 +33,7 @@ exports.createResellerConnection = async (req, res) => {
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { parent, name, oltSerialNumber, portNo, type, oltType, coordinates, color } = req.body;
+    const { parent, name, oltSerialNumber, portNo, type, oltType, coordinates, color, totalCore } = req.body;
 
     const parentConnection = await pointToPointConnectionModel.findById(parent);
 
@@ -79,6 +79,7 @@ exports.createResellerConnection = async (req, res) => {
       connectionLimit: oltType === "epon" ? 64 : 128,
       location: { coordinates: coordinatesLatLngArr },
       color,
+      totalCore,
     });
 
     parentConnection.childrens.push({

@@ -24,7 +24,7 @@ exports.createHomeConnection = async (req, res) => {
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { parent, name, coordinates, onuNo, color } = req.body;
+    const { parent, name, coordinates, onuNo, color, totalCore } = req.body;
     const coordinatesLatLngArr = coordinates.map((item) => [item.lat, item.lng]);
 
     const splitter = await splitterConnectionModel.findById(parent).populate("reseller");
@@ -84,6 +84,7 @@ exports.createHomeConnection = async (req, res) => {
       locations: {
         coordinates: coordinatesLatLngArr,
       },
+      totalCore,
     });
 
     splitter.childrens.push({

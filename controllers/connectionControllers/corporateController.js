@@ -32,7 +32,7 @@ exports.createCorporateConnection = async (req, res) => {
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { parent, name, portNo, coreColor, coordinates } = req.body;
+    const { parent, name, portNo, coreColor, coordinates, totalCore } = req.body;
 
     const parentConnection = await pointToPointConnectionModel.findById(parent);
 
@@ -67,6 +67,7 @@ exports.createCorporateConnection = async (req, res) => {
       portNo,
       color: coreColor,
       location: { coordinates: coordinatesLatLngArr },
+      totalCore,
     });
 
     parentConnection.childrens.push({
