@@ -1,27 +1,27 @@
-const { body, validationResult } = require('express-validator');
+const { body, validationResult } = require("express-validator");
 
-const pointToPointConnectionModel = require('../../model/pointToPointConnectionModel');
-const resellerConnectionModel = require('../../model/resellerConnectionModel');
+const pointToPointConnectionModel = require("../../model/pointToPointConnectionModel");
+const resellerConnectionModel = require("../../model/resellerConnectionModel");
 
 exports.createResellerConnectionValidation = [
-  body('parent').notEmpty().withMessage('parent is required'),
-  body('name').notEmpty().withMessage('name is required'),
-  body('oltSerialNumber').notEmpty().withMessage('oltSerialNumber is required'),
-  body('portNo')
+  body("parent").notEmpty().withMessage("parent is required"),
+  body("name").notEmpty().withMessage("name is required"),
+  body("oltSerialNumber").notEmpty().withMessage("oltSerialNumber is required"),
+  body("portNo")
     .notEmpty()
-    .withMessage('portNo is required')
+    .withMessage("portNo is required")
     .isInt({ min: 1 })
-    .withMessage('portNo must be an integer or greater than 0'),
-  body('type').notEmpty().withMessage('type is required'),
-  body('oltType').notEmpty().withMessage('oltType is required'),
-  body('coordinates')
+    .withMessage("portNo must be an integer or greater than 0"),
+  body("type").notEmpty().withMessage("type is required"),
+  body("oltType").notEmpty().withMessage("oltType is required"),
+  body("coordinates")
     .notEmpty()
-    .withMessage('coordinates is required')
+    .withMessage("coordinates is required")
     .isArray()
-    .withMessage('coordinates must be an array')
+    .withMessage("coordinates must be an array")
     .isLength({ min: 2 })
-    .withMessage('coordinates must have at least 2 items'),
-  body('color').notEmpty().withMessage('color is required'),
+    .withMessage("coordinates must have at least 2 items"),
+  body("color").notEmpty().withMessage("color is required"),
 ];
 
 exports.createResellerConnection = async (req, res) => {
@@ -32,44 +32,35 @@ exports.createResellerConnection = async (req, res) => {
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const {
-      parent,
-      name,
-      oltSerialNumber,
-      portNo,
-      type,
-      oltType,
-      coordinates,
-      color,
-    } = req.body;
+    const { parent, name, oltSerialNumber, portNo, type, oltType, coordinates, color } = req.body;
 
     const parentConnection = await pointToPointConnectionModel.findById(parent);
 
     if (!parentConnection) {
       return res.status(400).json({
-        status: 'error',
-        message: 'parent connection does not exist',
+        status: "error",
+        message: "parent connection does not exist",
       });
     }
 
-    if (parentConnection.type !== 'pointToPoint') {
+    if (parentConnection.type !== "pointToPoint") {
       return res.status(400).json({
-        status: 'error',
-        message: 'parent connection is not a point to point connection',
+        status: "error",
+        message: "parent connection is not a point to point connection",
       });
     }
 
     if (parentConnection.childrens.find((item) => item.color === color)) {
       return res.status(400).json({
-        status: 'error',
-        message: 'parent connection already has a child with the same color',
+        status: "error",
+        message: "parent connection already has a child with the same color",
       });
     }
 
     if (!(parentConnection.totalConnected < parentConnection.totalCore)) {
       return res.status(400).json({
-        status: 'error',
-        message: 'parent connection is full',
+        status: "error",
+        message: "parent connection is full",
       });
     }
 
@@ -84,7 +75,7 @@ exports.createResellerConnection = async (req, res) => {
       portNo,
       type,
       oltType,
-      connectionLimit: oltType === 'epon' ? 64 : 128,
+      connectionLimit: oltType === "epon" ? 64 : 128,
       location: { coordinates: coordinatesLatLngArr },
       color,
     });
@@ -92,12 +83,12 @@ exports.createResellerConnection = async (req, res) => {
     parentConnection.childrens.push({
       color,
       portNo,
-      connectionType: 'reseller',
+      connectionType: "reseller",
       child: createdResellerConnection._id.toString(),
     });
 
     const markerPoint = parentConnection.markers.find(
-      (item) => item.location.coordinates[0] === coordinatesLatLngArr[0][0],
+      (item) => item.location.coordinates[0] === coordinatesLatLngArr[0][0]
     );
 
     if (!markerPoint) {
@@ -112,12 +103,12 @@ exports.createResellerConnection = async (req, res) => {
     parentConnection.save();
 
     return res.status(201).json({
-      status: 'success',
+      status: "success",
       data: createdResellerConnection,
     });
   } catch (error) {
     return res.status(500).json({
-      status: 'error',
+      status: "error",
       message: error.message,
     });
   }
@@ -130,47 +121,42 @@ exports.deleteResellerConnection = async (req, res) => {
 
     if (!resellerConnection) {
       return res.status(400).json({
-        status: 'error',
-        message: 'reseller connection does not exist',
+        status: "error",
+        message: "reseller connection does not exist",
       });
     }
 
     if (resellerConnection.childrens.length > 0) {
       return res.status(400).json({
-        status: 'error',
-        message: 'reseller connection has childrens',
+        status: "error",
+        message: "reseller connection has childrens",
       });
     }
 
-    const parentConnection = await pointToPointConnectionModel.findById(
-      resellerConnection.parent,
-    );
+    const parentConnection = await pointToPointConnectionModel.findById(resellerConnection.parent);
 
     if (!parentConnection) {
       return res.status(400).json({
-        status: 'error',
-        message: 'parent connection does not exist',
+        status: "error",
+        message: "parent connection does not exist",
       });
     }
 
-    const parentConnectionIndex = parentConnection.childrens.findIndex(
-      (item) => item.child.toString() === id,
-    );
+    const parentConnectionIndex = parentConnection.childrens.findIndex((item) => item.child.toString() === id);
 
     if (parentConnectionIndex === -1) {
       return res.status(400).json({
-        status: 'error',
-        message: 'parent connection does not have this child',
+        status: "error",
+        message: "parent connection does not have this child",
       });
     }
 
     parentConnection.childrens.splice(parentConnectionIndex, 1);
     parentConnection.totalConnected -= 1;
 
-    const markerPoint = parentConnection.markers.findIndex((item) => (
-      item.location.coordinates[0]
-        === resellerConnection.location.coordinates[0][0]
-    ));
+    const markerPoint = parentConnection.markers.findIndex(
+      (item) => item.location.coordinates[0] === resellerConnection.location.coordinates[0][0]
+    );
 
     if (markerPoint !== -1) {
       if (parentConnection.markers[markerPoint].totalConnected === 1) {
@@ -180,8 +166,8 @@ exports.deleteResellerConnection = async (req, res) => {
       }
     } else {
       return res.status(400).json({
-        status: 'error',
-        message: 'parent connection does not have this child',
+        status: "error",
+        message: "parent connection does not have this child",
       });
     }
 
@@ -190,12 +176,12 @@ exports.deleteResellerConnection = async (req, res) => {
     await resellerConnection.remove();
 
     return res.status(200).json({
-      status: 'success',
+      status: "success",
       data: resellerConnection,
     });
   } catch (error) {
     return res.status(500).json({
-      status: 'error',
+      status: "error",
       message: error.message,
     });
   }

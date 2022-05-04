@@ -1,14 +1,14 @@
-const { body, query, validationResult } = require('express-validator');
+const { body, query, validationResult } = require("express-validator");
 
-const localFiberConnectionModel = require('../../model/localFiberConnectionModel.js');
-const resellerConnectionModel = require('../../model/resellerConnectionModel.js');
+const localFiberConnectionModel = require("../../model/localFiberConnectionModel");
+const resellerConnectionModel = require("../../model/resellerConnectionModel");
 
 exports.createLocalFiberConnectionValidation = [
-  body('name').notEmpty().withMessage('name is required'),
-  body('parent').notEmpty().withMessage('parent is required'),
-  body('parentType').notEmpty().withMessage('parentType is required'),
-  body('totalCore').notEmpty().withMessage('totalCore is required'),
-  body('coordinates').notEmpty().withMessage('coordinates is required'),
+  body("name").notEmpty().withMessage("name is required"),
+  body("parent").notEmpty().withMessage("parent is required"),
+  body("parentType").notEmpty().withMessage("parentType is required"),
+  body("totalCore").notEmpty().withMessage("totalCore is required"),
+  body("coordinates").notEmpty().withMessage("coordinates is required"),
 ];
 
 exports.createLocalFiberConnection = async (req, res) => {
@@ -22,107 +22,98 @@ exports.createLocalFiberConnection = async (req, res) => {
     const { name, parent, parentType, totalCore, coordinates } = req.body;
 
     let selectedParent = null;
-    if (parentType === 'reseller') {
+    if (parentType === "reseller") {
       selectedParent = await resellerConnectionModel.findOne({ _id: parent });
-    } else if (parentType === 'localFiber') {
-      selectedParent = await localFiberConnectionModel
-        .findOne({ _id: parent })
-        .populate('parent');
+    } else if (parentType === "localFiber") {
+      selectedParent = await localFiberConnectionModel.findOne({ _id: parent }).populate("parent");
     }
 
     if (!selectedParent) {
       return res.status(400).json({
-        status: 'error',
-        message: 'parent connection does not exist',
+        status: "error",
+        message: "parent connection does not exist",
       });
     }
 
-    const coordinatesLatLngArr = coordinates.map((item) => {
-      return [item.lat, item.lng];
-    });
+    const coordinatesLatLngArr = coordinates.map((item) => [item.lat, item.lng]);
 
-    if (selectedParent.type === 'reseller') {
-      const createLocalFiberConnection = await localFiberConnectionModel.create(
-        {
-          name,
-          parent: selectedParent._id,
-          parentType: 'reseller',
-          reseller: selectedParent._id,
-          totalCore,
-          type: 'localFiber',
-          totalCore,
-          locations: {
-            coordinates: coordinatesLatLngArr,
-          },
-        }
-      );
+    if (selectedParent.type === "reseller") {
+      const createLocalFiberConnection = await localFiberConnectionModel.create({
+        name,
+        parent: selectedParent._id,
+        parentType: "reseller",
+        reseller: selectedParent._id,
+        totalCore,
+        type: "localFiber",
+        locations: {
+          coordinates: coordinatesLatLngArr,
+        },
+      });
 
       await createLocalFiberConnection.save();
 
       selectedParent.childrens.push({
         child: createLocalFiberConnection._id,
-        connectionType: 'localFiber',
+        connectionType: "localFiber",
       });
 
       await selectedParent.save();
 
       return res.status(201).json({
-        status: 'success',
+        status: "success",
         data: createLocalFiberConnection,
       });
-    } else if (selectedParent.type === 'localFiber') {
-      const createLocalFiberConnection = await localFiberConnectionModel.create(
-        {
-          name,
-          parent: selectedParent._id,
-          reseller: selectedParent.reseller,
-          parentType: 'localFiber',
-          totalCore,
-          type: 'localFiber',
-          totalCore,
-          locations: {
-            coordinates: coordinatesLatLngArr,
-          },
-        }
-      );
+    }
+    if (selectedParent.type === "localFiber") {
+      const createLocalFiberConnection = await localFiberConnectionModel.create({
+        name,
+        parent: selectedParent._id,
+        reseller: selectedParent.reseller,
+        parentType: "localFiber",
+        totalCore,
+        type: "localFiber",
+        locations: {
+          coordinates: coordinatesLatLngArr,
+        },
+      });
 
       if (selectedParent.mainLocalFiber) {
-        createLocalFiberConnection.mainLocalFiber =
-          selectedParent.mainLocalFiber;
-      } else if (selectedParent.parent.type === 'reseller') {
+        createLocalFiberConnection.mainLocalFiber = selectedParent.mainLocalFiber;
+      } else if (selectedParent.parent.type === "reseller") {
         createLocalFiberConnection.mainLocalFiber = selectedParent._id;
       } else {
         return res.status(400).json({
-          status: 'error',
-          message: 'parent connection does not exist',
+          status: "error",
+          message: "parent connection does not exist",
         });
       }
       await createLocalFiberConnection.save();
 
       selectedParent.childrens.push({
         child: createLocalFiberConnection._id,
-        connectionType: 'localFiber',
+        connectionType: "localFiber",
       });
 
       await selectedParent.save();
 
       return res.status(201).json({
-        status: 'success',
+        status: "success",
         data: createLocalFiberConnection,
       });
     }
   } catch (error) {
-    console.log(error);
     return res.status(500).json({
-      status: 'error',
+      status: "error",
       message: error.message,
     });
   }
+  return res.status(500).json({
+    status: "error",
+    message: "something went wrong",
+  });
 };
 
-exports.deleteLocalFiberConnectionValidation = [
-  query('id').notEmpty().withMessage('id is required'),
-];
+exports.deleteLocalFiberConnectionValidation = [query("id").notEmpty().withMessage("id is required")];
 
 exports.deleteLocalFiberConnection = async (req, res) => {
   try {
@@ -134,40 +125,35 @@ exports.deleteLocalFiberConnection = async (req, res) => {
 
     const { id } = req.query;
 
-    const selectedLocalFiberConnection = await localFiberConnectionModel
-      .findById(id)
-      .populate('parent');
+    const selectedLocalFiberConnection = await localFiberConnectionModel.findById(id).populate("parent");
 
     if (!selectedLocalFiberConnection) {
       return res.status(400).json({
-        status: 'error',
-        message: 'connection does not exist',
+        status: "error",
+        message: "connection does not exist",
       });
     }
 
     if (selectedLocalFiberConnection.childrens.length > 0) {
       return res.status(400).json({
-        status: 'error',
-        message: 'connection has childrens',
+        status: "error",
+        message: "connection has childrens",
       });
     }
 
-    selectedLocalFiberConnection.parent.childrens =
-      selectedLocalFiberConnection.parent.childrens.filter((item) => {
-        return (
-          item.child.toString() !== selectedLocalFiberConnection._id.toString()
-        );
-      });
+    selectedLocalFiberConnection.parent.childrens = selectedLocalFiberConnection.parent.childrens.filter(
+      (item) => item.child.toString() !== selectedLocalFiberConnection._id.toString()
+    );
 
     await selectedLocalFiberConnection.parent.save();
     await selectedLocalFiberConnection.remove();
 
     return res.status(200).json({
-      status: 'success',
+      status: "success",
     });
   } catch (error) {
     return res.status(500).json({
-      status: 'error',
+      status: "error",
       message: error.message,
     });
   }

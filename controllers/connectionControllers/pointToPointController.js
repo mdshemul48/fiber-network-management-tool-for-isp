@@ -1,23 +1,23 @@
-const { body, validationResult } = require('express-validator');
-const pointToPointConnectionModel = require('../../model/pointToPointConnectionModel.js');
+const { body, validationResult } = require("express-validator");
+const pointToPointConnectionModel = require("../../model/pointToPointConnectionModel");
 
 // ! -> point to point connection validation array
 exports.createPointToPointConnectionValidation = [
-  body('name').notEmpty().withMessage('name is required'),
+  body("name").notEmpty().withMessage("name is required"),
 
-  body('totalCore')
+  body("totalCore")
     .notEmpty()
-    .withMessage('totalCore is required')
+    .withMessage("totalCore is required")
     .isInt({ min: 2 })
-    .withMessage('totalCore must be an integer or greater than 2'),
+    .withMessage("totalCore must be an integer or greater than 2"),
 
-  body('coordinates')
+  body("coordinates")
     .notEmpty()
-    .withMessage('coordinates is required')
+    .withMessage("coordinates is required")
     .isArray()
-    .withMessage('coordinates must be an array')
+    .withMessage("coordinates must be an array")
     .isLength({ min: 2 })
-    .withMessage('coordinates must be an array of at least 2 items'),
+    .withMessage("coordinates must be an array of at least 2 items"),
 ];
 
 // ! -> point to point connection controller functions
@@ -30,9 +30,7 @@ exports.createPointToPointConnection = async (req, res) => {
     }
 
     const { name, totalCore, coordinates } = req.body;
-    const coordinatesLatLngArr = coordinates.map((item) => {
-      return [item.lng, item.lat];
-    });
+    const coordinatesLatLngArr = coordinates.map((item) => [item.lng, item.lat]);
     const createdConnection = await pointToPointConnectionModel.create({
       name,
       totalCore,
@@ -42,12 +40,12 @@ exports.createPointToPointConnection = async (req, res) => {
     });
 
     return res.status(201).json({
-      status: 'success',
+      status: "success",
       data: createdConnection,
     });
   } catch (err) {
     return res.status(500).json({
-      status: 'error',
+      status: "error",
       message: err.message,
     });
   }
@@ -63,7 +61,7 @@ exports.findNearestPointToPointConnection = async (req, res) => {
       location: {
         $near: {
           $geometry: {
-            type: 'Point',
+            type: "Point",
             coordinates: [lng, lat],
           },
           $maxDistance: 100000,
@@ -73,18 +71,18 @@ exports.findNearestPointToPointConnection = async (req, res) => {
 
     if (!pointToPointConnection) {
       return res.status(404).json({
-        status: 'error',
-        message: 'No point to point connection found',
+        status: "error",
+        message: "No point to point connection found",
       });
     }
 
     return res.status(200).json({
-      status: 'success',
+      status: "success",
       data: pointToPointConnection,
     });
   } catch (err) {
     return res.status(500).json({
-      status: 'error',
+      status: "error",
       message: err.message,
     });
   }
@@ -98,26 +96,26 @@ exports.deletePointToPointConnection = async (req, res) => {
 
     if (!targetPointToPoint) {
       return res.status(404).json({
-        status: 'error',
-        message: 'No point to point connection found',
+        status: "error",
+        message: "No point to point connection found",
       });
     }
 
     if (targetPointToPoint.childrens.length > 0) {
       return res.status(400).json({
-        status: 'error',
-        message: 'point to point connection has childrens',
+        status: "error",
+        message: "point to point connection has childrens",
       });
     }
 
     await pointToPointConnectionModel.findByIdAndDelete(targetPointToPoint._id);
 
     return res.status(200).json({
-      status: 'success',
+      status: "success",
     });
   } catch (err) {
     return res.status(500).json({
-      status: 'error',
+      status: "error",
       message: err.message,
     });
   }
