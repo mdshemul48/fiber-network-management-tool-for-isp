@@ -1,7 +1,7 @@
 const { body, validationResult } = require('express-validator');
-const resellerConnectionModel = require('../../model/resellerConnectionModel.js');
-const splitterConnectionModel = require('../../model/splitterConnectionModel.js');
-const localFiberConnectionModel = require('../../model/localFiberConnectionModel.js');
+const resellerConnectionModel = require('../../model/resellerConnectionModel');
+const splitterConnectionModel = require('../../model/splitterConnectionModel');
+const localFiberConnectionModel = require('../../model/localFiberConnectionModel');
 
 exports.createSplitterValidation = [
   body('name').not().isEmpty().withMessage('Name is required'),
@@ -39,9 +39,10 @@ exports.createSplitterConnection = async (req, res) => {
     } = req.body;
 
     // creating the connection
-    const coordinatesLatLngArr = coordinates.map((item) => {
-      return [item.lng, item.lat];
-    });
+    const coordinatesLatLngArr = coordinates.map((item) => [
+      item.lng,
+      item.lat,
+    ]);
 
     let reseller;
     if (parentType === 'reseller') {
@@ -54,13 +55,11 @@ exports.createSplitterConnection = async (req, res) => {
         });
       }
 
-      const alreadyExistSplitter = reseller.childrens.find((item) => {
-        return (
-          item.connectionType === 'splitter' &&
-          ((item.color !== undefined && item.color === color) ||
-            item.portNo === parseInt(portNo))
-        );
-      });
+      const alreadyExistSplitter = reseller.childrens.find(
+        (item) => item.connectionType === 'splitter'
+          && ((item.color !== undefined && item.color === color)
+            || item.portNo === parseInt(portNo, 10)),
+      );
 
       if (alreadyExistSplitter) {
         return res.status(400).json({
@@ -98,7 +97,8 @@ exports.createSplitterConnection = async (req, res) => {
         status: 'success',
         data: splitterConnection,
       });
-    } else if (parentType === 'localFiber') {
+    }
+    if (parentType === 'localFiber') {
       // ! create splitter connection from local fiber
       const localFiber = await localFiberConnectionModel
         .findById(parent)
@@ -126,13 +126,9 @@ exports.createSplitterConnection = async (req, res) => {
       }
 
       const alreadyExistSplitterInReseller = localFiber.reseller.childrens.find(
-        (item) => {
-          return (
-            item.connectionType === 'splitter' &&
-            ((item.color !== undefined && item.color === color) ||
-              item.portNo === parseInt(portNo))
-          );
-        }
+        (item) => item.connectionType === 'splitter'
+          && ((item.color !== undefined && item.color === color)
+            || item.portNo === parseInt(portNo, 10)),
       );
 
       if (alreadyExistSplitterInReseller) {
@@ -144,13 +140,9 @@ exports.createSplitterConnection = async (req, res) => {
       }
 
       const alreadyExistSplitterInLocalFiber = localFiber.childrens.find(
-        (item) => {
-          return (
-            item.connectionType === 'splitter' &&
-            item.color !== undefined &&
-            item.color === color
-          );
-        }
+        (item) => item.connectionType === 'splitter'
+          && item.color !== undefined
+          && item.color === color,
       );
 
       if (alreadyExistSplitterInLocalFiber) {
@@ -163,8 +155,8 @@ exports.createSplitterConnection = async (req, res) => {
       if (localFiber.mainLocalFiber) {
         if (
           !(
-            localFiber.mainLocalFiber.totalConnected <
-            localFiber.mainLocalFiber.totalCore
+            localFiber.mainLocalFiber.totalConnected
+            < localFiber.mainLocalFiber.totalCore
           )
         ) {
           return res.json({
@@ -173,14 +165,11 @@ exports.createSplitterConnection = async (req, res) => {
           });
         }
 
-        const alreadyExistParentSplitter =
-          localFiber.mainLocalFiber.childrens.find((item) => {
-            return (
-              item.connectionType === 'splitter' &&
-              item.color !== undefined &&
-              item.color === color
-            );
-          });
+        const alreadyExistParentSplitter = localFiber.mainLocalFiber.childrens.find(
+          (item) => item.connectionType === 'splitter'
+              && item.color !== undefined
+              && item.color === color,
+        );
 
         if (alreadyExistParentSplitter) {
           return res.status(400).json({
@@ -225,22 +214,23 @@ exports.createSplitterConnection = async (req, res) => {
           connectionType: 'splitter',
           child: splitterConnection._id,
         });
-        localFiber.mainLocalFiber.totalConnected++;
+        localFiber.mainLocalFiber.totalConnected += 1;
         localFiber.mainLocalFiber.save();
       }
 
-      const markerPoint = localFiber.markers.find((item) => {
-        return item.coordinates[0] === coordinatesLatLngArr[0][0];
-      });
+      // eslint-disable-next-line max-len
+      const markerPoint = localFiber.markers.find(
+        (item) => item.coordinates[0] === coordinatesLatLngArr[0][0],
+      );
       if (!markerPoint) {
         localFiber.markers.push({
           coordinates: coordinatesLatLngArr[0],
         });
       } else {
-        markerPoint.totalConnected++;
+        markerPoint.totalConnected += 1;
       }
 
-      localFiber.totalConnected++;
+      localFiber.totalConnected += 1;
       await localFiber.save();
       await localFiber.reseller.save();
 
@@ -248,7 +238,8 @@ exports.createSplitterConnection = async (req, res) => {
         status: 'success',
         data: splitterConnection,
       });
-    } else if (parentType === 'splitter') {
+    }
+    if (parentType === 'splitter') {
       // ! create splitter connection from  another splitter
       const splitter = await splitterConnectionModel.findById(parent);
       if (!splitter) {
@@ -265,8 +256,9 @@ exports.createSplitterConnection = async (req, res) => {
         });
       }
 
+      // eslint-disable-next-line no-shadow
       const reseller = await resellerConnectionModel.findById(
-        splitter.reseller.toString()
+        splitter.reseller.toString(),
       );
       if (!reseller) {
         return res.json({
@@ -275,9 +267,9 @@ exports.createSplitterConnection = async (req, res) => {
         });
       }
 
-      const alreadyExistSplitter = splitter.childrens.find((item) => {
-        return item.color === color;
-      });
+      const alreadyExistSplitter = splitter.childrens.find(
+        (item) => item.color === color,
+      );
 
       if (alreadyExistSplitter) {
         return res.status(400).json({
@@ -317,12 +309,11 @@ exports.createSplitterConnection = async (req, res) => {
         status: 'success',
         data: splitterConnection,
       });
-    } else {
-      return res.status(400).json({
-        status: 'error',
-        message: 'Invalid parentType',
-      });
     }
+    return res.status(400).json({
+      status: 'error',
+      message: 'Invalid parentType',
+    });
   } catch (err) {
     return res.status(500).json({
       status: 'error',
@@ -406,9 +397,9 @@ exports.deleteSplitterConnection = async (req, res) => {
     }
 
     if (splitterConnection.parent.type === 'reseller') {
-      const index = splitterConnection.parent.childrens.findIndex((item) => {
-        return item.child.toString() === splitterConnection._id.toString();
-      });
+      const index = splitterConnection.parent.childrens.findIndex(
+        (item) => item.child.toString() === splitterConnection._id.toString(),
+      );
 
       if (index === -1) {
         return res.status(400).json({
@@ -421,9 +412,9 @@ exports.deleteSplitterConnection = async (req, res) => {
       await splitterConnection.parent.save();
       await splitterConnection.remove();
     } else if (splitterConnection.parent.type === 'localFiber') {
-      const index = splitterConnection.parent.childrens.findIndex((item) => {
-        return item.child.toString() === splitterConnection._id.toString();
-      });
+      const index = splitterConnection.parent.childrens.findIndex(
+        (item) => item.child.toString() === splitterConnection._id.toString(),
+      );
 
       if (index === -1) {
         return res.status(400).json({
@@ -433,16 +424,16 @@ exports.deleteSplitterConnection = async (req, res) => {
       }
 
       splitterConnection.parent.childrens.splice(index, 1);
-      splitterConnection.parent.totalConnected--;
+      splitterConnection.parent.totalConnected -= 1;
 
       // ! deleting from main fiber
       if (splitterConnection.parent.mainLocalFiber) {
         const { mainLocalFiber } = await splitterConnection.parent.populate(
-          'mainLocalFiber'
+          'mainLocalFiber',
         );
-        const indexMain = mainLocalFiber.childrens.findIndex((item) => {
-          return item.child.toString() === splitterConnection._id.toString();
-        });
+        const indexMain = mainLocalFiber.childrens.findIndex(
+          (item) => item.child.toString() === splitterConnection._id.toString(),
+        );
 
         if (indexMain === -1) {
           return res.status(400).json({
@@ -452,7 +443,7 @@ exports.deleteSplitterConnection = async (req, res) => {
         }
 
         mainLocalFiber.childrens.splice(indexMain, 1);
-        mainLocalFiber.totalConnected--;
+        mainLocalFiber.totalConnected -= 1;
         await mainLocalFiber.save();
       }
 
@@ -464,21 +455,15 @@ exports.deleteSplitterConnection = async (req, res) => {
         });
       }
 
-      const resellerChildIndex =
-        splitterConnection.reseller.childrens.findIndex((item) => {
-          return item.child.toString() === splitterConnection._id.toString();
-        });
+      const resellerChildIndex = splitterConnection.reseller.childrens.findIndex(
+        (item) => item.child.toString() === splitterConnection._id.toString(),
+      );
 
       splitterConnection.reseller.childrens.splice(resellerChildIndex, 1);
 
       // ! deleting marker from local fiber
       const markerPoint = splitterConnection.parent.markers.findIndex(
-        (item) => {
-          return (
-            item.coordinates[0] ===
-            splitterConnection.location.coordinates[0][0]
-          );
-        }
+        (item) => item.coordinates[0] === splitterConnection.location.coordinates[0][0],
       );
 
       if (markerPoint !== -1) {
@@ -487,7 +472,7 @@ exports.deleteSplitterConnection = async (req, res) => {
         ) {
           splitterConnection.parent.markers.splice(markerPoint, 1);
         } else {
-          splitterConnection.parent.markers[markerPoint].totalConnected--;
+          splitterConnection.parent.markers[markerPoint].totalConnected -= 1;
         }
       } else {
         return res.status(400).json({
@@ -500,9 +485,9 @@ exports.deleteSplitterConnection = async (req, res) => {
       await splitterConnection.parent.save();
       await splitterConnection.remove();
     } else if (splitterConnection.parentType === 'splitter') {
-      const index = splitterConnection.parent.childrens.findIndex((item) => {
-        return item.child.toString() === splitterConnection._id.toString();
-      });
+      const index = splitterConnection.parent.childrens.findIndex(
+        (item) => item.child.toString() === splitterConnection._id.toString(),
+      );
 
       if (index === -1) {
         return res.status(400).json({
@@ -512,7 +497,7 @@ exports.deleteSplitterConnection = async (req, res) => {
       }
 
       splitterConnection.parent.childrens.splice(index, 1);
-      splitterConnection.parent.splitterUsed--;
+      splitterConnection.parent.splitterUsed -= 1;
 
       await splitterConnection.parent.save();
       await splitterConnection.remove();
@@ -528,7 +513,6 @@ exports.deleteSplitterConnection = async (req, res) => {
       message: 'splitter connection deleted successfully',
     });
   } catch (error) {
-    console.log(error);
     return res.status(500).json({
       status: 'error',
       message: error.message,

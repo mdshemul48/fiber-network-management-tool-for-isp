@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 const { body, validationResult } = require('express-validator');
 
 const pointToPointConnectionModel = require('../../model/pointToPointConnectionModel.js');
@@ -42,15 +43,16 @@ exports.createCorporateConnection = async (req, res) => {
       });
     }
 
-    if (!(parentConnection.totalConnected < parentConnection.totalCore))
+    if (!(parentConnection.totalConnected < parentConnection.totalCore)) {
       return res.status(400).json({
         status: 'error',
         message: 'parent connection is full',
       });
+    }
 
     if (
       parentConnection.childrens.find(
-        (item) => item.color === coreColor || item.portNo === parseInt(portNo)
+        (item) => item.color === coreColor || item.portNo === parseInt(portNo, 10)
       )
     ) {
       return res.status(400).json({
@@ -61,9 +63,10 @@ exports.createCorporateConnection = async (req, res) => {
     }
 
     // creating the connection
-    const coordinatesLatLngArr = coordinates.map((item) => {
-      return [item.lat, item.lng];
-    });
+    const coordinatesLatLngArr = coordinates.map((item) => [
+      item.lat,
+      item.lng,
+    ]);
 
     const createdCorporateConnection = await corporateConnectionModel.create({
       parentType: parentConnection.type,
@@ -81,9 +84,9 @@ exports.createCorporateConnection = async (req, res) => {
       child: createdCorporateConnection._id.toString(),
     });
 
-    const markerPoint = parentConnection.markers.find((item) => {
-      return item.location.coordinates[0] === coordinatesLatLngArr[0][0];
-    });
+    const markerPoint = parentConnection.markers.find(
+      (item) => item.location.coordinates[0] === coordinatesLatLngArr[0][0]
+    );
 
     if (!markerPoint) {
       parentConnection.markers.push({

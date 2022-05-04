@@ -4,6 +4,7 @@ const resellerConnectionModel = require('../model/resellerConnectionModel.js');
 const createLocalFiberModel = require('../model/localFiberConnectionModel.js');
 const splitterConnectionModel = require('../model/splitterConnectionModel.js');
 const homeConnectionModel = require('../model/homeConnectionModel.js');
+
 exports.getAllConnection = async (req, res) => {
   const pointToPointData = await pointToPointConnectionModel.find();
   const corporateData = await corporateConnectionModel.find();
