@@ -13,7 +13,8 @@ exports.createHomeConnectionValidation = [
     .withMessage("coordinates must be an array")
     .isLength({ min: 2 })
     .withMessage("coordinates must be an array of at least 2 items"),
-  body("totalCore").notEmpty().withMessage("totalCore is required"),
+  body("totalCore").notEmpty().withMessage("totalCore is required").isIn().withMessage("totalCore must be a number"),
+  body("length").notEmpty().withMessage("length is required").isInt().withMessage("length must be an integer"),
 ];
 
 exports.createHomeConnection = async (req, res) => {
@@ -24,7 +25,7 @@ exports.createHomeConnection = async (req, res) => {
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { parent, name, coordinates, onuNo, color, totalCore } = req.body;
+    const { parent, name, coordinates, onuNo, color, totalCore, length } = req.body;
     const coordinatesLatLngArr = coordinates.map((item) => [item.lat, item.lng]);
 
     const splitter = await splitterConnectionModel.findById(parent).populate("reseller");
@@ -85,6 +86,7 @@ exports.createHomeConnection = async (req, res) => {
         coordinates: coordinatesLatLngArr,
       },
       totalCore,
+      length,
     });
 
     splitter.childrens.push({

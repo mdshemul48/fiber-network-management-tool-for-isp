@@ -1,9 +1,10 @@
 import { InfoWindow, Marker, Polyline } from "@react-google-maps/api";
+import toast from "react-hot-toast";
 import React, { useEffect, useState } from "react";
+
 import coreColor from "../../../utility/coreColor";
 import officeIcon from "../../../assets/img/office.png";
 import axiosInstance from "../../../utility/axios";
-import toast from "react-hot-toast";
 import usePolylines from "../../../hooks/usePolylines";
 
 const PrintCorporate = ({ connection }) => {

@@ -25,7 +25,7 @@ const SplitterForm = ({ handleClose }) => {
     event.preventDefault();
 
     const { name, OltPortNo, color, splitterType, coreCount } = formData;
-
+    const length = window.google.maps.geometry.spherical.computeLength(coordinates);
     const newPolyline = {
       parentType: parent.type,
       parent: parent._id,
@@ -35,6 +35,7 @@ const SplitterForm = ({ handleClose }) => {
       color: color,
       portNo: OltPortNo,
       totalCore: coreCount,
+      length,
     };
     toast.promise(axiosInstance.post("/splitter-connection", newPolyline), {
       loading: () => "Adding new reseller connection...",

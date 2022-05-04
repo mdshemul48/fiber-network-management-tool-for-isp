@@ -25,11 +25,12 @@ const PointToPointForm = ({ show, handleClose }) => {
     e.preventDefault();
 
     const { name, coreCount } = formData;
-
+    const length = window.google.maps.geometry.spherical.computeLength(coordinates);
     const newPointToPointConnection = {
       name: name,
       totalCore: coreCount,
       coordinates,
+      length,
     };
     toast.promise(axiosInstance.post("/ptp-connection", newPointToPointConnection), {
       loading: () => "Adding new company connection...",

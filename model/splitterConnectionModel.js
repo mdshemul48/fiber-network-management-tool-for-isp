@@ -78,6 +78,11 @@ const splitterConnectionModel = new Schema(
       },
     },
 
+    length: {
+      type: Number,
+      required: true,
+    },
+
     childrens: [
       {
         color: {

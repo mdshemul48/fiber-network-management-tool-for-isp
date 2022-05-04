@@ -20,7 +20,8 @@ exports.createCorporateConnectionValidation = [
     .withMessage("coordinates must be an array")
     .isLength({ min: 2 })
     .withMessage("coordinates must be an array of at least 2 items"),
-  body("totalCore").notEmpty().withMessage("totalCore is required"),
+  body("totalCore").notEmpty().withMessage("totalCore is required").isInt().withMessage("totalCore must be an integer"),
+  body("length").notEmpty().withMessage("length is required").isInt().withMessage("length must be an integer"),
 ];
 
 // creating corporate connection
@@ -32,7 +33,7 @@ exports.createCorporateConnection = async (req, res) => {
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { parent, name, portNo, coreColor, coordinates, totalCore } = req.body;
+    const { parent, name, portNo, coreColor, coordinates, totalCore, length } = req.body;
 
     const parentConnection = await pointToPointConnectionModel.findById(parent);
 
@@ -68,6 +69,7 @@ exports.createCorporateConnection = async (req, res) => {
       color: coreColor,
       location: { coordinates: coordinatesLatLngArr },
       totalCore,
+      length,
     });
 
     parentConnection.childrens.push({

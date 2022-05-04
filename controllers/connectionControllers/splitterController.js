@@ -19,7 +19,8 @@ exports.createSplitterValidation = [
     .withMessage("Splitter limit is required")
     .isNumeric()
     .withMessage("Splitter limit must be a number"),
-  body("totalCore").notEmpty().withMessage("totalCore is required"),
+  body("totalCore").notEmpty().withMessage("totalCore is required").isIn().withMessage("totalCore must be a number"),
+  body("length").notEmpty().withMessage("length is required").isInt().withMessage("length must be an integer"),
 ];
 
 exports.createSplitterConnection = async (req, res) => {
@@ -29,7 +30,7 @@ exports.createSplitterConnection = async (req, res) => {
       return res.status(422).json({ errors: errors.array() });
     }
 
-    const { parent, parentType, name, coordinates, splitterLimit, color, portNo, totalCore } = req.body;
+    const { parent, parentType, name, coordinates, splitterLimit, color, portNo, totalCore, length } = req.body;
 
     // creating the connection
     const coordinatesLatLngArr = coordinates.map((item) => [item.lng, item.lat]);
@@ -72,6 +73,7 @@ exports.createSplitterConnection = async (req, res) => {
           coordinates: coordinatesLatLngArr[coordinatesLatLngArr.length - 1],
         },
         totalCore,
+        length,
       });
 
       reseller.childrens.push({
@@ -172,6 +174,7 @@ exports.createSplitterConnection = async (req, res) => {
           coordinates: coordinatesLatLngArr[coordinatesLatLngArr.length - 1],
         },
         totalCore,
+        length,
       });
 
       localFiber.reseller.childrens.push({
@@ -266,6 +269,7 @@ exports.createSplitterConnection = async (req, res) => {
           coordinates: coordinatesLatLngArr[coordinatesLatLngArr.length - 1],
         },
         totalCore,
+        length,
       });
 
       splitter.childrens.push({

@@ -22,7 +22,8 @@ exports.createResellerConnectionValidation = [
     .isLength({ min: 2 })
     .withMessage("coordinates must have at least 2 items"),
   body("color").notEmpty().withMessage("color is required"),
-  body("totalCore").notEmpty().withMessage("totalCore is required"),
+  body("totalCore").notEmpty().withMessage("totalCore is required").isIn().withMessage("totalCore must be a number"),
+  body("length").notEmpty().withMessage("length is required").isInt().withMessage("length must be an integer"),
 ];
 
 exports.createResellerConnection = async (req, res) => {
@@ -33,7 +34,7 @@ exports.createResellerConnection = async (req, res) => {
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { parent, name, oltSerialNumber, portNo, type, oltType, coordinates, color, totalCore } = req.body;
+    const { parent, name, oltSerialNumber, portNo, type, oltType, coordinates, color, totalCore, length } = req.body;
 
     const parentConnection = await pointToPointConnectionModel.findById(parent);
 
@@ -80,6 +81,7 @@ exports.createResellerConnection = async (req, res) => {
       location: { coordinates: coordinatesLatLngArr },
       color,
       totalCore,
+      length,
     });
 
     parentConnection.childrens.push({

@@ -18,6 +18,8 @@ exports.createPointToPointConnectionValidation = [
     .withMessage("coordinates must be an array")
     .isLength({ min: 2 })
     .withMessage("coordinates must be an array of at least 2 items"),
+
+  body("length").notEmpty().withMessage("length is required").isInt().withMessage("length must be an integer"),
 ];
 
 // ! -> point to point connection controller functions
@@ -29,7 +31,7 @@ exports.createPointToPointConnection = async (req, res) => {
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { name, totalCore, coordinates } = req.body;
+    const { name, totalCore, coordinates, length } = req.body;
     const coordinatesLatLngArr = coordinates.map((item) => [item.lng, item.lat]);
     const createdConnection = await pointToPointConnectionModel.create({
       name,
@@ -37,6 +39,7 @@ exports.createPointToPointConnection = async (req, res) => {
       location: { coordinates: coordinatesLatLngArr },
       childrenConnection: [],
       markers: [],
+      length,
     });
 
     return res.status(201).json({

@@ -39,6 +39,8 @@ const ResellerForm = ({ handleClose }) => {
     e.preventDefault();
 
     const { name, oltSerialNumber, portNo, oltType, color, coreCount } = formData;
+    const length = window.google.maps.geometry.spherical.computeLength(coordinates);
+
     const newPolyline = {
       parent: parent._id,
       type: "reseller",
@@ -49,6 +51,7 @@ const ResellerForm = ({ handleClose }) => {
       coordinates,
       color: color,
       totalCore: coreCount,
+      length,
     };
 
     toast.promise(axiosInstance.post("/reseller-connection", newPolyline), {

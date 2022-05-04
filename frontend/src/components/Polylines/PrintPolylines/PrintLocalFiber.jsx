@@ -18,9 +18,7 @@ const PrintLocalFiber = ({ connection }) => {
 
   useEffect(() => {
     if (locations?.coordinates) {
-      const coordinates = locations.coordinates.map((item) => {
-        return { lat: item[0], lng: item[1] };
-      });
+      const coordinates = locations.coordinates.map((item) => ({ lat: item[0], lng: item[1] }));
       setCoordinates(coordinates);
       const lengthInMeters = window.google.maps.geometry.spherical.computeLength(coordinates);
       setLength(lengthInMeters);

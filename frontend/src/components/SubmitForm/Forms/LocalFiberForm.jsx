@@ -23,6 +23,7 @@ const LocalFiberForm = ({ handleClose }) => {
     e.preventDefault();
 
     const { name, coreCount } = formData;
+    const length = window.google.maps.geometry.spherical.computeLength(coordinates);
 
     const newConnection = {
       name: name,
@@ -30,6 +31,7 @@ const LocalFiberForm = ({ handleClose }) => {
       parentType: parent.type,
       totalCore: coreCount,
       coordinates,
+      length,
     };
 
     toast.promise(axiosInstance.post("/local-fiber-connection", newConnection), {

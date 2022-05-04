@@ -38,6 +38,7 @@ const HomeForm = ({ handleClose }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    const length = window.google.maps.geometry.spherical.computeLength(coordinates);
 
     const { name, onuNo, color, coreCount } = formData;
     const homeConnection = {
@@ -47,6 +48,7 @@ const HomeForm = ({ handleClose }) => {
       onuNo: onuNo,
       color: color,
       totalCore: coreCount,
+      length,
     };
     toast.promise(axiosInstance.post("/home-connection", homeConnection), {
       loading: () => "Adding new reseller connection...",

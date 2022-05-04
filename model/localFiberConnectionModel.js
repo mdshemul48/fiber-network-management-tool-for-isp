@@ -34,6 +34,11 @@ const localFiberConnectionSchema = new Schema(
       required: true,
     },
 
+    length: {
+      type: Number,
+      required: true,
+    },
+
     totalConnected: {
       type: Number,
       default: 0,

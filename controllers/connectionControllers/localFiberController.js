@@ -7,8 +7,9 @@ exports.createLocalFiberConnectionValidation = [
   body("name").notEmpty().withMessage("name is required"),
   body("parent").notEmpty().withMessage("parent is required"),
   body("parentType").notEmpty().withMessage("parentType is required"),
-  body("totalCore").notEmpty().withMessage("totalCore is required"),
   body("coordinates").notEmpty().withMessage("coordinates is required"),
+  body("totalCore").notEmpty().withMessage("totalCore is required").isIn().withMessage("totalCore must be a number"),
+  body("length").notEmpty().withMessage("length is required").isInt().withMessage("length must be an integer"),
 ];
 
 exports.createLocalFiberConnection = async (req, res) => {
@@ -19,7 +20,7 @@ exports.createLocalFiberConnection = async (req, res) => {
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { name, parent, parentType, totalCore, coordinates } = req.body;
+    const { name, parent, parentType, totalCore, coordinates, length } = req.body;
 
     let selectedParent = null;
     if (parentType === "reseller") {
@@ -44,6 +45,7 @@ exports.createLocalFiberConnection = async (req, res) => {
         parentType: "reseller",
         reseller: selectedParent._id,
         totalCore,
+        length,
         type: "localFiber",
         locations: {
           coordinates: coordinatesLatLngArr,

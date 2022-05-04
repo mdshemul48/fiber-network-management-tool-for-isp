@@ -25,6 +25,7 @@ const CompanyForm = ({ handleClose }) => {
     e.preventDefault();
 
     const { name, coreColor, portNo, coreCount } = formData;
+    const length = window.google.maps.geometry.spherical.computeLength(coordinates);
 
     const newCompanyConnection = {
       parent: parent._id,
@@ -33,6 +34,7 @@ const CompanyForm = ({ handleClose }) => {
       coreColor,
       coordinates,
       totalCore: coreCount,
+      length,
     };
     toast.promise(axiosInstance.post("/corporate-connection", newCompanyConnection), {
       loading: () => "Adding new company connection...",
