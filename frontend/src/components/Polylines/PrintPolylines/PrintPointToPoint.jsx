@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import { Polyline, Marker, InfoWindow } from '@react-google-maps/api';
+import React, { useEffect, useState } from "react";
+import { Polyline, Marker, InfoWindow } from "@react-google-maps/api";
 
-import coreColor from '../../../utility/coreColor';
-import tjIcon from '../../../assets/img/tj.png';
-import useEditablePolyline from '../../../hooks/useEditablePolyline';
-import toast from 'react-hot-toast';
-import axiosInstance from '../../../utility/axios';
-import usePolylines from '../../../hooks/usePolylines';
+import coreColor from "../../../utility/coreColor";
+import tjIcon from "../../../assets/img/tj.png";
+import useEditablePolyline from "../../../hooks/useEditablePolyline";
+import toast from "react-hot-toast";
+import axiosInstance from "../../../utility/axios";
+import usePolylines from "../../../hooks/usePolylines";
 
 const PrintPointToPoint = ({ connection }) => {
   const [coordinates, setCoordinates] = useState([]);
@@ -16,16 +16,7 @@ const PrintPointToPoint = ({ connection }) => {
   const [position, setPosition] = useState(null);
   const [length, setLength] = useState(0);
 
-  const {
-    _id,
-    name,
-    location,
-    totalCore,
-    totalConnected,
-    type,
-    childrens,
-    markers,
-  } = connection;
+  const { _id, name, location, totalCore, totalConnected, type, childrens, markers } = connection;
 
   useEffect(() => {
     if (location?.coordinates) {
@@ -38,31 +29,27 @@ const PrintPointToPoint = ({ connection }) => {
 
   const options = {
     geodesic: true,
-    strokeColor: '#142F43',
+    strokeColor: "#142F43",
     strokeOpacity: 1.0,
     strokeWeight: 4,
   };
   const colorCores = coreColor.slice(0, totalCore);
 
   const CoreStatus = colorCores.map((item) => {
-    const targetColor = childrens.find(
-      (child) => child.color === item.colorName
-    );
+    const targetColor = childrens.find((child) => child.color === item.colorName);
     if (targetColor) {
       return (
-        <p className='mb-1'>
+        <p className="mb-1">
           {item.colorName} : used (Port: {targetColor.portNo})
         </p>
       );
     } else {
-      return <p className='mb-1'>{item.colorName} : available</p>;
+      return <p className="mb-1">{item.colorName} : available</p>;
     }
   });
 
   const onLoad = (polyline) => {
-    const lengthInMeters = window.google.maps.geometry.spherical.computeLength(
-      polyline.getPath()
-    );
+    const lengthInMeters = window.google.maps.geometry.spherical.computeLength(polyline.getPath());
     setLength(lengthInMeters);
   };
 
@@ -72,10 +59,10 @@ const PrintPointToPoint = ({ connection }) => {
 
   const deleteHandler = () => {
     toast.promise(axiosInstance.delete(`/ptp-connection?id=${_id}`), {
-      loading: 'Deleting...',
+      loading: "Deleting...",
       success: () => {
         setFetch(true);
-        return 'Deleted successfully';
+        return "Deleted successfully";
       },
       error: ({
         response: {
@@ -124,31 +111,25 @@ const PrintPointToPoint = ({ connection }) => {
       })}
 
       {showInfoWindow && (
-        <InfoWindow
-          position={position}
-          onCloseClick={() => setShowInfoWindow(false)}
-        >
+        <InfoWindow position={position} onCloseClick={() => setShowInfoWindow(false)}>
           <>
-            <p className='mb-1 fw-bold'>{name}</p>
-            <hr className='my-1' />
-            <p className='mb-1'>
-              <span className='fw-bold'>Connection Type:</span> {type}
+            <p className="mb-1 fw-bold">{name}</p>
+            <hr className="my-1" />
+            <p className="mb-1">
+              <span className="fw-bold">Connection Type:</span> {type}
             </p>
-            <p className='mb-1'>
-              <span className=' fw-bold'>total Used Core:</span>
+            <p className="mb-1">
+              <span className=" fw-bold">total Used Core:</span>
               {totalConnected}/{totalCore}
             </p>
-            <p className='mb-1'>
-              <span className=' fw-bold'>Distance:</span> {Math.ceil(length)}m
+            <p className="mb-1">
+              <span className=" fw-bold">Distance:</span> {Math.ceil(length)}m
             </p>
-            <button
-              className='badge mb-1 bg-danger border-0'
-              onClick={deleteHandler}
-            >
+            <button className="badge mb-1 bg-danger border-0" onClick={deleteHandler}>
               Delete
             </button>
-            <p className='mb-1 fw-bold'>Core Available: </p>
-            <hr className='my-1 w-50' /> {CoreStatus}
+            <p className="mb-1 fw-bold">Core Available: </p>
+            <hr className="my-1 w-50" /> {CoreStatus}
           </>
         </InfoWindow>
       )}

@@ -1,12 +1,12 @@
-import { InfoWindow, Marker, Polyline } from '@react-google-maps/api';
-import React, { useEffect, useState } from 'react';
-import coreColor from '../../../utility/coreColor';
+import { InfoWindow, Marker, Polyline } from "@react-google-maps/api";
+import React, { useEffect, useState } from "react";
+import coreColor from "../../../utility/coreColor";
 
-import resellerIcon from '../../../assets/img/olt.png';
-import useEditablePolyline from '../../../hooks/useEditablePolyline';
-import toast from 'react-hot-toast';
-import axiosInstance from '../../../utility/axios';
-import usePolylines from '../../../hooks/usePolylines';
+import resellerIcon from "../../../assets/img/olt.png";
+import useEditablePolyline from "../../../hooks/useEditablePolyline";
+import toast from "react-hot-toast";
+import axiosInstance from "../../../utility/axios";
+import usePolylines from "../../../hooks/usePolylines";
 
 const PrintReseller = ({ connection }) => {
   const { setParent } = useEditablePolyline();
@@ -47,9 +47,9 @@ const PrintReseller = ({ connection }) => {
   };
 
   const childConnection = childrens.map((child, index) => {
-    if (child.connectionType === 'splitter') {
+    if (child.connectionType === "splitter") {
       return (
-        <p className='mb-1' key={index}>
+        <p className="mb-1" key={index}>
           Port: {child.portNo}: {child.connectionUsed}/{connectionLimit}
         </p>
       );
@@ -58,9 +58,7 @@ const PrintReseller = ({ connection }) => {
   });
 
   const onLoad = (polyline) => {
-    const lengthInMeters = window.google.maps.geometry.spherical.computeLength(
-      polyline.getPath()
-    );
+    const lengthInMeters = window.google.maps.geometry.spherical.computeLength(polyline.getPath());
     setLength(lengthInMeters);
   };
 
@@ -77,10 +75,10 @@ const PrintReseller = ({ connection }) => {
 
   const deleteHandler = () => {
     toast.promise(axiosInstance.delete(`/reseller-connection?id=${_id}`), {
-      loading: 'Deleting...',
+      loading: "Deleting...",
       success: () => {
         setFetch(true);
-        return 'Deleted successfully';
+        return "Deleted successfully";
       },
       error: ({
         response: {
@@ -117,44 +115,38 @@ const PrintReseller = ({ connection }) => {
         }}
       />
       {showInfoWindow && (
-        <InfoWindow
-          position={position}
-          onCloseClick={() => setShowInfoWindow(false)}
-        >
+        <InfoWindow position={position} onCloseClick={() => setShowInfoWindow(false)}>
           <>
-            <p className='mb-1 fw-bold'>{name}</p>
-            <hr className='my-1' />
-            <p className='mb-1'>
-              <span className='fw-bold'>Connection Type:</span> {type}
+            <p className="mb-1 fw-bold">{name}</p>
+            <hr className="my-1" />
+            <p className="mb-1">
+              <span className="fw-bold">Connection Type:</span> {type}
             </p>
-            <p className='mb-1'>
-              <span className='fw-bold'>Core Color:</span> {color}
+            <p className="mb-1">
+              <span className="fw-bold">Core Color:</span> {color}
             </p>
-            <p className='mb-1'>
-              <span className='fw-bold'>Port No:</span> {portNo}
+            <p className="mb-1">
+              <span className="fw-bold">Port No:</span> {portNo}
             </p>
-            <p className='mb-1'>
-              <span className=' fw-bold'>Distance:</span> {Math.ceil(length)}m
+            <p className="mb-1">
+              <span className=" fw-bold">Distance:</span> {Math.ceil(length)}m
             </p>
-            <p className='mb-1'>
-              <span className='fw-bold'> Olt Type:</span> {oltType}
+            <p className="mb-1">
+              <span className="fw-bold"> Olt Type:</span> {oltType}
             </p>
-            <p className='mb-1'>
-              <span className='fw-bold'> total Connection Used:</span>
+            <p className="mb-1">
+              <span className="fw-bold"> total Connection Used:</span>
               {connectionUsed}
             </p>
-            <p className='mb-1'>
-              <span className='fw-bold'> oltSwitchNumber:</span>
+            <p className="mb-1">
+              <span className="fw-bold"> oltSwitchNumber:</span>
               {oltSerialNumber}
             </p>
-            <button
-              className='badge mb-1 bg-danger border-0'
-              onClick={deleteHandler}
-            >
+            <button className="badge mb-1 bg-danger border-0" onClick={deleteHandler}>
               Delete
             </button>
-            <p className='mb-1 fw-bold'>Port Used: </p>
-            <hr className='my-1 w-50' />
+            <p className="mb-1 fw-bold">Port Used: </p>
+            <hr className="my-1 w-50" />
             {childConnection}
           </>
         </InfoWindow>

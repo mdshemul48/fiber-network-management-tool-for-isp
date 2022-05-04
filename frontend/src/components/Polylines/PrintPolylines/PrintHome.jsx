@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { InfoWindow, Marker, Polyline } from '@react-google-maps/api';
-import coreColor from '../../../utility/coreColor';
-import homeIcon from '../../../assets/img/onu.png';
-import toast from 'react-hot-toast';
-import axiosInstance from '../../../utility/axios';
-import usePolylines from '../../../hooks/usePolylines';
+import React, { useEffect, useState } from "react";
+import { InfoWindow, Marker, Polyline } from "@react-google-maps/api";
+import coreColor from "../../../utility/coreColor";
+import homeIcon from "../../../assets/img/onu.png";
+import toast from "react-hot-toast";
+import axiosInstance from "../../../utility/axios";
+import usePolylines from "../../../hooks/usePolylines";
 
 const PrintHome = ({ connection }) => {
   const { setFetch } = usePolylines();
@@ -32,9 +32,7 @@ const PrintHome = ({ connection }) => {
   };
 
   const onLoad = (polyline) => {
-    const lengthInMeters = window.google.maps.geometry.spherical.computeLength(
-      polyline.getPath()
-    );
+    const lengthInMeters = window.google.maps.geometry.spherical.computeLength(polyline.getPath());
     setLength(lengthInMeters);
   };
 
@@ -47,10 +45,10 @@ const PrintHome = ({ connection }) => {
 
   const deleteHandler = () => {
     toast.promise(axiosInstance.delete(`/home-connection?id=${_id}`), {
-      loading: 'Deleting...',
+      loading: "Deleting...",
       success: () => {
         setFetch(true);
-        return 'Deleted successfully';
+        return "Deleted successfully";
       },
       error: ({
         response: {
@@ -79,7 +77,7 @@ const PrintHome = ({ connection }) => {
           })
         }
         onClick={() => {
-          console.log('marker');
+          console.log("marker");
         }}
         icon={icon}
         onRightClick={({ latLng }) => {
@@ -88,29 +86,23 @@ const PrintHome = ({ connection }) => {
         }}
       />
       {showInfoWindow && (
-        <InfoWindow
-          position={position}
-          onCloseClick={() => setShowInfoWindow(false)}
-        >
+        <InfoWindow position={position} onCloseClick={() => setShowInfoWindow(false)}>
           <>
-            <p className='mb-1 fw-bold'>{name}</p>
-            <hr className='my-1' />
-            <p className='mb-1'>
-              <span className='fw-bold'>Onu No:</span> {onuNo}
+            <p className="mb-1 fw-bold">{name}</p>
+            <hr className="my-1" />
+            <p className="mb-1">
+              <span className="fw-bold">Onu No:</span> {onuNo}
             </p>
-            <p className='mb-1'>
-              <span className='fw-bold'>connection Type:</span> {type}
+            <p className="mb-1">
+              <span className="fw-bold">connection Type:</span> {type}
             </p>
-            <p className='mb-1'>
-              <span className='fw-bold'>Core Color:</span> {color}
+            <p className="mb-1">
+              <span className="fw-bold">Core Color:</span> {color}
             </p>
-            <p className='mb-1'>
-              <span className='fw-bold'>Distance:</span> {Math.ceil(length)}m
+            <p className="mb-1">
+              <span className="fw-bold">Distance:</span> {Math.ceil(length)}m
             </p>
-            <button
-              className='badge mb-1 bg-danger border-0'
-              onClick={deleteHandler}
-            >
+            <button className="badge mb-1 bg-danger border-0" onClick={deleteHandler}>
               Delete
             </button>
           </>

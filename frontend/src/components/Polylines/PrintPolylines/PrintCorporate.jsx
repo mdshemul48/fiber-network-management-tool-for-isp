@@ -1,10 +1,10 @@
-import { InfoWindow, Marker, Polyline } from '@react-google-maps/api';
-import React, { useEffect, useState } from 'react';
-import coreColor from '../../../utility/coreColor';
-import officeIcon from '../../../assets/img/office.png';
-import axiosInstance from '../../../utility/axios';
-import toast from 'react-hot-toast';
-import usePolylines from '../../../hooks/usePolylines';
+import { InfoWindow, Marker, Polyline } from "@react-google-maps/api";
+import React, { useEffect, useState } from "react";
+import coreColor from "../../../utility/coreColor";
+import officeIcon from "../../../assets/img/office.png";
+import axiosInstance from "../../../utility/axios";
+import toast from "react-hot-toast";
+import usePolylines from "../../../hooks/usePolylines";
 
 const PrintCorporate = ({ connection }) => {
   const [coordinates, setCoordinates] = useState([]);
@@ -31,9 +31,7 @@ const PrintCorporate = ({ connection }) => {
   };
 
   const onLoad = (polyline) => {
-    const lengthInMeters = window.google.maps.geometry.spherical.computeLength(
-      polyline.getPath()
-    );
+    const lengthInMeters = window.google.maps.geometry.spherical.computeLength(polyline.getPath());
     setLength(lengthInMeters);
   };
 
@@ -46,10 +44,10 @@ const PrintCorporate = ({ connection }) => {
 
   const deleteHandler = () => {
     toast.promise(axiosInstance.delete(`/corporate-connection?id=${_id}`), {
-      loading: 'Deleting...',
+      loading: "Deleting...",
       success: () => {
         setFetch(true);
-        return 'Deleted successfully';
+        return "Deleted successfully";
       },
       error: ({
         response: {
@@ -85,29 +83,23 @@ const PrintCorporate = ({ connection }) => {
         }}
       />
       {showInfoWindow && (
-        <InfoWindow
-          position={position}
-          onCloseClick={() => setShowInfoWindow(false)}
-        >
+        <InfoWindow position={position} onCloseClick={() => setShowInfoWindow(false)}>
           <>
-            <p className='mb-1 fw-bold'>{name}</p>
-            <hr className='my-1' />
-            <p className='mb-1'>
-              <span className='fw-bold'>Connection Type:</span> {type}
+            <p className="mb-1 fw-bold">{name}</p>
+            <hr className="my-1" />
+            <p className="mb-1">
+              <span className="fw-bold">Connection Type:</span> {type}
             </p>
-            <p className='mb-1'>
-              <span className='fw-bold'>Port No:</span> {portNo}
+            <p className="mb-1">
+              <span className="fw-bold">Port No:</span> {portNo}
             </p>
-            <p className='mb-1'>
-              <span className='fw-bold'>Core Color:</span> {color}
+            <p className="mb-1">
+              <span className="fw-bold">Core Color:</span> {color}
             </p>
-            <p className='mb-1'>
-              <span className=' fw-bold'>Distance:</span> {Math.ceil(length)}m
+            <p className="mb-1">
+              <span className=" fw-bold">Distance:</span> {Math.ceil(length)}m
             </p>
-            <button
-              className='badge mb-1 bg-danger border-0'
-              onClick={deleteHandler}
-            >
+            <button className="badge mb-1 bg-danger border-0" onClick={deleteHandler}>
               Delete
             </button>
           </>

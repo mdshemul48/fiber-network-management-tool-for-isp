@@ -1,4 +1,4 @@
-import * as turf from '@turf/turf';
+import * as turf from "@turf/turf";
 
 const getPointOnPolyline = (coordinates, targetPoint) => {
   const point = turf.point(targetPoint);
@@ -12,7 +12,7 @@ const getPointOnPolyline = (coordinates, targetPoint) => {
   return pstnOnLine;
 };
 
-export default async (coordinates, point, callback) => {
+const findNearByPTP = async (coordinates, point, callback) => {
   let finalResult = null;
 
   const pointOnLine = getPointOnPolyline(coordinates, [point.lng, point.lat]);
@@ -22,29 +22,27 @@ export default async (coordinates, point, callback) => {
   const request = {
     origin: new window.google.maps.LatLng(pointOnLine.lat, pointOnLine.lng),
     destination: point,
-    travelMode: 'WALKING',
+    travelMode: "WALKING",
   };
 
   await directionsService.route(request, async function (result, status) {
-    if (status === 'OK') {
+    if (status === "OK") {
       const allSteps = result.routes[0].legs[0].steps;
       let shortestDistance = +Infinity;
       let shortestPath = null;
       for (let i = 0, j = 0; i < allSteps.length && j < 2; i++, j++) {
         const step = allSteps[i];
 
-        const { lat, lng } = getPointOnPolyline(coordinates, [
-          step.start_location.lng(),
-          step.start_location.lat(),
-        ]);
+        const { lat, lng } = getPointOnPolyline(coordinates, [step.start_location.lng(), step.start_location.lat()]);
 
         const request = {
           origin: new window.google.maps.LatLng(lat, lng),
           destination: point,
-          travelMode: 'WALKING',
+          travelMode: "WALKING",
         };
+        // eslint-disable-next-line no-loop-func
         await directionsService.route(request, async (result, status) => {
-          if (status === 'OK') {
+          if (status === "OK") {
             const {
               distance: { value },
             } = result.routes[0].legs[0];
@@ -61,10 +59,7 @@ export default async (coordinates, point, callback) => {
         routes: [{ overview_path: path }],
       } = shortestPath;
 
-      const { lat, lng } = getPointOnPolyline(coordinates, [
-        path[0].lng(),
-        path[0].lat(),
-      ]);
+      const { lat, lng } = getPointOnPolyline(coordinates, [path[0].lng(), path[0].lat()]);
       const startPoint = new window.google.maps.LatLng(lat, lng);
       const endPoint = new window.google.maps.LatLng(point);
 
@@ -73,3 +68,4 @@ export default async (coordinates, point, callback) => {
     }
   });
 };
+export default findNearByPTP;

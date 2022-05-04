@@ -1,5 +1,5 @@
-import { useJsApiLoader } from '@react-google-maps/api';
-import { createContext, useCallback, useState } from 'react';
+import { useJsApiLoader } from "@react-google-maps/api";
+import { createContext, useCallback, useState } from "react";
 
 export const MapCreatedContext = createContext({
   map: null,
@@ -8,9 +8,9 @@ export const MapCreatedContext = createContext({
 });
 
 export const MapContext = ({ children }) => {
-  const [libraries] = useState(['geometry']);
+  const [libraries] = useState(["geometry"]);
   const { isLoaded } = useJsApiLoader({
-    id: 'google-map-script',
+    id: "google-map-script",
     googleMapsApiKey: process.env.REACT_APP_MAP_API_KEY,
     libraries,
   });
@@ -19,17 +19,17 @@ export const MapContext = ({ children }) => {
   const onLoad = useCallback(function callback(map) {
     setMap(map);
 
-    map.addListener('zoom_changed', () => {
+    map.addListener("zoom_changed", () => {
       const zoom = map.getZoom();
-      localStorage.setItem('zoom', zoom);
+      localStorage.setItem("zoom", zoom);
     });
 
-    map.addListener('center_changed', () => {
+    map.addListener("center_changed", () => {
       const { lat: latC, lng: lngC } = map.getCenter();
       const lat = latC();
       const lng = lngC();
       localStorage.setItem(
-        'center',
+        "center",
         JSON.stringify({
           lat: lat,
           lng: lng,

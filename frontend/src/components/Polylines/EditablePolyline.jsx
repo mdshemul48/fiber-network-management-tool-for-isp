@@ -1,7 +1,7 @@
-import React, { useRef } from 'react';
-import { Polyline } from '@react-google-maps/api';
-import { useCallback } from 'react';
-import useEditablePolyline from '../../hooks/useEditablePolyline';
+import React, { useRef } from "react";
+import { Polyline } from "@react-google-maps/api";
+import { useCallback } from "react";
+import useEditablePolyline from "../../hooks/useEditablePolyline";
 
 const EditablePolyline = () => {
   const listenersRef = useRef([]);
@@ -9,7 +9,7 @@ const EditablePolyline = () => {
 
   const options = {
     editable: true,
-    strokeColor: '#313552',
+    strokeColor: "#313552",
     strokeOpacity: 1.0,
     strokeWeight: 3,
   };
@@ -30,9 +30,9 @@ const EditablePolyline = () => {
 
       const path = polyline.getPath();
       listenersRef.current.push(
-        path.addListener('set_at', onEdit),
-        path.addListener('insert_at', onEdit),
-        path.addListener('remove_at', onEdit)
+        path.addListener("set_at", onEdit),
+        path.addListener("insert_at", onEdit),
+        path.addListener("remove_at", onEdit)
       );
     },
     [onEdit, polylineRef]

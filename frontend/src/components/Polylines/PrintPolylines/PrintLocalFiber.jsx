@@ -1,11 +1,11 @@
-import { InfoWindow, Marker, Polyline } from '@react-google-maps/api';
-import React, { useEffect, useState } from 'react';
-import toast from 'react-hot-toast';
+import { InfoWindow, Marker, Polyline } from "@react-google-maps/api";
+import React, { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
-import tjIcon from '../../../assets/img/tj.png';
-import useEditablePolyline from '../../../hooks/useEditablePolyline';
-import usePolylines from '../../../hooks/usePolylines';
-import axiosInstance from '../../../utility/axios';
+import tjIcon from "../../../assets/img/tj.png";
+import useEditablePolyline from "../../../hooks/useEditablePolyline";
+import usePolylines from "../../../hooks/usePolylines";
+import axiosInstance from "../../../utility/axios";
 
 const PrintLocalFiber = ({ connection }) => {
   const [coordinates, setCoordinates] = useState([]);
@@ -14,17 +14,7 @@ const PrintLocalFiber = ({ connection }) => {
   const [showInfoWindow, setShowInfoWindow] = useState(false);
   const [position, setPosition] = useState(null);
   const [length, setLength] = useState(0);
-  const {
-    _id,
-    name,
-    locations,
-    type,
-    totalCore,
-    totalConnected,
-    markers,
-    childrens,
-    mainLocalFiber,
-  } = connection;
+  const { _id, name, locations, type, totalCore, totalConnected, markers, childrens, mainLocalFiber } = connection;
 
   useEffect(() => {
     if (locations?.coordinates) {
@@ -37,29 +27,25 @@ const PrintLocalFiber = ({ connection }) => {
 
   const options = {
     geodesic: true,
-    strokeColor: '#142F43',
+    strokeColor: "#142F43",
     strokeOpacity: 1.0,
     strokeWeight: 4,
   };
 
   const onLoad = (polyline) => {
-    const lengthInMeters = window.google.maps.geometry.spherical.computeLength(
-      polyline.getPath()
-    );
+    const lengthInMeters = window.google.maps.geometry.spherical.computeLength(polyline.getPath());
     setLength(lengthInMeters);
   };
 
-  const localFiberChildrens = (mainLocalFiber?.childrens || childrens).map(
-    (item) => {
-      return item.connectionType === 'splitter' ? (
-        <p className='mb-1' key={item._id}>
-          {item.color}: used{' '}
-        </p>
-      ) : (
-        <></>
-      );
-    }
-  );
+  const localFiberChildrens = (mainLocalFiber?.childrens || childrens).map((item) => {
+    return item.connectionType === "splitter" ? (
+      <p className="mb-1" key={item._id}>
+        {item.color}: used{" "}
+      </p>
+    ) : (
+      <></>
+    );
+  });
 
   const onClickHandler = (event) => {
     setParent(connection, event.latLng);
@@ -67,10 +53,10 @@ const PrintLocalFiber = ({ connection }) => {
 
   const deleteHandler = () => {
     toast.promise(axiosInstance.delete(`/local-fiber-connection?id=${_id}`), {
-      loading: 'Deleting...',
+      loading: "Deleting...",
       success: () => {
         setFetch(true);
-        return 'Deleted successfully';
+        return "Deleted successfully";
       },
       error: ({
         response: {
@@ -117,32 +103,25 @@ const PrintLocalFiber = ({ connection }) => {
       })}
 
       {showInfoWindow && (
-        <InfoWindow
-          position={position}
-          onCloseClick={() => setShowInfoWindow(false)}
-        >
+        <InfoWindow position={position} onCloseClick={() => setShowInfoWindow(false)}>
           <>
-            <p className='mb-1 fw-bold'>{name}</p>
-            <hr className='my-1' />
-            <p className='mb-1'>
-              <span className='fw-bold'>Connection Type:</span> {type}
+            <p className="mb-1 fw-bold">{name}</p>
+            <hr className="my-1" />
+            <p className="mb-1">
+              <span className="fw-bold">Connection Type:</span> {type}
             </p>
-            <p className='mb-1'>
-              <span className=' fw-bold'>total Used Core:</span>
-              {mainLocalFiber?.totalConnected || totalConnected}/
-              {mainLocalFiber?.totalCore || totalCore}
+            <p className="mb-1">
+              <span className=" fw-bold">total Used Core:</span>
+              {mainLocalFiber?.totalConnected || totalConnected}/{mainLocalFiber?.totalCore || totalCore}
             </p>
-            <p className='mb-1'>
-              <span className=' fw-bold'>Distance:</span> {Math.ceil(length)}m
+            <p className="mb-1">
+              <span className=" fw-bold">Distance:</span> {Math.ceil(length)}m
             </p>
-            <button
-              className='badge mb-1 bg-danger border-0'
-              onClick={deleteHandler}
-            >
+            <button className="badge mb-1 bg-danger border-0" onClick={deleteHandler}>
               Delete
             </button>
-            <p className='mb-1 fw-bold'>Core Available: </p>
-            <hr className='my-1 w-50' />
+            <p className="mb-1 fw-bold">Core Available: </p>
+            <hr className="my-1 w-50" />
             {localFiberChildrens}
           </>
         </InfoWindow>
