@@ -20,6 +20,7 @@ exports.createCorporateConnectionValidation = [
     .withMessage("coordinates must be an array")
     .isLength({ min: 2 })
     .withMessage("coordinates must be an array of at least 2 items"),
+  body("totalCore").notEmpty().withMessage("totalCore is required"),
 ];
 
 // creating corporate connection

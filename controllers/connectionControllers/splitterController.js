@@ -19,6 +19,7 @@ exports.createSplitterValidation = [
     .withMessage("Splitter limit is required")
     .isNumeric()
     .withMessage("Splitter limit must be a number"),
+  body("totalCore").notEmpty().withMessage("totalCore is required"),
 ];
 
 exports.createSplitterConnection = async (req, res) => {

@@ -46,7 +46,7 @@ const HomeForm = ({ handleClose }) => {
       coordinates,
       onuNo: onuNo,
       color: color,
-      coreCount: coreCount,
+      totalCore: coreCount,
     };
     toast.promise(axiosInstance.post("/home-connection", homeConnection), {
       loading: () => "Adding new reseller connection...",

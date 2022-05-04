@@ -22,6 +22,7 @@ exports.createResellerConnectionValidation = [
     .isLength({ min: 2 })
     .withMessage("coordinates must have at least 2 items"),
   body("color").notEmpty().withMessage("color is required"),
+  body("totalCore").notEmpty().withMessage("totalCore is required"),
 ];
 
 exports.createResellerConnection = async (req, res) => {

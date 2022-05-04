@@ -34,7 +34,7 @@ const SplitterForm = ({ handleClose }) => {
       splitterLimit: splitterType,
       color: color,
       portNo: OltPortNo,
-      coreCount: coreCount,
+      totalCore: coreCount,
     };
     toast.promise(axiosInstance.post("/splitter-connection", newPolyline), {
       loading: () => "Adding new reseller connection...",

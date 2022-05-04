@@ -48,7 +48,7 @@ const ResellerForm = ({ handleClose }) => {
       oltType: oltType,
       coordinates,
       color: color,
-      coreCount: coreCount,
+      totalCore: coreCount,
     };
 
     toast.promise(axiosInstance.post("/reseller-connection", newPolyline), {
