@@ -36,6 +36,8 @@ const PrintReseller = ({ connection }) => {
         return { lat: item[0], lng: item[1] };
       });
       setCoordinates(coordinates);
+      const lengthInMeters = window.google.maps.geometry.spherical.computeLength(coordinates);
+      setLength(lengthInMeters);
     }
   }, [location.coordinates]);
 
@@ -57,10 +59,7 @@ const PrintReseller = ({ connection }) => {
     return <></>;
   });
 
-  const onLoad = (polyline) => {
-    const lengthInMeters = window.google.maps.geometry.spherical.computeLength(polyline.getPath());
-    setLength(lengthInMeters);
-  };
+
 
   const icon = {
     url: resellerIcon,
@@ -97,7 +96,6 @@ const PrintReseller = ({ connection }) => {
           setPosition(latLng);
           setShowInfoWindow(true);
         }}
-        onLoad={onLoad}
       />
       <Marker
         position={

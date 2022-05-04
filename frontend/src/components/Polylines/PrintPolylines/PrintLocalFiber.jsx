@@ -22,6 +22,8 @@ const PrintLocalFiber = ({ connection }) => {
         return { lat: item[0], lng: item[1] };
       });
       setCoordinates(coordinates);
+      const lengthInMeters = window.google.maps.geometry.spherical.computeLength(coordinates);
+      setLength(lengthInMeters);
     }
   }, [locations.coordinates]);
 
@@ -32,10 +34,6 @@ const PrintLocalFiber = ({ connection }) => {
     strokeWeight: 4,
   };
 
-  const onLoad = (polyline) => {
-    const lengthInMeters = window.google.maps.geometry.spherical.computeLength(polyline.getPath());
-    setLength(lengthInMeters);
-  };
 
   const localFiberChildrens = (mainLocalFiber?.childrens || childrens).map((item) => {
     return item.connectionType === "splitter" ? (
@@ -75,7 +73,6 @@ const PrintLocalFiber = ({ connection }) => {
           setPosition(latLng);
           setShowInfoWindow(true);
         }}
-        onLoad={onLoad}
         onClick={onClickHandler}
       />
 

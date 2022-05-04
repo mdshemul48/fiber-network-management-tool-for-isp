@@ -24,6 +24,8 @@ const PrintPointToPoint = ({ connection }) => {
         return { lat: item[1], lng: item[0] };
       });
       setCoordinates(coordinates);
+      const lengthInMeters = window.google.maps.geometry.spherical.computeLength(coordinates);
+      setLength(lengthInMeters);
     }
   }, [location.coordinates]);
 
@@ -48,10 +50,7 @@ const PrintPointToPoint = ({ connection }) => {
     }
   });
 
-  const onLoad = (polyline) => {
-    const lengthInMeters = window.google.maps.geometry.spherical.computeLength(polyline.getPath());
-    setLength(lengthInMeters);
-  };
+  
 
   const onClickHandler = (event) => {
     setParent(connection, event.latLng);
@@ -81,7 +80,6 @@ const PrintPointToPoint = ({ connection }) => {
           setPosition(latLng);
           setShowInfoWindow(true);
         }}
-        onLoad={onLoad}
         onClick={onClickHandler}
       />
 

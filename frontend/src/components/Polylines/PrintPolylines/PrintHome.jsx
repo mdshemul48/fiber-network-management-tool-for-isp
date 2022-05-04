@@ -20,6 +20,8 @@ const PrintHome = ({ connection }) => {
         return { lat: item[0], lng: item[1] };
       });
       setCoordinates(coordinates);
+      const lengthInMeters = window.google.maps.geometry.spherical.computeLength(coordinates);
+      setLength(lengthInMeters);
     }
   }, [locations.coordinates]);
 
@@ -29,11 +31,6 @@ const PrintHome = ({ connection }) => {
     strokeColor: coreColor.find((item) => item.colorName === color)?.colorCode,
     strokeOpacity: 1.0,
     strokeWeight: 3,
-  };
-
-  const onLoad = (polyline) => {
-    const lengthInMeters = window.google.maps.geometry.spherical.computeLength(polyline.getPath());
-    setLength(lengthInMeters);
   };
 
   const icon = {
@@ -61,7 +58,6 @@ const PrintHome = ({ connection }) => {
     <>
       <Polyline
         options={options}
-        onLoad={onLoad}
         onRightClick={({ latLng }) => {
           setPosition(latLng);
           setShowInfoWindow(true);

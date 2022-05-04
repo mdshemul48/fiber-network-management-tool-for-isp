@@ -24,6 +24,8 @@ const PrintSplitter = ({ connection }) => {
         return { lng: item[0], lat: item[1] };
       });
       setCoordinates(coordinates);
+      const lengthInMeters = window.google.maps.geometry.spherical.computeLength(coordinates);
+      setLength(lengthInMeters);
     }
   }, [location.coordinates]);
 
@@ -42,10 +44,6 @@ const PrintSplitter = ({ connection }) => {
     );
   });
 
-  const onLoad = (polyline) => {
-    const lengthInMeters = window.google.maps.geometry.spherical.computeLength(polyline.getPath());
-    setLength(lengthInMeters);
-  };
   const icon = {
     url: splitterImage,
     scaledSize: new window.google.maps.Size(30, 30),
@@ -81,7 +79,6 @@ const PrintSplitter = ({ connection }) => {
           setPosition(latLng);
           setShowInfoWindow(true);
         }}
-        onLoad={onLoad}
       />
 
       <Marker
