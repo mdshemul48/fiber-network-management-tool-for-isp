@@ -73,6 +73,7 @@ exports.createLocalFiberConnection = async (req, res) => {
         reseller: selectedParent.reseller,
         parentType: "localFiber",
         totalCore,
+        length,
         type: "localFiber",
         locations: {
           coordinates: coordinatesLatLngArr,
