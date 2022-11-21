@@ -1,38 +1,21 @@
 export default function (connection, map, index) {
-  const {
-    _id,
-    name,
-    locations,
-    type,
-    totalCore,
-    totalConnected,
-    markers,
-    childrens,
-    mainLocalFiber,
-  } = connection;
+  const { _id, name, locations, type, totalCore, totalConnected, markers, childrens, mainLocalFiber } = connection;
 
-  const coordinates = locations.coordinates.map((item) => {
-    return { lat: item[0], lng: item[1] };
-  });
+  const coordinates = locations.coordinates.map((item) => ({ lat: item[0], lng: item[1] }));
   const polyline = new google.maps.Polyline({
     path: coordinates,
     geodesic: true,
-    strokeColor: '#142F43',
+    strokeColor: "#142F43",
     strokeOpacity: 1.0,
     strokeWeight: 4,
   });
   window.allTheConnection[index].polyline = polyline;
 
-  const lengthInMeters = google.maps.geometry.spherical.computeLength(
-    polyline.getPath()
-  );
-  let localFiberChildrens = '';
+  const lengthInMeters = google.maps.geometry.spherical.computeLength(polyline.getPath());
+  let localFiberChildrens = "";
 
   (mainLocalFiber?.childrens || childrens).forEach((item) => {
-    localFiberChildrens +=
-      item.connectionType === 'splitter'
-        ? `<p class="mb-1">${item.color}: used </p>`
-        : '';
+    localFiberChildrens += item.connectionType === "splitter" ? `<p class="mb-1">${item.color}: used </p>` : "";
   });
 
   const infoWindow = new google.maps.InfoWindow({
@@ -43,9 +26,7 @@ export default function (connection, map, index) {
     <p class="mb-1"><span class=" fw-bold">total Used Core:</span> ${
       mainLocalFiber?.totalConnected || totalConnected
     }/${mainLocalFiber?.totalCore || totalCore}</p>
-    <p class="mb-1"><span class=" fw-bold">Distance:</span> ${Math.ceil(
-      lengthInMeters
-    )}m</p>
+    <p class="mb-1"><span class=" fw-bold">Distance:</span> ${Math.ceil(lengthInMeters)}m</p>
     <button class="badge mb-1 bg-danger border-0" onclick="deleteConnection('${type}', '${_id}', '${
       location._id
     }')">Delete</button>
@@ -55,16 +36,16 @@ export default function (connection, map, index) {
       `,
   });
 
-  polyline.addListener('mouseover', (event) => {
+  polyline.addListener("mouseover", (event) => {
     infoWindow.setPosition(event.latLng);
     infoWindow.open(map);
   });
 
-  polyline.addListener('mouseout', () => {
+  polyline.addListener("mouseout", () => {
     infoWindow.close();
   });
 
-  google.maps.event.addListener(polyline, 'click', function (event) {
+  google.maps.event.addListener(polyline, "click", (event) => {
     window.selectPolyline(event.latLng, { _id, type });
   });
 
@@ -75,7 +56,7 @@ export default function (connection, map, index) {
   markers.forEach(({ coordinates }) => {
     // printing tj box on the map
     const icon = {
-      url: '../../../assets/img/tj.png',
+      url: "../../../assets/img/tj.png",
       scaledSize: new google.maps.Size(30, 30),
       origin: new google.maps.Point(0, 0),
       anchor: new google.maps.Point(15, 15),
@@ -87,9 +68,9 @@ export default function (connection, map, index) {
         lng: coordinates[0],
       },
       map,
-      icon: icon,
+      icon,
     });
-    google.maps.event.addListener(marker, 'click', function (event) {
+    google.maps.event.addListener(marker, "click", (event) => {
       window.selectPolyline(event.latLng, { _id, type });
     });
     window.allTheConnection[index].markersPoint.push(marker);

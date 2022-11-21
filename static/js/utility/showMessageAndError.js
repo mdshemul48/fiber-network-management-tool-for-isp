@@ -3,15 +3,15 @@ const showMessage = (message) => {
     text: message,
     duration: 3000,
     close: true,
-    gravity: 'top',
-    position: 'center',
+    gravity: "top",
+    position: "center",
     stopOnFocus: true,
     style: {
-      color: 'white',
-      'font-weight': '400',
-      background: 'black',
+      color: "white",
+      "font-weight": "400",
+      background: "black",
     },
-    onClick: function () {}, // Callback after click
+    onClick() {}, // Callback after click
   }).showToast();
 };
 
@@ -20,15 +20,15 @@ const showError = (errorMessage) => {
     text: errorMessage,
     duration: 3000,
     close: true,
-    gravity: 'top',
-    position: 'center',
+    gravity: "top",
+    position: "center",
     stopOnFocus: true,
     style: {
-      color: 'red',
-      'font-weight': '400',
-      background: 'white',
+      color: "red",
+      "font-weight": "400",
+      background: "white",
     },
-    onClick: function () {}, // Callback after click
+    onClick() {}, // Callback after click
   }).showToast();
 };
 

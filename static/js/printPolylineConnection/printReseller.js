@@ -1,4 +1,4 @@
-import allTheCoreColor from '../utility/coreColor.js';
+import allTheCoreColor from "../utility/coreColor.js";
 
 export default function (connection, map, index) {
   const {
@@ -16,23 +16,20 @@ export default function (connection, map, index) {
     connectionUsed,
   } = connection;
 
-  const coordinates = location.coordinates.map((item) => {
-    return { lat: item[0], lng: item[1] };
-  });
+  const coordinates = location.coordinates.map((item) => ({ lat: item[0], lng: item[1] }));
   const polyline = new google.maps.Polyline({
     path: coordinates,
     geodesic: true,
-    strokeColor: allTheCoreColor.find((item) => item.colorName === color)
-      .colorCode,
+    strokeColor: allTheCoreColor.find((item) => item.colorName === color).colorCode,
     strokeOpacity: 1.0,
     strokeWeight: 4,
   });
 
   window.allTheConnection[index].polyline = polyline;
 
-  let resellerChildDetail = '';
+  let resellerChildDetail = "";
   childrens.forEach((child) => {
-    if (child.connectionType === 'splitter') {
+    if (child.connectionType === "splitter") {
       resellerChildDetail += `<p class="mb-1">Port: ${child.portNo}: ${child.connectionUsed}/${connectionLimit}</p>`;
     }
   });
@@ -54,14 +51,14 @@ export default function (connection, map, index) {
     `,
   });
 
-  google.maps.event.addListener(polyline, 'click', function (event) {
+  google.maps.event.addListener(polyline, "click", (event) => {
     window.selectPolyline(event.latLng, { _id, type });
   });
 
   polyline.setMap(map);
 
   const icon = {
-    url: '../../../assets/img/olt.png',
+    url: "../../../assets/img/olt.png",
     scaledSize: new google.maps.Size(35, 50),
     origin: new google.maps.Point(0, 0),
     anchor: new google.maps.Point(15, 15),
@@ -70,20 +67,20 @@ export default function (connection, map, index) {
   const marker = new google.maps.Marker({
     position: coordinates[coordinates.length - 1],
     map,
-    icon: icon,
+    icon,
   });
 
-  polyline.addListener('mouseover', (event) => {
+  polyline.addListener("mouseover", (event) => {
     infoWindow.setPosition(event.latLng);
     infoWindow.open(map);
   });
 
   window.allTheConnection[index].markersPoint = [marker];
 
-  polyline.addListener('mouseout', () => {
+  polyline.addListener("mouseout", () => {
     infoWindow.close();
   });
-  google.maps.event.addListener(marker, 'click', function (event) {
+  google.maps.event.addListener(marker, "click", (event) => {
     window.selectPolyline(event.latLng, { _id, type });
   });
 }

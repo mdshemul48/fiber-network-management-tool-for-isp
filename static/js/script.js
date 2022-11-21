@@ -1,20 +1,20 @@
-import getShortestPath from './shortestPath/getShortestPath.js';
+import getShortestPath from "./shortestPath/getShortestPath.js";
 
-import EditablePolyline from './GoogleMap/EditablePolyline.js';
-import printAllThePolylines from './printPolylineConnection/printAllThePolylines.js';
+import EditablePolyline from "./GoogleMap/EditablePolyline.js";
+import printAllThePolylines from "./printPolylineConnection/printAllThePolylines.js";
 
 // all the from submit functions
-import customForm from './addNewMainConnection/customForm.js';
+import customForm from "./addNewMainConnection/customForm.js";
 
-import addPointToPoint from './addNewMainConnection/addPointToPoint.js';
-import AddCompany from './addNewMainConnection/AddCompany.js';
-import addReseller from './addNewMainConnection/addReseller.js';
-import addLocalSplitter from './addNewMainConnection/addLocalSplitter.js';
-import addLocalHomeConnection from './addNewMainConnection/addLocalHomeConnection.js';
-import addLocalFiberConnection from './addNewMainConnection/addLocalFiberConnection.js';
+import addPointToPoint from "./addNewMainConnection/addPointToPoint.js";
+import AddCompany from "./addNewMainConnection/AddCompany.js";
+import addReseller from "./addNewMainConnection/addReseller.js";
+import addLocalSplitter from "./addNewMainConnection/addLocalSplitter.js";
+import addLocalHomeConnection from "./addNewMainConnection/addLocalHomeConnection.js";
+import addLocalFiberConnection from "./addNewMainConnection/addLocalFiberConnection.js";
 
-import deleteConnection from './deletePolyline/deleteConnection.js';
-import showMessage from './utility/showMessageAndError.js';
+import deleteConnection from "./deletePolyline/deleteConnection.js";
+import showMessage from "./utility/showMessageAndError.js";
 
 let map;
 let editablePolyline;
@@ -23,46 +23,46 @@ let selectedPolylineType = null;
 let clickEvent = null;
 
 const insertScript = async () => {
-  const script = document.createElement('script');
+  const script = document.createElement("script");
   script.src =
-    'https://maps.googleapis.com/maps/api/js?key=AIzaSyDL9422bxk3GtU5z54qo2Sg-JrrSn5RGcE&libraries=geometry&callback=initMap';
+    "https://maps.googleapis.com/maps/api/js?key=AIzaSyDL9422bxk3GtU5z54qo2Sg-JrrSn5RGcE&libraries=geometry&callback=initMap";
   script.async = true;
   document.head.appendChild(script);
 };
 insertScript();
 
 window.initMap = function () {
-  const center = JSON.parse(localStorage.getItem('center')) || {
+  const center = JSON.parse(localStorage.getItem("center")) || {
     lat: 23.824374476895283,
     lng: 90.27119894947462,
   };
-  const zoom = parseInt(localStorage.getItem('zoom')) || 12;
-  map = new google.maps.Map(document.getElementById('map'), {
+  const zoom = parseInt(localStorage.getItem("zoom")) || 12;
+  map = new google.maps.Map(document.getElementById("map"), {
     center,
     zoom,
   });
-  map.addListener('center_changed', () => {
+  map.addListener("center_changed", () => {
     const { lat: latC, lng: lngC } = map.getCenter();
     const lat = latC();
     const lng = lngC();
     localStorage.setItem(
-      'center',
+      "center",
       JSON.stringify({
-        lat: lat,
-        lng: lng,
+        lat,
+        lng,
       })
     );
   });
 
-  map.addListener('zoom_changed', () => {
+  map.addListener("zoom_changed", () => {
     const zoom = map.getZoom();
-    localStorage.setItem('zoom', zoom);
+    localStorage.setItem("zoom", zoom);
   });
 
   window.targetMap = map;
   editablePolyline = new EditablePolyline();
 
-  clickEvent = map.addListener('click', (event) => {
+  clickEvent = map.addListener("click", (event) => {
     editablePolyline.addVertex(event.latLng);
   });
 
@@ -80,9 +80,9 @@ window.selectPolyline = (latLng, { _id, type }) => {
   }
 };
 
-document.getElementById('addNewConnection').addEventListener('click', () => {
+document.getElementById("addNewConnection").addEventListener("click", () => {
   if (!selectedPolyline && editablePolyline.getAllThePath()?.length > 1) {
-    customForm(null, 'newPointToPoint');
+    customForm(null, "newPointToPoint");
   } else {
     customForm(selectedPolyline, selectedPolylineType);
   }
@@ -98,19 +98,19 @@ const createNewPolyline = async () => {
   selectedPolyline = null;
   selectedPolylineType = null;
 
-  for (let connection of allConnections) {
+  for (const connection of allConnections) {
     connection.polyline.setMap(null);
     connection?.markersPoint?.forEach((marker) => {
       marker.setMap(null);
     });
   }
 
-  $('#form-area').modal('hide');
+  $("#form-area").modal("hide");
 };
 
 window.addPointToPointForm = async () => {
   const { status } = await addPointToPoint(editablePolyline.getAllThePath());
-  if (status === 'success') {
+  if (status === "success") {
     editablePolyline.setMap(null);
     createNewPolyline();
   }
@@ -119,30 +119,23 @@ window.addPointToPointForm = async () => {
 window.addResellerForm = async () => {
   const polylineCoordinates = editablePolyline.getAllThePath();
   const { status } = await addReseller(selectedPolyline, polylineCoordinates);
-  if (status === 'success') {
+  if (status === "success") {
     editablePolyline.setMap(null);
     createNewPolyline();
   }
 };
 
 window.addCompanyForm = async () => {
-  const { status } = await AddCompany(
-    selectedPolyline,
-    editablePolyline.getAllThePath()
-  );
-  if (status === 'success') {
+  const { status } = await AddCompany(selectedPolyline, editablePolyline.getAllThePath());
+  if (status === "success") {
     editablePolyline.setMap(null);
     createNewPolyline();
   }
 };
 
 window.addSplitterConnection = async () => {
-  const { status } = await addLocalSplitter(
-    selectedPolyline,
-    selectedPolylineType,
-    editablePolyline.getAllThePath()
-  );
-  if (status === 'success') {
+  const { status } = await addLocalSplitter(selectedPolyline, selectedPolylineType, editablePolyline.getAllThePath());
+  if (status === "success") {
     editablePolyline.setMap(null);
     createNewPolyline();
   }
@@ -154,18 +147,15 @@ window.addLocalFiberConnection = async () => {
     selectedPolylineType,
     editablePolyline.getAllThePath()
   );
-  if (status === 'success') {
+  if (status === "success") {
     editablePolyline.setMap(null);
     createNewPolyline();
   }
 };
 
 window.addHomeConnection = async () => {
-  const { status } = await addLocalHomeConnection(
-    selectedPolyline,
-    editablePolyline.getAllThePath()
-  );
-  if (status === 'success') {
+  const { status } = await addLocalHomeConnection(selectedPolyline, editablePolyline.getAllThePath());
+  if (status === "success") {
     editablePolyline.setMap(null);
     createNewPolyline();
   }
@@ -173,21 +163,20 @@ window.addHomeConnection = async () => {
 
 // ! testing shortest route here
 
-document.getElementById('triggerButton').addEventListener('click', async () => {
+document.getElementById("triggerButton").addEventListener("click", async () => {
   const polylineCoordinates = editablePolyline.polyline.getPath();
   const point = polylineCoordinates.getAt(0);
 
   const response = await fetch(
-    '/api/ptp-connection?coordinates=' +
-      JSON.stringify({
-        lat: point.lat(),
-        lng: point.lng(),
-      })
+    `/api/ptp-connection?coordinates=${JSON.stringify({
+      lat: point.lat(),
+      lng: point.lng(),
+    })}`
   );
 
   const { status, data } = await response.json();
 
-  if (status === 'success') {
+  if (status === "success") {
     const {
       location: { coordinates },
     } = data;
@@ -201,13 +190,13 @@ document.getElementById('triggerButton').addEventListener('click', async () => {
       editablePolyline = new EditablePolyline();
       editablePolyline.setMap(window.targetMap);
       // adding new event listener
-      clickEvent = window.targetMap.addListener('click', (event) => {
+      clickEvent = window.targetMap.addListener("click", (event) => {
         editablePolyline.addVertex(event.latLng);
       });
       // this will animate polyline
       for (let i = 0; i < polylineEstimatedPath.length; i++) {
         setTimeout(
-          function (coords) {
+          (coords) => {
             editablePolyline.addVertex(coords);
           },
           200 * i,
@@ -222,82 +211,75 @@ document.getElementById('triggerButton').addEventListener('click', async () => {
   }
 });
 
-document
-  .getElementById('nearbySplitter')
-  .addEventListener('click', async () => {
-    const polylineCoordinates = editablePolyline.polyline.getPath();
-    const point = polylineCoordinates.getAt(0);
+document.getElementById("nearbySplitter").addEventListener("click", async () => {
+  const polylineCoordinates = editablePolyline.polyline.getPath();
+  const point = polylineCoordinates.getAt(0);
 
-    const response = await fetch(
-      '/api/splitter-connection?coordinates=' +
-        JSON.stringify({
-          lat: point.lat(),
-          lng: point.lng(),
-        })
-    );
+  const response = await fetch(
+    `/api/splitter-connection?coordinates=${JSON.stringify({
+      lat: point.lat(),
+      lng: point.lng(),
+    })}`
+  );
 
-    const { status, data } = await response.json();
+  const { status, data } = await response.json();
 
-    if (status === 'success') {
-      const {
-        lastPoint: { coordinates },
-      } = data;
+  if (status === "success") {
+    const {
+      lastPoint: { coordinates },
+    } = data;
 
-      const request = {
-        origin: new google.maps.LatLng(coordinates[1], coordinates[0]),
-        destination: point,
-        travelMode: 'WALKING',
-      };
+    const request = {
+      origin: new google.maps.LatLng(coordinates[1], coordinates[0]),
+      destination: point,
+      travelMode: "WALKING",
+    };
 
-      const directionsService = new google.maps.DirectionsService();
+    const directionsService = new google.maps.DirectionsService();
 
-      await directionsService.route(request, (result, status) => {
-        if (status === 'OK') {
-          const path = result.routes[0].overview_path;
-          const polylineEstimatedPath = [
-            new google.maps.LatLng(coordinates[1], coordinates[0]),
-            ...path,
-            point,
-          ];
+    await directionsService.route(request, (result, status) => {
+      if (status === "OK") {
+        const path = result.routes[0].overview_path;
+        const polylineEstimatedPath = [new google.maps.LatLng(coordinates[1], coordinates[0]), ...path, point];
 
-          google.maps.event.removeListener(clickEvent);
-          editablePolyline.setMap(null);
-          // creating new polyline
-          editablePolyline = new EditablePolyline();
-          editablePolyline.setMap(window.targetMap);
-          // adding new event listener
-          clickEvent = window.targetMap.addListener('click', (event) => {
-            editablePolyline.addVertex(event.latLng);
-          });
-          // this will animate polyline
-          for (let i = 0; i < polylineEstimatedPath.length; i++) {
-            setTimeout(
-              function (coords) {
-                editablePolyline.addVertex(coords);
-              },
-              200 * i,
-              polylineEstimatedPath[i]
-            );
-          }
-          // setting parent data
-          const { _id, type } = data;
-          selectedPolyline = _id;
-          selectedPolylineType = type;
+        google.maps.event.removeListener(clickEvent);
+        editablePolyline.setMap(null);
+        // creating new polyline
+        editablePolyline = new EditablePolyline();
+        editablePolyline.setMap(window.targetMap);
+        // adding new event listener
+        clickEvent = window.targetMap.addListener("click", (event) => {
+          editablePolyline.addVertex(event.latLng);
+        });
+        // this will animate polyline
+        for (let i = 0; i < polylineEstimatedPath.length; i++) {
+          setTimeout(
+            (coords) => {
+              editablePolyline.addVertex(coords);
+            },
+            200 * i,
+            polylineEstimatedPath[i]
+          );
         }
-      });
-    }
-  });
+        // setting parent data
+        const { _id, type } = data;
+        selectedPolyline = _id;
+        selectedPolylineType = type;
+      }
+    });
+  }
+});
 
 // ! -----------------------------------
 
 window.deleteConnection = async (...params) => {
   const { status } = await deleteConnection(...params);
-  if (status === 'success') {
-    showMessage('Connection deleted successfully');
+  if (status === "success") {
+    showMessage("Connection deleted successfully");
     const allConnections = [...window.allTheConnection];
     await printAllThePolylines();
 
-    for (let connection of allConnections) {
+    for (const connection of allConnections) {
       connection.polyline.setMap(null);
       connection?.markersPoint?.forEach((marker) => {
         marker.setMap(null);

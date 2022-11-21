@@ -2,9 +2,7 @@ import allTheCoreColor from '../utility/coreColor.js';
 export default function (connection, map, index) {
   const { name, color, onuNo, type, locations, _id } = connection;
 
-  const coordinates = locations.coordinates.map((item) => {
-    return { lat: item[0], lng: item[1] };
-  });
+  const coordinates = locations.coordinates.map((item) => ({ lat: item[0], lng: item[1] }));
 
   const polyline = new google.maps.Polyline({
     path: coordinates,
