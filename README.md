@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This project is a comprehensive solution for ISPs to manage their fiber network, including network devices and optic fiber cores, through the use of Google Maps. With a user-friendly interface and the latest technologies, the Optic Fiber Network Visualization project is a must-have tool for any ISP.
+This project displays an ISP's fiber network on Google Maps. The software allows the ISP to view and manage their cable network, including information on the location of optical fiber cables and the availability of cores. The ISP can also manage devices such as ONUs, splitters, OLTs, and switches. The integration of Google Maps provides a visual representation of the network, making it easy for the ISP to understand and manage their fiber network.
 
 ## Features
 
