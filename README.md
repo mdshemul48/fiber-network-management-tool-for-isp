@@ -79,4 +79,4 @@ This project displays an ISP's fiber network on Google Maps. The software allows
 
 ## Video Demo
 
-Check out the video demo [here](https://youtu.be/3ZZM5xB2--c 'Optic Fiber Network Visualization demo') to see the Optic Fiber Network Visualization project in action and experience the future of fiber network management!
+Check out the video demo [here](https://youtu.be/NCaWp_L8tGw 'Optic Fiber Network Visualization demo') to see the Optic Fiber Network Visualization project in action and experience the future of fiber network management!
